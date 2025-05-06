@@ -1,9 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Мой сайт</title>
+  <title>Реферальная система</title>
+  <!-- Подключаем Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  
+  <script>
+    // Ваша конфигурация Firebase
+    const firebaseConfig = {
+      apiKey: "ВАШ_API_KEY",
+      authDomain: "ВАШ-PROJECT.firebaseapp.com",
+      projectId: "ВАШ-PROJECT",
+    };
+    
+    // Инициализируем Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Проверяем реферальную ссылку
+    function checkReferral() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const refId = urlParams.get('ref');
+      
+      if (refId) {
+        // Сохраняем в базу
+        db.collection("referrals").add({
+          referrer: refId,
+          referee: "Новый пользователь",
+          date: new Date(),
+          page: window.location.href
+        });
+        
+        alert("Реферал зарегистрирован!");
+      }
+    }
+    
+    // Проверяем при загрузке страницы
+    window.onload = checkReferral;
+  </script>
 </head>
 <body>
-    <h1>Привет с Xbox!</h1>
+  <h1>Добро пожаловать!</h1>
+  <p>Ваша реферальная ссылка: 
+    <span id="refLink">Загрузка...</span>
+  </p>
+  
+  <script>
+    // Генерируем реферальную ссылку
+    function generateRefLink(userId) {
+      const link = `${window.location.origin}${window.location.pathname}?ref=${userId}`;
+      document.getElementById("refLink").innerHTML = 
+        `<a href="${link}">${link}</a>`;
+    }
+    
+    // Здесь можно получить ID пользователя из cookies/localStorage
+    generateRefLink("user123"); 
+  </script>
 </body>
 </html>
