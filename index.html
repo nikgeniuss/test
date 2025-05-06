@@ -1,61 +1,258 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <title>Реферальная система</title>
-  <!-- Подключаем Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  
-  <script>
-    // Ваша конфигурация Firebase
-    const firebaseConfig = {
-      apiKey: "ВАШ_API_KEY",
-      authDomain: "ВАШ-PROJECT.firebaseapp.com",
-      projectId: "ВАШ-PROJECT",
-    };
-    
-    // Инициализируем Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // Проверяем реферальную ссылку
-    function checkReferral() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const refId = urlParams.get('ref');
-      
-      if (refId) {
-        // Сохраняем в базу
-        db.collection("referrals").add({
-          referrer: refId,
-          referee: "Новый пользователь",
-          date: new Date(),
-          page: window.location.href
-        });
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой первый сайт</title>
+    <style>
+        /* Базовые стили */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
         
-        alert("Реферал зарегистрирован!");
-      }
-    }
-    
-    // Проверяем при загрузке страницы
-    window.onload = checkReferral;
-  </script>
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        nav {
+            background-color: #34495e;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            width: 300px;
+            margin: 15px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h3 {
+            color: #2c3e50;
+        }
+        
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 20px;
+        }
+        
+        /* Стиль для кнопки */
+        .button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Для темной темы */
+        .dark-mode {
+            background-color: #333;
+            color: #f5f5f5;
+        }
+        
+        .dark-mode main {
+            background-color: #444;
+            color: #f5f5f5;
+        }
+        
+        .dark-mode .feature-card {
+            background-color: #555;
+            color: #f5f5f5;
+        }
+        
+        .dark-mode .feature-card h3 {
+            color: #3498db;
+        }
+    </style>
 </head>
 <body>
-  <h1>Добро пожаловать!</h1>
-  <p>Ваша реферальная ссылка: 
-    <span id="refLink">Загрузка...</span>
-  </p>
-  
-  <script>
-    // Генерируем реферальную ссылку
-    function generateRefLink(userId) {
-      const link = `${window.location.origin}${window.location.pathname}?ref=${userId}`;
-      document.getElementById("refLink").innerHTML = 
-        `<a href="${link}">${link}</a>`;
-    }
+    <header>
+        <h1>Добро пожаловать на мой сайт</h1>
+        <p>Простой но красивый шаблон для вашего проекта</p>
+    </header>
     
-    // Здесь можно получить ID пользователя из cookies/localStorage
-    generateRefLink("user123"); 
-  </script>
+    <nav>
+        <a href="#" id="home-link">Главная</a>
+        <a href="#" id="about-link">О нас</a>
+        <a href="#" id="services-link">Услуги</a>
+        <a href="#" id="contact-link">Контакты</a>
+    </nav>
+    
+    <main id="main-content">
+        <section id="home-section">
+            <h2>Главная страница</h2>
+            <p>Добро пожаловать на наш замечательный сайт! Здесь вы найдете множество полезной информации и интересных возможностей.</p>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>Первоклассный дизайн</h3>
+                    <p>Современный дизайн, который адаптируется под любые устройства.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Быстрая загрузка</h3>
+                    <p>Оптимизированный код для максимальной производительности.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Удобное управление</h3>
+                    <p>Интуитивно понятный интерфейс для комфортного использования.</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="theme-toggle" class="button">Переключить тему</button>
+            </div>
+        </section>
+        
+        <section id="about-section" style="display: none;">
+            <h2>О нас</h2>
+            <p>Мы команда профессионалов, специализирующихся на создании качественных веб-решений.</p>
+            <p>Наша миссия — помогать клиентам реализовывать их идеи в сети интернет максимально эффективно и красиво.</p>
+        </section>
+        
+        <section id="services-section" style="display: none;">
+            <h2>Наши услуги</h2>
+            <ul>
+                <li>Разработка веб-сайтов</li>
+                <li>Дизайн пользовательских интерфейсов</li>
+                <li>SEO-оптимизация</li>
+                <li>Техническая поддержка</li>
+            </ul>
+        </section>
+        
+        <section id="contact-section" style="display: none;">
+            <h2>Свяжитесь с нами</h2>
+            <form id="contact-form">
+                <div style="margin-bottom: 15px;">
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" style="width: 100%; padding: 8px; margin-top: 5px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" style="width: 100%; padding: 8px; margin-top: 5px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="message">Сообщение:</label>
+                    <textarea id="message" name="message" rows="5" style="width: 100%; padding: 8px; margin-top: 5px;"></textarea>
+                </div>
+                
+                <button type="submit" class="button">Отправить</button>
+            </form>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Мой первый сайт. Все права защищены.</p>
+    </footer>
+
+    <script>
+        // Функция для навигации между разделами
+        function showSection(sectionId) {
+            // Скрываем все разделы
+            document.querySelectorAll('main section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Показываем выбранный раздел
+            document.getElementById(sectionId).style.display = 'block';
+        }
+        
+        // Обработчики событий для ссылок навигации
+        document.getElementById('home-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showSection('home-section');
+        });
+        
+        document.getElementById('about-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showSection('about-section');
+        });
+        
+        document.getElementById('services-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showSection('services-section');
+        });
+        
+        document.getElementById('contact-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showSection('contact-section');
+        });
+        
+        // Переключение темной темы
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+        
+        // Обработка отправки формы
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // В реальном приложении здесь был бы код для отправки данных на сервер
+            alert(`Спасибо за сообщение, ${name}! Ваш email: ${email}. Мы получили ваше сообщение: "${message}"`);
+            
+            // Очистка формы
+            this.reset();
+        });
+    </script>
 </body>
 </html>
