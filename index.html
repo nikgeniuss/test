@@ -3,255 +3,1364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой первый сайт</title>
+    <title>КиноПлюс - Онлайн кинотеатр</title>
     <style>
-        /* Базовые стили */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary-color: #e50914;
+            --secondary-color: #221f1f;
+            --background-dark: #141414;
+            --background-light: #f5f5f5;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --accent-color: #e5b109;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-light);
+        }
+        
+        /* Шапка сайта */
         header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-        
-        nav {
-            background-color: #34495e;
-            padding: 0.5rem;
-            text-align: center;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
-        
-        nav a:hover {
-            color: #3498db;
-        }
-        
-        main {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .features {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px 40px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin-top: 30px;
-        }
-        
-        .feature-card {
-            width: 300px;
-            margin: 15px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .feature-card h3 {
-            color: #2c3e50;
-        }
-        
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-            margin-top: 20px;
-        }
-        
-        /* Стиль для кнопки */
-        .button {
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
             transition: background-color 0.3s;
         }
         
-        .button:hover {
-            background-color: #2980b9;
+        header.scrolled {
+            background-color: rgba(0, 0, 0, 0.95);
         }
         
-        /* Для темной темы */
-        .dark-mode {
+        .logo {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .main-nav {
+            display: flex;
+            list-style: none;
+        }
+        
+        .main-nav li {
+            margin-left: 20px;
+        }
+        
+        .main-nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        .main-nav a:hover, 
+        .main-nav a.active {
+            color: var(--primary-color);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-form {
+            margin-right: 15px;
+            display: flex;
+        }
+        
+        .search-form input {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            outline: none;
             background-color: #333;
-            color: #f5f5f5;
+            color: white;
         }
         
-        .dark-mode main {
-            background-color: #444;
-            color: #f5f5f5;
-        }
-        
-        .dark-mode .feature-card {
+        .search-form button {
             background-color: #555;
-            color: #f5f5f5;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 0 4px 4px 0;
+            color: white;
+            cursor: pointer;
         }
         
-        .dark-mode .feature-card h3 {
-            color: #3498db;
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #f40612;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            margin-left: 10px;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Главный баннер */
+        .hero {
+            height: 80vh;
+            background-image: url("/api/placeholder/1920/1080");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.3) 100%);
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            margin-left: 80px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-btns .btn {
+            padding: 12px 30px;
+            font-size: 18px;
+        }
+        
+        /* Контент страницы */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        /* Слайдеры фильмов */
+        .movie-slider {
+            margin-bottom: 50px;
+        }
+        
+        .movie-list {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            scroll-behavior: smooth;
+        }
+        
+        .movie-list::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .movie-list::-webkit-scrollbar-track {
+            background: #333;
+            border-radius: 10px;
+        }
+        
+        .movie-list::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        .movie-card {
+            min-width: 220px;
+            margin-right: 15px;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .movie-card img {
+            width: 100%;
+            height: 330px;
+            object-fit: cover;
+        }
+        
+        .movie-info {
+            padding: 10px;
+            background-color: #2a2a2a;
+        }
+        
+        .movie-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            color: var(--accent-color);
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .category-tab {
+            padding: 8px 20px;
+            background-color: #333;
+            border: none;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .category-tab:hover,
+        .category-tab.active {
+            background-color: var(--primary-color);
+        }
+        
+        /* Модальное окно для фильма */
+        .movie-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 1000px;
+            margin: 50px auto;
+            background-color: #222;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            z-index: 2001;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-header {
+            position: relative;
+            height: 400px;
+        }
+        
+        .modal-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .modal-header::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, rgba(34, 34, 34, 1) 0%, rgba(34, 34, 34, 0) 100%);
+        }
+        
+        .modal-title {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 32px;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .modal-info {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .movie-tag {
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .movie-description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .movie-actors {
+            margin-bottom: 30px;
+        }
+        
+        .actors-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .actors-list {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+        }
+        
+        .actor {
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .actor img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        
+        .actor-name {
+            font-size: 14px;
+        }
+        
+        .watch-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .watch-btn:hover {
+            background-color: #f40612;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #111;
+            padding: 50px 0;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--primary-color);
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-content {
+                margin-left: 40px;
+                max-width: 500px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .main-nav {
+                display: none;
+            }
+            
+            .hero {
+                height: 60vh;
+            }
+            
+            .hero-content {
+                margin-left: 20px;
+                max-width: 80%;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+            
+            .modal-header {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .category-tabs {
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .category-tab {
+                white-space: nowrap;
+            }
+            
+            .modal-header {
+                height: 200px;
+            }
+            
+            .modal-title {
+                font-size: 24px;
+            }
+        }
+        
+        /* Стили для видеоплеера */
+        .video-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 3000;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .video-controls {
+            display: flex;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .video-container:hover .video-controls {
+            opacity: 1;
+        }
+        
+        .video-placeholder {
+            flex: 1;
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .video-placeholder::before {
+            content: "▶";
+            font-size: 80px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .video-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3001;
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 5px;
+            background-color: #555;
+            margin: 0 15px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+        }
+        
+        .time-display {
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* Стили для мобильного меню */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons .btn {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+            
+            .search-form {
+                display: none;
+            }
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            height: 100%;
+            background-color: #222;
+            z-index: 2000;
+            transition: left 0.3s;
+            padding: 50px 20px;
+        }
+        
+        .mobile-menu.active {
+            left: 0;
+        }
+        
+        .mobile-menu ul {
+            list-style: none;
+        }
+        
+        .mobile-menu li {
+            margin-bottom: 20px;
+        }
+        
+        .mobile-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .mobile-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1999;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Добро пожаловать на мой сайт</h1>
-        <p>Простой но красивый шаблон для вашего проекта</p>
+    <!-- Шапка сайта -->
+    <header id="header">
+        <a href="#" class="logo">КиноПлюс</a>
+        
+        <button class="mobile-menu-btn">☰</button>
+        
+        <ul class="main-nav">
+            <li><a href="#" class="active">Главная</a></li>
+            <li><a href="#">Фильмы</a></li>
+            <li><a href="#">Сериалы</a></li>
+            <li><a href="#">Новинки</a></li>
+            <li><a href="#">Подборки</a></li>
+        </ul>
+        
+        <div class="auth-buttons">
+            <form class="search-form">
+                <input type="text" placeholder="Поиск...">
+                <button type="submit">🔍</button>
+            </form>
+            <button class="btn btn-primary">Войти</button>
+            <button class="btn btn-outline">Регистрация</button>
+        </div>
     </header>
     
-    <nav>
-        <a href="#" id="home-link">Главная</a>
-        <a href="#" id="about-link">О нас</a>
-        <a href="#" id="services-link">Услуги</a>
-        <a href="#" id="contact-link">Контакты</a>
-    </nav>
+    <!-- Мобильное меню -->
+    <div class="mobile-menu">
+        <button class="mobile-close">✕</button>
+        <ul>
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">Фильмы</a></li>
+            <li><a href="#">Сериалы</a></li>
+            <li><a href="#">Новинки</a></li>
+            <li><a href="#">Подборки</a></li>
+            <li>
+                <form class="search-form" style="margin-top: 20px;">
+                    <input type="text" placeholder="Поиск..." style="width: 100%;">
+                    <button type="submit" style="margin-top: 10px; width: 100%;">Искать</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="overlay"></div>
     
-    <main id="main-content">
-        <section id="home-section">
-            <h2>Главная страница</h2>
-            <p>Добро пожаловать на наш замечательный сайт! Здесь вы найдете множество полезной информации и интересных возможностей.</p>
-            
-            <div class="features">
-                <div class="feature-card">
-                    <h3>Первоклассный дизайн</h3>
-                    <p>Современный дизайн, который адаптируется под любые устройства.</p>
+    <!-- Главный баннер -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Новый сезон "Игра престолов: Дом дракона"</h1>
+            <p>Возвращение в Вестерос! Смотрите продолжение саги о борьбе за Железный трон и истории дома Таргариенов в новом захватывающем сезоне.</p>
+            <div class="hero-btns">
+                <button class="btn btn-primary" onclick="openVideoPlayer()">Смотреть</button>
+                <button class="btn btn-outline">Трейлер</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Основной контент -->
+    <div class="container">
+        <!-- Популярное -->
+        <section class="movie-slider">
+            <h2 class="section-title">Популярное</h2>
+            <div class="category-tabs">
+                <button class="category-tab active">Все</button>
+                <button class="category-tab">Фильмы</button>
+                <button class="category-tab">Сериалы</button>
+                <button class="category-tab">Мультфильмы</button>
+            </div>
+            <div class="movie-list">
+                <div class="movie-card" onclick="openMovieModal('Мстители: Финал')">
+                    <img src="/api/placeholder/220/330" alt="Мстители: Финал">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Мстители: Финал</h3>
+                        <div class="movie-meta">
+                            <span>2019</span>
+                            <span class="rating">★ 8.4</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="feature-card">
-                    <h3>Быстрая загрузка</h3>
-                    <p>Оптимизированный код для максимальной производительности.</p>
+                <div class="movie-card" onclick="openMovieModal('Джокер')">
+                    <img src="/api/placeholder/220/330" alt="Джокер">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Джокер</h3>
+                        <div class="movie-meta">
+                            <span>2019</span>
+                            <span class="rating">★ 8.0</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="feature-card">
-                    <h3>Удобное управление</h3>
-                    <p>Интуитивно понятный интерфейс для комфортного использования.</p>
+                <div class="movie-card" onclick="openMovieModal('Дюна')">
+                    <img src="/api/placeholder/220/330" alt="Дюна">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Дюна</h3>
+                        <div class="movie-meta">
+                            <span>2021</span>
+                            <span class="rating">★ 8.2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Веном 2')">
+                    <img src="/api/placeholder/220/330" alt="Веном 2">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Веном 2</h3>
+                        <div class="movie-meta">
+                            <span>2021</span>
+                            <span class="rating">★ 7.5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Шан-Чи и легенда десяти колец')">
+                    <img src="/api/placeholder/220/330" alt="Шан-Чи">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Шан-Чи и легенда десяти колец</h3>
+                        <div class="movie-meta">
+                            <span>2021</span>
+                            <span class="rating">★ 7.9</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Черная Вдова')">
+                    <img src="/api/placeholder/220/330" alt="Черная Вдова">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Черная Вдова</h3>
+                        <div class="movie-meta">
+                            <span>2021</span>
+                            <span class="rating">★ 7.2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Главный герой')">
+                    <img src="/api/placeholder/220/330" alt="Главный герой">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Главный герой</h3>
+                        <div class="movie-meta">
+                            <span>2021</span>
+                            <span class="rating">★ 7.7</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div style="text-align: center; margin-top: 30px;">
-                <button id="theme-toggle" class="button">Переключить тему</button>
+        </section>
+        
+        <!-- Новинки -->
+        <section class="movie-slider">
+            <h2 class="section-title">Новинки</h2>
+            <div class="movie-list">
+                <div class="movie-card" onclick="openMovieModal('Бэтмен')">
+                    <img src="/api/placeholder/220/330" alt="Бэтмен">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Бэтмен</h3>
+                        <div class="movie-meta">
+                            <span>2022</span>
+                            <span class="rating">★ 8.5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Топ Ган: Мэверик')">
+                    <img src="/api/placeholder/220/330" alt="Топ Ган: Мэверик">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Топ Ган: Мэверик</h3>
+                        <div class="movie-meta">
+                            <span>2022</span>
+                            <span class="rating">★ 8.7</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Морбиус')">
+                    <img src="/api/placeholder/220/330" alt="Морбиус">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Морбиус</h3>
+                        <div class="movie-meta">
+                            <span>2022</span>
+                            <span class="rating">★ 6.5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Доктор Стрэндж: В мультивселенной безумия')">
+                    <img src="/api/placeholder/220/330" alt="Доктор Стрэндж">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Доктор Стрэндж: В мультивселенной безумия</h3>
+                        <div class="movie-meta">
+                            <span>2022</span>
+                            <span class="rating">★ 8.2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Индиана Джонс 5')">
+                    <img src="/api/placeholder/220/330" alt="Индиана Джонс 5">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Индиана Джонс 5</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating">★ 8.1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Миссия невыполнима 7')">
+                    <img src="/api/placeholder/220/330" alt="Миссия невыполнима 7">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Миссия невыполнима 7</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating">★ 8.3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Джон Уик 4')">
+                    <img src="/api/placeholder/220/330" alt="Джон Уик 4">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Джон Уик 4</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating">★ 8.4</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         
-        <section id="about-section" style="display: none;">
-            <h2>О нас</h2>
-            <p>Мы команда профессионалов, специализирующихся на создании качественных веб-решений.</p>
-            <p>Наша миссия — помогать клиентам реализовывать их идеи в сети интернет максимально эффективно и красиво.</p>
-        </section>
-        
-        <section id="services-section" style="display: none;">
-            <h2>Наши услуги</h2>
-            <ul>
-                <li>Разработка веб-сайтов</li>
-                <li>Дизайн пользовательских интерфейсов</li>
-                <li>SEO-оптимизация</li>
-                <li>Техническая поддержка</li>
-            </ul>
-        </section>
-        
-        <section id="contact-section" style="display: none;">
-            <h2>Свяжитесь с нами</h2>
-            <form id="contact-form">
-                <div style="margin-bottom: 15px;">
-                    <label for="name">Имя:</label>
-                    <input type="text" id="name" name="name" style="width: 100%; padding: 8px; margin-top: 5px;">
+        <!-- Сериалы -->
+        <section class="movie-slider">
+            <h2 class="section-title">Популярные сериалы</h2>
+            <div class="movie-list">
+                <div class="movie-card" onclick="openMovieModal('Игра в кальмара')">
+                    <img src="/api/placeholder/220/330" alt="Игра в кальмара">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Игра в кальмара</h3>
+                        <div class="movie-meta">
+                            <span>2021</span>
+                            <span class="rating">★ 8.7</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div style="margin-bottom: 15px;">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" style="width: 100%; padding: 8px; margin-top: 5px;">
+                <div class="movie-card" onclick="openMovieModal('Ведьмак')">
+                    <img src="/api/placeholder/220/330" alt="Ведьмак">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Ведьмак</h3>
+                        <div class="movie-meta">
+                            <span>2019-2023</span>
+                            <span class="rating">★ 8.2</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div style="margin-bottom: 15px;">
-                    <label for="message">Сообщение:</label>
-                    <textarea id="message" name="message" rows="5" style="width: 100%; padding: 8px; margin-top: 5px;"></textarea>
+                <div class="movie-card" onclick="openMovieModal('Локи')">
+                    <img src="/api/placeholder/220/330" alt="Локи">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Локи</h3>
+                        <div class="movie-meta">
+                            <span>2021-2023</span>
+                            <span class="rating">★ 8.6</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <button type="submit" class="button">Отправить</button>
-            </form>
+                <div class="movie-card" onclick="openMovieModal('Мандалорец')">
+                    <img src="/api/placeholder/220/330" alt="Мандалорец">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Мандалорец</h3>
+                        <div class="movie-meta">
+                            <span>2019-2023</span>
+                            <span class="rating">★ 8.8</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Эйфория')">
+                    <img src="/api/placeholder/220/330" alt="Эйфория">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Эйфория</h3>
+                        <div class="movie-meta">
+                            <span>2019-2022</span>
+                            <span class="rating">★ 8.4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Тед Лассо')">
+                    <img src="/api/placeholder/220/330" alt="Тед Лассо">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Тед Лассо</h3>
+                        <div class="movie-meta">
+                            <span>2020-2023</span>
+                            <span class="rating">★ 8.9</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" onclick="openMovieModal('Бумажный дом')">
+                    <img src="/api/placeholder/220/330" alt="Бумажный дом">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Бумажный дом</h3>
+                        <div class="movie-meta">
+                            <span>2017-2021</span>
+                            <span class="rating">★ 8.3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
-    </main>
+    </div>
     
+    <!-- Модальное окно фильма -->
+    <div class="movie-modal" id="movieModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeMovieModal()">✕</span>
+            <div class="modal-header">
+                <img src="/api/placeholder/1000/400" alt="Movie Banner">
+                <h2 class="modal-title" id="modalTitle">Название фильма</h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <span class="movie-tag" id="modalYear">2023</span>
+                    <span class="movie-tag" id="modalRating">8.5</span>
+                    <span class="movie-tag" id="modalDuration">2ч 15мин</span>
+                    <span class="movie-tag" id="modalGenre">Боевик</span>
+                </div>
+                
+                <p class="movie-description" id="modalDescription">
+                    Описание фильма появится здесь. Это захватывающая история о героях, которые спасают мир от невиданной угрозы.
+                </p>
+                
+                <div class="movie-actors">
+                    <h3 class="actors-title">В ролях</h3>
+                    <div class="actors-list">
+                        <div class="actor">
+                            <img src="/api/placeholder/100/100" alt="Актер 1">
+                            <div class="actor-name">Роберт Дауни мл.</div>
+                        </div>
+                        <div class="actor">
+                            <img src="/api/placeholder/100/100" alt="Актер 2">
+                            <div class="actor-name">Скарлетт Йоханссон</div>
+                        </div>
+                        <div class="actor">
+                            <img src="/api/placeholder/100/100" alt="Актер 3">
+                            <div class="actor-name">Крис Эванс</div>
+                        </div>
+                        <div class="actor">
+                            <img src="/api/placeholder/100/100" alt="Актер 4">
+                            <div class="actor-name">Марк Руффало</div>
+                        </div>
+                        <div class="actor">
+                            <img src="/api/placeholder/100/100" alt="Актер 5">
+                            <div class="actor-name">Крис Хемсворт</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="watch-btn" onclick="openVideoPlayer()">
+                    <span>▶</span> Смотреть
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Видеоплеер -->
+    <div class="video-container" id="videoPlayer">
+        <button class="video-close" onclick="closeVideoPlayer()">✕</button>
+        <div class="video-player">
+            <div class="video-placeholder"></div>
+            <div class="video-controls">
+                <div class="control-group">
+                    <button class="control-btn">▶</button>
+                    <button class="control-btn">⏸</button>
+                    <span class="time-display">0:00 / 2:15:00</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <div class="control-group">
+                    <button class="control-btn">🔊</button>
+                    <button class="control-btn">⚙️</button>
+                    <button class="control-btn">⛶</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Мой первый сайт. Все права защищены.</p>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>О сервисе</h3>
+                <ul>
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">Инвесторам</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Помощь</h3>
+                <ul>
+                    <li><a href="#">Центр поддержки</a></li>
+                    <li><a href="#">Вопросы и ответы</a></li>
+                    <li><a href="#">Способы просмотра</a></li>
+                    <li><a href="#">Правовые документы</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Подписка</h3>
+                <ul>
+                    <li><a href="#">Тарифы</a></li>
+                    <li><a href="#">Подарочные карты</a></li>
+                    <li><a href="#">Студенческая подписка</a></li>
+                    <li><a href="#">Корпоративные аккаунты</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Следите за нами</h3>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">f</a>
+                    <a href="#" class="social-icon">t</a>
+                    <a href="#" class="social-icon">in</a>
+                    <a href="#" class="social-icon">ig</a>
+                </div>
+                <p style="margin-top: 20px;">Скачайте наше приложение:</p>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <a href="#" style="display: block; background: #333; padding: 10px; border-radius: 5px; color: white; text-decoration: none; font-size: 12px;">App Store</a>
+                    <a href="#" style="display: block; background: #333; padding: 10px; border-radius: 5px; color: white; text-decoration: none; font-size: 12px;">Google Play</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 КиноПлюс. Все права защищены.
+        </div>
     </footer>
 
     <script>
-        // Функция для навигации между разделами
-        function showSection(sectionId) {
-            // Скрываем все разделы
-            document.querySelectorAll('main section').forEach(section => {
-                section.style.display = 'none';
-            });
+        // Изменение фона шапки при прокрутке
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                document.getElementById('header').classList.add('scrolled');
+            } else {
+                document.getElementById('header').classList.remove('scrolled');
+            }
+        });
+        
+        // Мобильное меню
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.add('active');
+            document.querySelector('.overlay').style.display = 'block';
+        });
+        
+        document.querySelector('.mobile-close').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.remove('active');
+            document.querySelector('.overlay').style.display = 'none';
+        });
+        
+        document.querySelector('.overlay').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.remove('active');
+            this.style.display = 'none';
+        });
+        
+        // Модальное окно фильма
+        function openMovieModal(title) {
+            const modal = document.getElementById('movieModal');
+            const modalTitle = document.getElementById('modalTitle');
             
-            // Показываем выбранный раздел
-            document.getElementById(sectionId).style.display = 'block';
+            // Здесь можно добавить логику для загрузки информации о фильме по API
+            modalTitle.textContent = title;
+            
+            // Временные данные для демонстрации
+            const movieInfo = {
+                'Мстители: Финал': {
+                    year: '2019',
+                    rating: '★ 8.4',
+                    duration: '3ч 1мин',
+                    genre: 'Фантастика, Боевик',
+                    description: 'Оставшиеся в живых члены команды Мстителей и их союзники должны разработать новый план, который поможет противостоять разрушительным действиям могущественного титана Таноса. После наиболее масштабной и трагической битвы в истории они не могут допустить ошибку.'
+                },
+                'Джокер': {
+                    year: '2019',
+                    rating: '★ 8.0',
+                    duration: '2ч 2мин',
+                    genre: 'Триллер, Драма',
+                    description: 'Готэм, начало 1980-х годов. Комик Артур Флек живет с больной матерью, которая с детства учит его «ходить с улыбкой». Пытаясь нести в мир хорошее и дарить людям радость, Артур сталкивается с человеческой жестокостью и постепенно приходит к выводу, что этот мир получит от него не добрую улыбку, а ухмылку злодея Джокера.'
+                },
+                'Дюна': {
+                    year: '2021',
+                    rating: '★ 8.2',
+                    duration: '2ч 35мин',
+                    genre: 'Фантастика, Приключения',
+                    description: 'Наследник знаменитого дома Атрейдесов Пол отправляется вместе с семьей на одну из самых опасных планет во Вселенной — Арракис. Здесь нет ничего, кроме песка, палящего солнца, гигантских чудовищ и основной причины межгалактических конфликтов — невероятно ценного ресурса, который называется меланж. В результате захвата власти Пол вынужден бежать и скрываться, и это становится началом его эпического путешествия.'
+                },
+                // Добавьте информацию для других фильмов
+            };
+            
+            // Заполнение информации о фильме, если она есть
+            if (movieInfo[title]) {
+                document.getElementById('modalYear').textContent = movieInfo[title].year;
+                document.getElementById('modalRating').textContent = movieInfo[title].rating;
+                document.getElementById('modalDuration').textContent = movieInfo[title].duration;
+                document.getElementById('modalGenre').textContent = movieInfo[title].genre;
+                document.getElementById('modalDescription').textContent = movieInfo[title].description;
+            } else {
+                // Дефолтные значения, если информации нет
+                document.getElementById('modalYear').textContent = '2023';
+                document.getElementById('modalRating').textContent = '★ 8.5';
+                document.getElementById('modalDuration').textContent = '2ч 15мин';
+                document.getElementById('modalGenre').textContent = 'Боевик, Приключения';
+                document.getElementById('modalDescription').textContent = 'Подробное описание пока недоступно.';
+            }
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Запрет прокрутки фонового контента
         }
         
-        // Обработчики событий для ссылок навигации
-        document.getElementById('home-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            showSection('home-section');
-        });
+        function closeMovieModal() {
+            document.getElementById('movieModal').style.display = 'none';
+            document.body.style.overflow = ''; // Возвращаем прокрутку
+        }
         
-        document.getElementById('about-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            showSection('about-section');
-        });
+        // Видеоплеер
+        function openVideoPlayer() {
+            document.getElementById('videoPlayer').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            closeMovieModal(); // Закрываем модальное окно фильма, если оно открыто
+        }
         
-        document.getElementById('services-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            showSection('services-section');
-        });
+        function closeVideoPlayer() {
+            document.getElementById('videoPlayer').style.display = 'none';
+            document.body.style.overflow = '';
+        }
         
-        document.getElementById('contact-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            showSection('contact-section');
-        });
-        
-        // Переключение темной темы
-        document.getElementById('theme-toggle').addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-        });
-        
-        // Обработка отправки формы
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+        // Закрытие модальных окон при клике вне их области
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('movieModal');
+            const videoPlayer = document.getElementById('videoPlayer');
             
-            // В реальном приложении здесь был бы код для отправки данных на сервер
-            alert(`Спасибо за сообщение, ${name}! Ваш email: ${email}. Мы получили ваше сообщение: "${message}"`);
+            if (event.target === modal) {
+                closeMovieModal();
+            }
             
-            // Очистка формы
-            this.reset();
+            if (event.target === videoPlayer) {
+                closeVideoPlayer();
+            }
+        });
+        
+        // Обработка нажатия на табы категорий
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Удаляем активный класс у всех табов
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                // Добавляем активный класс нажатому табу
+                this.classList.add('active');
+                
+                // Здесь можно добавить логику фильтрации фильмов по категориям
+            });
+        });
+        
+        // Симуляция прогресса видео для демонстрации
+        let progressInterval;
+        const progressBar = document.querySelector('.progress');
+        
+        document.querySelector('.video-placeholder').addEventListener('click', function() {
+            startProgress();
+        });
+        
+        document.querySelector('.control-btn:first-child').addEventListener('click', function() {
+            startProgress();
+        });
+        
+        document.querySelector('.control-btn:nth-child(2)').addEventListener('click', function() {
+            clearInterval(progressInterval);
+        });
+        
+        function startProgress() {
+            clearInterval(progressInterval);
+            let width = parseFloat(progressBar.style.width) || 0;
+            
+            progressInterval = setInterval(function() {
+                if (width >= 100) {
+                    clearInterval(progressInterval);
+                } else {
+                    width += 0.1;
+                    progressBar.style.width = width + '%';
+                    
+                    // Обновление отображаемого времени
+                    const totalDuration = 8100; // 2:15:00 в секундах
+                    const currentTime = Math.floor(totalDuration * (width / 100));
+                    document.querySelector('.time-display').textContent = formatTime(currentTime) + ' / 2:15:00';
+                }
+            }, 100);
+        }
+        
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = Math.floor(seconds % 60);
+            
+            return (h > 0 ? h + ':' : '') + 
+                  (m < 10 && h > 0 ? '0' + m : m) + ':' + 
+                  (s < 10 ? '0' + s : s);
+        }
+        
+        // Обработка клика по прогресс-бару для перемотки
+        document.querySelector('.progress-bar').addEventListener('click', function(e) {
+            const progressBar = this;
+            const clickPosition = e.clientX - progressBar.getBoundingClientRect().left;
+            const progressBarWidth = progressBar.clientWidth;
+            const newPosition = (clickPosition / progressBarWidth) * 100;
+            
+            document.querySelector('.progress').style.width = newPosition + '%';
+            
+            // Обновление отображаемого времени
+            const totalDuration = 8100; // 2:15:00 в секундах
+            const currentTime = Math.floor(totalDuration * (newPosition / 100));
+            document.querySelector('.time-display').textContent = formatTime(currentTime) + ' / 2:15:00';
+            
+            // Перезапуск симуляции воспроизведения с новой позиции
+            startProgress();
         });
     </script>
 </body>
