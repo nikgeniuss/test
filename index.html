@@ -289,7 +289,7 @@
 
             <div class="input-group">
                 <label for="phone">Телефон</label>
-                <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+                <input type="tel" id="phone" placeholder="+373 000-000-00" required>
             </div>
 
             <div class="input-group">
@@ -307,7 +307,7 @@
     </div>
 
     <script>
-        const BASE_PRICE = 5000;
+        const BASE_PRICE = 500;
 
         function updatePrice() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -319,7 +319,7 @@
                 }
             });
 
-            document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' лей';
         }
 
         function submitOrder() {
@@ -341,7 +341,7 @@
                 if (checkbox.checked) {
                     const serviceName = checkbox.parentElement.querySelector('.service-name').textContent;
                     const price = parseInt(checkbox.dataset.price);
-                    services.push(`${serviceName} (+${price} ₽)`);
+                    services.push(`${serviceName} (+${price} лей)`);
                     total += price;
                 }
             });
@@ -356,7 +356,7 @@ Email: ${email}
 ${telegram ? 'Telegram: ' + telegram : ''}
 
 💰 Стоимость:
-Базовый квест: 5000 ₽
+Базовый квест: 500 ₽лей
 ${services.length > 0 ? '\nДополнительные услуги:\n' + services.join('\n') : 'Без дополнительных услуг'}
 
 📊 ИТОГО: ${total.toLocaleString('ru-RU')} ₽
