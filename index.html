@@ -179,6 +179,12 @@
             transform: translateY(-1px);
         }
 
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 30px 25px;
@@ -308,6 +314,11 @@
 
     <script>
         const BASE_PRICE = 500;
+        
+        // ⚙️ НАСТРОЙКИ TELEGRAM БОТА - ЗАМЕНИТЕ НА СВОИ ДАННЫЕ
+        const TELEGRAM_BOT_TOKEN = '6836324743:AAFIWAOKYDUkbz3ojpNthxPb0WqYtBkfBkg'; // Получите у @BotFather
+        const TELEGRAM_CHAT_ID = '5446866680';     // Получите у @userinfobot
+        const SUCCESS_PAGE_URL = 'https://nikgeniuss.github.io/vkb/'; // Страница после заказа
 
         function updatePrice() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -322,7 +333,7 @@
             document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' лей';
         }
 
-        function submitOrder() {
+        async function submitOrder() {
             const name = document.getElementById('name').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -346,23 +357,57 @@
                 }
             });
 
-            let orderDetails = `
-🎭 ЗАКАЗ РОМАНТИЧЕСКОГО ВЕЧЕРА 🎭
+            // Формируем сообщение для Telegram
+            let message = `🎭 НОВЫЙ ЗАКАЗ РОМАНТИЧЕСКОГО ВЕЧЕРА 🎭\n\n`;
+            message += `👤 Контактная информация:\n`;
+            message += `Имя: ${name}\n`;
+            message += `Телефон: ${phone}\n`;
+            message += `Email: ${email}\n`;
+            if (telegram) {
+                message += `Telegram: ${telegram}\n`;
+            }
+            message += `\n💰 Стоимость:\n`;
+            message += `Базовый квест: 500 лей\n`;
+            if (services.length > 0) {
+                message += `\nДополнительные услуги:\n${services.join('\n')}\n`;
+            } else {
+                message += `Без дополнительных услуг\n`;
+            }
+            message += `\n📊 ИТОГО: ${total} лей`;
 
-👤 Контактная информация:
-Имя: ${name}
-Телефон: ${phone}
-Email: ${email}
-${telegram ? 'Telegram: ' + telegram : ''}
+            // Отправляем в Telegram
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
 
-💰 Стоимость:
-Базовый квест: 500 ₽лей
-${services.length > 0 ? '\nДополнительные услуги:\n' + services.join('\n') : 'Без дополнительных услуг'}
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
 
-📊 ИТОГО: ${total.toLocaleString('ru-RU')} ₽
-            `;
+                const data = await response.json();
 
-            alert(orderDetails);
+                if (data.ok) {
+                    // Успешная отправка - перенаправляем на другую страницу
+                    window.location.href = SUCCESS_PAGE_URL;
+                } else {
+                    throw new Error('Ошибка отправки в Telegram');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке заказа. Пожалуйста, свяжитесь с нами напрямую по телефону или email.');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         }
     </script>
 </body>
