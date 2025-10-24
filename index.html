@@ -1,166 +1,369 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Заказ романтического ужина после квеста</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ffe6ea, #fff5f8);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-    h1 {
-      margin-top: 40px;
-      color: #d63384;
-      text-align: center;
-    }
-    p {
-      text-align: center;
-      color: #555;
-      margin-bottom: 30px;
-    }
-    .form-container {
-      background: white;
-      padding: 25px 30px;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 90%;
-    }
-    .option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 10px 0;
-    }
-    .price {
-      font-weight: bold;
-      color: #c2185b;
-    }
-    .total {
-      margin-top: 20px;
-      font-size: 1.3em;
-      text-align: center;
-      color: #c2185b;
-      transition: all 0.3s ease;
-    }
-    label {
-      color: #444;
-    }
-    input[type="text"], input[type="email"], input[type="tel"] {
-      width: 100%;
-      padding: 8px;
-      margin: 5px 0 15px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    button {
-      width: 100%;
-      background-color: #d63384;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #c2185b;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Романтический вечер - Заказ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe4f0 50%, #ffd4e8 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #d63384;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8b5e83;
+            font-size: 1em;
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+
+        .price-section {
+            background: linear-gradient(135deg, #ffd4e8 0%, #ffb3d9 100%);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .base-price {
+            font-size: 0.9em;
+            color: #8b5e83;
+            margin-bottom: 10px;
+        }
+
+        .total-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #d63384;
+            font-weight: 700;
+        }
+
+        .services-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            color: #d63384;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #fff8fc;
+            border-radius: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .service-item:hover {
+            background: #ffebf7;
+            transform: translateX(5px);
+            border-color: #ffc4e1;
+        }
+
+        .service-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #d63384;
+            margin-right: 15px;
+        }
+
+        .service-info {
+            flex: 1;
+        }
+
+        .service-name {
+            font-weight: 600;
+            color: #8b5e83;
+            margin-bottom: 3px;
+        }
+
+        .service-price {
+            color: #d63384;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .contact-section {
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #8b5e83;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ffc4e1;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #d63384;
+            box-shadow: 0 0 0 4px rgba(214, 51, 132, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #d63384 0%, #ff69b4 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 10px 25px rgba(214, 51, 132, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 25px;
+                border-radius: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .total-price {
+                font-size: 2em;
+            }
+
+            .service-item {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 25px 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .subtitle {
+                font-size: 0.9em;
+            }
+
+            .price-section {
+                padding: 20px;
+            }
+
+            .total-price {
+                font-size: 1.8em;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Закажите романтический ужин на двоих после захватывающего квеста</h1>
-  <div class="form-container">
-    <div class="option">
-      <label>Квест (фиксированная цена)</label>
-      <span class="price" data-price="5000">5000 лей</span>
+    <div class="container">
+        <h1>Закажите романтический вечер для двоих</h1>
+        <p class="subtitle">Создайте незабываемый вечер, полный любви, загадок и романтики</p>
+
+        <div class="price-section">
+            <div class="base-price">Базовая стоимость квеста: 500 лей</div>
+            <div class="total-price" id="totalPrice">500 лей</div>
+        </div>
+
+        <div class="services-section">
+            <h2 class="section-title">Дополнительные услуги</h2>
+            
+            <label class="service-item">
+                <input type="checkbox" data-price="1500" onchange="updatePrice()">
+                <div class="service-info">
+                    <div class="service-name">🌹 Букет роз</div>
+                </div>
+                <div class="service-price">+150 лей</div>
+            </label>
+
+            <label class="service-item">
+                <input type="checkbox" data-price="800" onchange="updatePrice()">
+                <div class="service-info">
+                    <div class="service-name">🌺 Лепестки роз по комнате</div>
+                </div>
+                <div class="service-price">+80 лей</div>
+            </label>
+
+            <label class="service-item">
+                <input type="checkbox" data-price="1200" onchange="updatePrice()">
+                <div class="service-info">
+                    <div class="service-name">🍷 Бутылка вина</div>
+                </div>
+                <div class="service-price">+120 лей</div>
+            </label>
+
+            <label class="service-item">
+                <input type="checkbox" data-price="500" onchange="updatePrice()">
+                <div class="service-info">
+                    <div class="service-name">🎵 Фоновая музыка</div>
+                </div>
+                <div class="service-price">+50 лей</div>
+            </label>
+
+            <label class="service-item">
+                <input type="checkbox" data-price="2000" onchange="updatePrice()">
+                <div class="service-info">
+                    <div class="service-name">📸 Фотосессия после квеста</div>
+                </div>
+                <div class="service-price">+200 лей</div>
+            </label>
+        </div>
+
+        <div class="contact-section">
+            <h2 class="section-title">Контактная информация</h2>
+            
+            <div class="input-group">
+                <label for="name">Имя</label>
+                <input type="text" id="name" placeholder="Введите ваше имя" required>
+            </div>
+
+            <div class="input-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="example@mail.ru" required>
+            </div>
+
+            <div class="input-group">
+                <label for="telegram">Telegram</label>
+                <input type="text" id="telegram" placeholder="@username">
+            </div>
+        </div>
+
+        <button class="submit-btn" onclick="submitOrder()">Заказать</button>
     </div>
 
-    <hr>
+    <script>
+        const BASE_PRICE = 5000;
 
-    <div class="option">
-      <label><input type="checkbox" value="1500"> Букет роз</label>
-      <span class="price">+1500 лей</span>
-    </div>
+        function updatePrice() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let total = BASE_PRICE;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    total += parseInt(checkbox.dataset.price);
+                }
+            });
 
-    <div class="option">
-      <label><input type="checkbox" value="800"> Лепестки роз по комнате</label>
-      <span class="price">+800 лей</span>
-    </div>
+            document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' ₽';
+        }
 
-    <div class="option">
-      <label><input type="checkbox" value="1200"> Бутылка вина</label>
-      <span class="price">+1200 лей</span>
-    </div>
+        function submitOrder() {
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telegram = document.getElementById('telegram').value.trim();
 
-    <div class="option">
-      <label><input type="checkbox" value="500"> Фоновая музыка</label>
-      <span class="price">+500 лей</span>
-    </div>
+            if (!name || !phone || !email) {
+                alert('Пожалуйста, заполните все обязательные поля: Имя, Телефон и Email');
+                return;
+            }
 
-    <div class="option">
-      <label><input type="checkbox" value="2000"> Фотосессия после квеста</label>
-      <span class="price">+2000 лей</span>
-    </div>
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const services = [];
+            let total = BASE_PRICE;
 
-    <div class="option">
-      <label><input type="checkbox" value="2500"> Ужин</label>
-      <span class="price">+2500 лей</span>
-    </div>
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const serviceName = checkbox.parentElement.querySelector('.service-name').textContent;
+                    const price = parseInt(checkbox.dataset.price);
+                    services.push(`${serviceName} (+${price} ₽)`);
+                    total += price;
+                }
+            });
 
-    <div class="total">Итоговая стоимость: <span id="total">5 000</span> лей</div>
+            let orderDetails = `
+🎭 ЗАКАЗ РОМАНТИЧЕСКОГО ВЕЧЕРА 🎭
 
-    <hr>
+👤 Контактная информация:
+Имя: ${name}
+Телефон: ${phone}
+Email: ${email}
+${telegram ? 'Telegram: ' + telegram : ''}
 
-    <h3>Контактная информация</h3>
-    <input type="text" id="name" placeholder="Ваше имя">
-    <input type="tel" id="phone" placeholder="Телефон">
-    <input type="email" id="email" placeholder="Email">
-    <input type="text" id="telegram" placeholder="Telegram (@username)">
+💰 Стоимость:
+Базовый квест: 5000 ₽
+${services.length > 0 ? '\nДополнительные услуги:\n' + services.join('\n') : 'Без дополнительных услуг'}
 
-    <button id="submitBtn">Заказать</button>
-  </div>
+📊 ИТОГО: ${total.toLocaleString('ru-RU')} ₽
+            `;
 
-  <script>
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const totalDisplay = document.getElementById('total');
-    const basePrice = 5000;
-
-    function formatPrice(num) {
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    }
-
-    checkboxes.forEach(cb => cb.addEventListener('change', () => {
-      let total = basePrice;
-      checkboxes.forEach(box => {
-        if (box.checked) total += parseInt(box.value);
-      });
-      totalDisplay.textContent = formatPrice(total);
-      totalDisplay.style.transform = 'scale(1.2)';
-      totalDisplay.style.opacity = '0.7';
-      setTimeout(() => {
-        totalDisplay.style.transform = 'scale(1)';
-        totalDisplay.style.opacity = '1';
-      }, 200);
-    }));
-
-    document.getElementById('submitBtn').addEventListener('click', () => {
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const email = document.getElementById('email').value;
-      const telegram = document.getElementById('telegram').value;
-
-      let message = `Заказ оформлен!\nИмя: ${name}\nТелефон: ${phone}\nEmail: ${email}\nTelegram: ${telegram}`;
-      alert(message);
-    });
-  </script>
+            alert(orderDetails);
+        }
+    </script>
 </body>
 </html>
