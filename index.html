@@ -313,102 +313,97 @@
     </div>
 
     <script>
-        const BASE_PRICE = 500;
+    const BASE_PRICE = 500;
+    
+    // ⚙️ НАСТРОЙКИ TELEGRAM БОТА
+    const TELEGRAM_BOT_TOKEN = '6836324743:AAFIWAOKYDUkbz3ojpNthxPb0WqYtBkfBkg';
+    const TELEGRAM_CHAT_IDS = ['5446866680', '5641551576']; // ✅ список получателей
+    const SUCCESS_PAGE_URL = 'https://nikgeniuss.github.io/vkb/';
+
+    function updatePrice() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let total = BASE_PRICE;
         
-        // ⚙️ НАСТРОЙКИ TELEGRAM БОТА - ЗАМЕНИТЕ НА СВОИ ДАННЫЕ
-        const TELEGRAM_BOT_TOKEN = '6836324743:AAFIWAOKYDUkbz3ojpNthxPb0WqYtBkfBkg'; // Получите у @BotFather
-        const TELEGRAM_CHAT_ID = '5446866680';     // Получите у @userinfobot
-        const SUCCESS_PAGE_URL = 'https://nikgeniuss.github.io/vkb/'; // Страница после заказа
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                total += parseInt(checkbox.dataset.price);
+            }
+        });
 
-        function updatePrice() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            let total = BASE_PRICE;
-            
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    total += parseInt(checkbox.dataset.price);
-                }
-            });
+        document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' лей';
+    }
 
-            document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' лей';
+    async function submitOrder() {
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const telegram = document.getElementById('telegram').value.trim();
+
+        if (!name || !phone || !email) {
+            alert('Пожалуйста, заполните все обязательные поля: Имя, Телефон и Email');
+            return;
         }
 
-        async function submitOrder() {
-            const name = document.getElementById('name').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const telegram = document.getElementById('telegram').value.trim();
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const services = [];
+        let total = BASE_PRICE;
 
-            if (!name || !phone || !email) {
-                alert('Пожалуйста, заполните все обязательные поля: Имя, Телефон и Email');
-                return;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const serviceName = checkbox.parentElement.querySelector('.service-name').textContent;
+                const price = parseInt(checkbox.dataset.price);
+                services.push(`${serviceName} (+${price} лей)`);
+                total += price;
             }
+        });
 
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const services = [];
-            let total = BASE_PRICE;
+        let message = `🎭 НОВЫЙ ЗАКАЗ РОМАНТИЧЕСКОГО ВЕЧЕРА 🎭\n\n`;
+        message += `👤 Контактная информация:\n`;
+        message += `Имя: ${name}\n`;
+        message += `Телефон: ${phone}\n`;
+        message += `Email: ${email}\n`;
+        if (telegram) {
+            message += `Telegram: ${telegram}\n`;
+        }
+        message += `\n💰 Стоимость:\n`;
+        message += `Базовый квест: 500 лей\n`;
+        if (services.length > 0) {
+            message += `\nДополнительные услуги:\n${services.join('\n')}\n`;
+        } else {
+            message += `Без дополнительных услуг\n`;
+        }
+        message += `\n📊 ИТОГО: ${total} лей`;
 
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    const serviceName = checkbox.parentElement.querySelector('.service-name').textContent;
-                    const price = parseInt(checkbox.dataset.price);
-                    services.push(`${serviceName} (+${price} лей)`);
-                    total += price;
-                }
-            });
+        const submitBtn = document.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Отправка...';
+        submitBtn.disabled = true;
 
-            // Формируем сообщение для Telegram
-            let message = `🎭 НОВЫЙ ЗАКАЗ РОМАНТИЧЕСКОГО ВЕЧЕРА 🎭\n\n`;
-            message += `👤 Контактная информация:\n`;
-            message += `Имя: ${name}\n`;
-            message += `Телефон: ${phone}\n`;
-            message += `Email: ${email}\n`;
-            if (telegram) {
-                message += `Telegram: ${telegram}\n`;
-            }
-            message += `\n💰 Стоимость:\n`;
-            message += `Базовый квест: 500 лей\n`;
-            if (services.length > 0) {
-                message += `\nДополнительные услуги:\n${services.join('\n')}\n`;
-            } else {
-                message += `Без дополнительных услуг\n`;
-            }
-            message += `\n📊 ИТОГО: ${total} лей`;
-
-            // Отправляем в Telegram
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Отправка...';
-            submitBtn.disabled = true;
-
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        try {
+            // ✅ отправляем сообщение всем получателям по очереди
+            for (const chatId of TELEGRAM_CHAT_IDS) {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
+                        chat_id: chatId,
                         text: message,
                         parse_mode: 'HTML'
                     })
                 });
-
-                const data = await response.json();
-
-                if (data.ok) {
-                    // Успешная отправка - перенаправляем на другую страницу
-                    window.location.href = SUCCESS_PAGE_URL;
-                } else {
-                    throw new Error('Ошибка отправки в Telegram');
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке заказа. Пожалуйста, свяжитесь с нами напрямую по телефону или email.');
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
             }
+
+            // ✅ после успешной отправки — переход
+            window.location.href = SUCCESS_PAGE_URL;
+
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке заказа. Пожалуйста, свяжитесь с нами напрямую по телефону или email.');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
