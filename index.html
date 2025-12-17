@@ -135,7 +135,7 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
         
-        /* КОНТЕЙНЕР ДЛЯ КАРТИНКИ С ФИКСИРОВАННЫМИ ПРОПОРЦИЯМИ */
+        /* КОНТЕЙНЕР ДЛЯ КАРТИНКИ БЕЗ ФИКСИРОВАННЫХ ПРОПОРЦИЙ */
         .image-container {
             width: 100%;
             margin-bottom: 20px;
@@ -144,29 +144,31 @@
             border: 3px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             position: relative;
-            padding-top: 56.25%; /* Соотношение 16:9 (9/16 = 0.5625 * 100 = 56.25%) */
             transition: transform 0.3s ease;
             flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.1); /* Фон на случай прозрачной картинки */
         }
         
         .column:hover .image-container {
             transform: scale(1.03);
         }
         
-        /* КАРТИНКА В КОЛОНКЕ */
+        /* КАРТИНКА В КОЛОНКЕ - СОХРАНЯЕТ ОРИГИНАЛЬНЫЕ ПРОПОРЦИИ */
         .column-image {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: 300px; /* Максимальная высота для контроля размера */
+            object-fit: contain; /* Вместо cover - сохраняет пропорции без обрезки */
             object-position: center;
+            display: block;
         }
         
         /* Запасной фон для картинки, если файл не загрузился */
         .image-container::before {
-            content: '';
+            content: 'Картинка не загружена';
             position: absolute;
             top: 0;
             left: 0;
@@ -177,14 +179,16 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
             z-index: -1;
             opacity: 0;
             transition: opacity 0.3s ease;
+            padding: 20px;
+            text-align: center;
         }
         
-        .image-not-loaded::before {
-            content: 'Картинка не загружена';
+        .image-container.image-not-loaded::before {
             opacity: 1;
         }
         
@@ -264,6 +268,9 @@
             .column {
                 padding: 18px;
             }
+            .column-image {
+                max-height: 280px;
+            }
             .column-button {
                 padding: 10px 18px;
                 font-size: 1rem;
@@ -286,6 +293,9 @@
             .image-container {
                 border-radius: 12px;
                 border-width: 2px;
+            }
+            .column-image {
+                max-height: 250px;
             }
             .column-button {
                 padding: 9px 16px;
@@ -338,6 +348,10 @@
                 margin-bottom: 15px;
             }
             
+            .column-image {
+                max-height: 220px;
+            }
+            
             .column-button {
                 padding: 8px 14px;
                 font-size: 0.9rem;
@@ -367,8 +381,8 @@
         }
         
         @media (max-width: 600px) {
-            .image-container {
-                padding-top: 75%;
+            .column-image {
+                max-height: 200px;
             }
             
             .column-button {
@@ -416,7 +430,10 @@
                 border-radius: 8px;
                 border-width: 2px;
                 margin-bottom: 12px;
-                padding-top: 80%;
+            }
+            
+            .column-image {
+                max-height: 180px;
             }
             
             .column-button {
@@ -449,8 +466,11 @@
             }
             
             .image-container {
-                padding-top: 85%;
                 border-width: 1px;
+            }
+            
+            .column-image {
+                max-height: 160px;
             }
             
             .column-button {
@@ -479,8 +499,11 @@
             }
             
             .image-container {
-                padding-top: 90%;
                 margin-bottom: 10px;
+            }
+            
+            .column-image {
+                max-height: 140px;
             }
             
             .column-button {
@@ -506,6 +529,10 @@
         }
         
         @media (max-width: 320px) {
+            .column-image {
+                max-height: 120px;
+            }
+            
             .column-button {
                 font-size: 0.65rem;
                 padding: 3px 5px;
@@ -525,9 +552,17 @@
             }
         }
         
+        /* Для очень высоких экранов */
         @media (min-height: 900px) and (max-width: 768px) {
-            .image-container {
-                padding-top: 70%;
+            .column-image {
+                max-height: 250px;
+            }
+        }
+        
+        /* Для очень широких экранов */
+        @media (min-width: 1400px) {
+            .column-image {
+                max-height: 350px;
             }
         }
     </style>
@@ -621,6 +656,9 @@
             img.addEventListener('load', function() {
                 console.log(`Картинка ${index + 1} загружена успешно`);
                 this.parentElement.classList.remove('image-not-loaded');
+                
+                // Выводим информацию о размере загруженной картинки
+                console.log(`Размер картинки ${index + 1}: ${img.naturalWidth}px × ${img.naturalHeight}px`);
             });
             
             img.addEventListener('error', function() {
