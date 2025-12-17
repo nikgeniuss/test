@@ -13,8 +13,7 @@
         }
         
         body {
-            /* Изменено: загрузка фона из папки image */
-            background-image: url('image/front.jpg'); /* или .png, .webp, .gif - укажите правильное расширение */
+            background-image: url('image/front.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -27,7 +26,6 @@
             transition: background-color 0.3s ease;
         }
         
-        /* Запасной фон на случай, если файл не найден */
         body::before {
             content: '';
             position: fixed;
@@ -41,7 +39,6 @@
             transition: opacity 0.5s ease;
         }
         
-        /* Если основное фоновое изображение не загрузилось */
         body.image-not-loaded {
             background-image: none;
         }
@@ -139,20 +136,32 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
         
-        /* КАРТИНКА В КОЛОНКЕ */
-        .column-image {
+        /* КОНТЕЙНЕР ДЛЯ КАРТИНКИ С ФИКСИРОВАННЫМИ ПРОПОРЦИЯМИ */
+        .image-container {
             width: 100%;
-            height: 180px;
-            border-radius: 15px;
-            object-fit: cover;
             margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
             border: 3px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            padding-top: 56.25%; /* Соотношение 16:9 (9/16 = 0.5625 * 100 = 56.25%) */
             transition: transform 0.3s ease;
         }
         
-        .column:hover .column-image {
+        .column:hover .image-container {
             transform: scale(1.03);
+        }
+        
+        /* КАРТИНКА В КОЛОНКЕ */
+        .column-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
         }
         
         /* КНОПКА В КОЛОНКЕ */
@@ -234,9 +243,6 @@
                 padding: 18px;
                 min-height: 520px;
             }
-            .column-image {
-                height: 160px;
-            }
             .column-button {
                 padding: 10px 18px;
                 font-size: 1rem;
@@ -257,9 +263,9 @@
                 min-height: 500px;
                 border-radius: 15px;
             }
-            .column-image {
-                height: 150px;
-                margin-bottom: 15px;
+            .image-container {
+                border-radius: 12px;
+                border-width: 2px;
             }
             .column-button {
                 padding: 9px 16px;
@@ -310,10 +316,10 @@
                 animation-delay: 0.3s !important;
             }
             
-            .column-image {
-                height: 130px;
-                margin-bottom: 12px;
+            .image-container {
                 border-radius: 10px;
+                border-width: 2px;
+                margin-bottom: 15px;
             }
             
             .column-button {
@@ -349,6 +355,11 @@
         }
         
         @media (max-width: 600px) {
+            /* Меняем соотношение картинки для очень узких экранов */
+            .image-container {
+                padding-top: 75%; /* Соотношение 4:3 для мобилок */
+            }
+            
             .column-button {
                 padding: 7px 12px;
                 font-size: 0.85rem;
@@ -391,11 +402,11 @@
                 border-radius: 10px;
             }
             
-            .column-image {
-                height: 110px;
-                margin-bottom: 10px;
+            .image-container {
                 border-radius: 8px;
                 border-width: 2px;
+                margin-bottom: 12px;
+                padding-top: 80%; /* Более квадратное соотношение */
             }
             
             .column-button {
@@ -431,8 +442,9 @@
                 min-height: 440px;
             }
             
-            .column-image {
-                height: 100px;
+            .image-container {
+                padding-top: 85%; /* Еще более квадратное */
+                border-width: 1px;
             }
             
             .column-button {
@@ -465,8 +477,9 @@
                 min-height: 420px;
             }
             
-            .column-image {
-                height: 90px;
+            .image-container {
+                padding-top: 90%; /* Почти квадрат */
+                margin-bottom: 10px;
             }
             
             .column-button {
@@ -514,6 +527,17 @@
                 -webkit-line-clamp: 12;
             }
         }
+        
+        /* Для очень высоких экранов */
+        @media (min-height: 900px) and (max-width: 768px) {
+            .column {
+                min-height: 520px;
+            }
+            
+            .image-container {
+                padding-top: 70%; /* Более широкое соотношение для высоких экранов */
+            }
+        }
     </style>
 </head>
 <body>
@@ -524,8 +548,10 @@
         <div class="columns-container">
             <!-- КОЛОНКА 1 -->
             <div class="column">
-                <img src="https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.auto&fit=crop&w=600" 
-                     alt="Картинка 1" class="column-image">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.auto&fit=crop&w=600" 
+                         alt="Картинка 1" class="column-image">
+                </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 1!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
@@ -539,8 +565,10 @@
             
             <!-- КОЛОНКА 2 -->
             <div class="column">
-                <img src="https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.auto&fit=crop&w=600" 
-                     alt="Картинка 2" class="column-image">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.auto&fit=crop&w=600" 
+                         alt="Картинка 2" class="column-image">
+                </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 2!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
@@ -554,8 +582,10 @@
             
             <!-- КОЛОНКА 3 -->
             <div class="column">
-                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.auto&fit=crop&w=600" 
-                     alt="Картинка 3" class="column-image">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.auto&fit=crop&w=600" 
+                         alt="Картинка 3" class="column-image">
+                </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 3!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
@@ -578,7 +608,7 @@
         
         // Проверка загрузки фонового изображения
         const bgImage = new Image();
-        bgImage.src = 'image/front.jpg'; // укажите правильный путь и расширение
+        bgImage.src = 'image/front.jpg';
         
         bgImage.onload = function() {
             console.log("Фоновое изображение загружено успешно");
@@ -588,13 +618,6 @@
         bgImage.onerror = function() {
             console.log("Ошибка загрузки фонового изображения, используется запасной фон");
             document.body.classList.add('image-not-loaded');
-            
-            // Предлагаем пользователю варианты расширений файлов
-            console.log("Проверьте путь к файлу и расширение. Возможные варианты:");
-            console.log("- image/front.jpg");
-            console.log("- image/front.png");
-            console.log("- image/front.webp");
-            console.log("- image/front.gif");
         };
         
         const images = document.querySelectorAll('.column-image');
