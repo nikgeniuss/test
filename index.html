@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FLEX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -63,9 +64,10 @@
         /* КОНТЕЙНЕР ДЛЯ ТРЕХ КОЛОНОК */
         .columns-container {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap; /* Запрещаем перенос строк */
             justify-content: center;
-            gap: 40px;
+            align-items: stretch;
+            gap: 20px;
             max-width: 1400px;
             width: 100%;
             margin-top: 20px;
@@ -75,9 +77,10 @@
         .column {
             background: rgba(255, 255, 255, 0.12);
             border-radius: 20px;
-            padding: 25px;
-            width: 350px;
-            min-height: 600px;
+            padding: 20px;
+            flex: 1; /* Колонки растягиваются пропорционально */
+            min-width: 0; /* Для правильного сжатия контента */
+            min-height: 550px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -117,7 +120,7 @@
         }
         
         .column:hover {
-            transform: translateY(-15px);
+            transform: translateY(-10px);
             background: rgba(255, 255, 255, 0.18);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
@@ -125,10 +128,10 @@
         /* КАРТИНКА В КОЛОНКЕ */
         .column-image {
             width: 100%;
-            height: 220px;
+            height: 180px;
             border-radius: 15px;
             object-fit: cover;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
@@ -143,17 +146,22 @@
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
             border: none;
-            padding: 16px 40px;
-            font-size: 1.3rem;
+            padding: 14px 30px;
+            font-size: 1.1rem;
             border-radius: 50px;
             cursor: pointer;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             transition: all 0.3s ease;
             font-weight: bold;
             letter-spacing: 1px;
-            width: 80%;
-            max-width: 250px;
+            width: 90%;
+            max-width: 220px;
             box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            white-space: nowrap;
         }
         
         .column-button:hover {
@@ -162,35 +170,66 @@
             background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
         }
         
+        .button-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+        
         /* ТЕКСТ ПОД КНОПКОЙ */
         .column-text {
-            font-size: 1.1rem;
-            line-height: 1.7;
+            font-size: 1rem;
+            line-height: 1.6;
             color: #f0f0f0;
             text-align: center;
-            padding: 0 10px;
+            padding: 0 5px;
             flex-grow: 1;
             display: flex;
             align-items: center;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         
         /* АДАПТИВНОСТЬ */
         @media (max-width: 1200px) {
             .columns-container {
-                gap: 30px;
+                gap: 15px;
             }
             .column {
-                width: 320px;
+                padding: 18px;
+                min-height: 520px;
+            }
+            .column-image {
+                height: 160px;
             }
         }
         
         @media (max-width: 992px) {
             .columns-container {
-                gap: 30px;
+                gap: 12px;
             }
             .column {
-                width: 300px;
-                min-height: 580px;
+                padding: 16px;
+                min-height: 500px;
+                border-radius: 15px;
+            }
+            .column-image {
+                height: 150px;
+                margin-bottom: 15px;
+            }
+            .column-button {
+                padding: 12px 25px;
+                font-size: 1rem;
+                width: 95%;
+                gap: 8px;
+            }
+            .button-icon {
+                width: 20px;
+                height: 20px;
+            }
+            .column-text {
+                font-size: 0.95rem;
+                line-height: 1.5;
             }
         }
         
@@ -200,25 +239,50 @@
             }
             
             h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
                 margin-bottom: 20px;
             }
             
             .description {
-                font-size: 1.2rem;
-                margin-bottom: 40px;
+                font-size: 1.1rem;
+                margin-bottom: 30px;
             }
             
             .columns-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 30px;
+                gap: 10px;
+                padding: 0 5px;
             }
             
             .column {
-                width: 100%;
-                max-width: 450px;
-                min-height: 550px;
+                padding: 15px;
+                min-height: 480px;
+                border-radius: 12px;
+                animation-delay: 0.3s !important;
+            }
+            
+            .column-image {
+                height: 130px;
+                margin-bottom: 12px;
+                border-radius: 10px;
+            }
+            
+            .column-button {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+                border-radius: 30px;
+                margin-bottom: 20px;
+                gap: 6px;
+            }
+            
+            .button-icon {
+                width: 18px;
+                height: 18px;
+            }
+            
+            .column-text {
+                font-size: 0.9rem;
+                line-height: 1.4;
+                padding: 0;
             }
             
             body {
@@ -228,39 +292,84 @@
         
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             
             .description {
-                font-size: 1.1rem;
+                font-size: 1rem;
                 padding: 0 10px;
+                margin-bottom: 25px;
+            }
+            
+            .columns-container {
+                gap: 8px;
+                padding: 0;
             }
             
             .column {
-                padding: 20px;
-                min-height: 500px;
-                animation-delay: 0.3s !important;
+                padding: 12px;
+                min-height: 450px;
+                border-radius: 10px;
             }
             
             .column-image {
-                height: 180px;
+                height: 110px;
+                margin-bottom: 10px;
+                border-radius: 8px;
+                border-width: 2px;
             }
             
             .column-button {
-                padding: 14px 30px;
-                font-size: 1.2rem;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+                border-radius: 25px;
+                margin-bottom: 15px;
+                gap: 5px;
+                width: 100%;
+            }
+            
+            .button-icon {
+                width: 16px;
+                height: 16px;
             }
             
             .column-text {
-                font-size: 1rem;
+                font-size: 0.85rem;
+                line-height: 1.3;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .column {
+                padding: 10px;
+                min-height: 420px;
+            }
+            
+            .column-image {
+                height: 100px;
+            }
+            
+            .column-button {
+                padding: 7px 12px;
+                font-size: 0.85rem;
+                gap: 4px;
+            }
+            
+            .button-icon {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .column-text {
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="content">
-        <h1>Здесь можно будет добавить текст</h1>
-        <p class="description">Три колонки с картинкой, кнопкой и текстом. Сайт полностью адаптивный.</p>
+        <h1>FLEX</h1>
+        <p class="description">Лучшее решение для вас</p>
         
         <div class="columns-container">
             <!-- КОЛОНКА 1 -->
@@ -268,7 +377,10 @@
                 <img src="https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.auto&fit=crop&w=600" 
                      alt="Картинка 1" class="column-image">
                 <button class="column-button" onclick="alert('Вы нажали кнопку 1!')">
-                    Кнопка 1
+                    <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
+                    </svg>
+                    Наш телеграмм
                 </button>
                 <div class="column-text">
                     <p>Это текст под кнопкой в первой колонке. Он описывает что-то важное и интересное, связанное с картинкой выше.</p>
@@ -280,7 +392,10 @@
                 <img src="https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.auto&fit=crop&w=600" 
                      alt="Картинка 2" class="column-image">
                 <button class="column-button" onclick="alert('Вы нажали кнопку 2!')">
-                    Кнопка 2
+                    <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
+                    </svg>
+                    Наш телеграмм
                 </button>
                 <div class="column-text">
                     <p>Это текст под кнопкой во второй колонке. Он тоже адаптируется и переносится на маленьких экранах.</p>
@@ -292,7 +407,10 @@
                 <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.auto&fit=crop&w=600" 
                      alt="Картинка 3" class="column-image">
                 <button class="column-button" onclick="alert('Вы нажали кнопку 3!')">
-                    Кнопка 3
+                    <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
+                    </svg>
+                    Наш телеграмм
                 </button>
                 <div class="column-text">
                     <p>Это текст под кнопкой в третьей колонке. Все три колонки выглядят как столбы с элементами сверху вниз.</p>
@@ -301,7 +419,7 @@
         </div>
         
         <div id="future-content" style="margin-top: 70px; color: #aaa; font-size: 1.2rem; animation: fadeIn 1s ease 1.2s forwards; opacity: 0;">
-            <p>Дальше будем добавлять больше функционала если нужно</p>
+            <p></p>
         </div>
     </div>
 
