@@ -149,7 +149,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.1); /* Фон на случай прозрачной картинки */
+            background: rgba(0, 0, 0, 0.1);
         }
         
         .column:hover .image-container {
@@ -160,15 +160,15 @@
         .column-image {
             width: 100%;
             height: auto;
-            max-height: 300px; /* Максимальная высота для контроля размера */
-            object-fit: contain; /* Вместо cover - сохраняет пропорции без обрезки */
+            max-height: 300px;
+            object-fit: contain;
             object-position: center;
             display: block;
         }
         
         /* Запасной фон для картинки, если файл не загрузился */
         .image-container::before {
-            content: 'Картинка не загружена';
+            content: 'Загрузка картинки...';
             position: absolute;
             top: 0;
             left: 0;
@@ -181,14 +181,21 @@
             color: white;
             font-size: 1.2rem;
             font-weight: bold;
-            z-index: -1;
-            opacity: 0;
+            z-index: 1;
+            opacity: 1;
             transition: opacity 0.3s ease;
             padding: 20px;
             text-align: center;
         }
         
-        .image-container.image-not-loaded::before {
+        .image-container.image-loaded::before {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .image-container.image-not-found::before {
+            content: 'Картинка не найдена';
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
             opacity: 1;
         }
         
@@ -576,9 +583,8 @@
             <!-- КОЛОНКА 1 -->
             <div class="column">
                 <div class="image-container">
-                    <img src="image/1.jpg" 
-                         alt="Картинка 1" class="column-image"
-                         onerror="this.parentElement.classList.add('image-not-loaded')">
+                    <!-- Источник будет установлен JavaScript -->
+                    <img src="" alt="Картинка 1" class="column-image">
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 1!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -594,9 +600,8 @@
             <!-- КОЛОНКА 2 -->
             <div class="column">
                 <div class="image-container">
-                    <img src="image/2.jpg" 
-                         alt="Картинка 2" class="column-image"
-                         onerror="this.parentElement.classList.add('image-not-loaded')">
+                    <!-- Источник будет установлен JavaScript -->
+                    <img src="" alt="Картинка 2" class="column-image">
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 2!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -612,9 +617,8 @@
             <!-- КОЛОНКА 3 -->
             <div class="column">
                 <div class="image-container">
-                    <img src="image/3.jpg" 
-                         alt="Картинка 3" class="column-image"
-                         onerror="this.parentElement.classList.add('image-not-loaded')">
+                    <!-- Источник будет установлен JavaScript -->
+                    <img src="" alt="Картинка 3" class="column-image">
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 3!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -636,37 +640,101 @@
     <script>
         console.log("Сайт загружен!");
         
-        // Проверка загрузки фонового изображения
-        const bgImage = new Image();
-        bgImage.src = 'image/front.jpg';
+        // Форматы изображений для проверки
+        const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
         
-        bgImage.onload = function() {
-            console.log("Фоновое изображение загружено успешно");
-            document.body.classList.remove('image-not-loaded');
-        };
+        // Функция для проверки существования файла
+        async function checkImageExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
         
-        bgImage.onerror = function() {
-            console.log("Ошибка загрузки фонового изображения, используется запасной фон");
-            document.body.classList.add('image-not-loaded');
-        };
-        
-        // Проверка загрузки картинок в колонках
-        const columnImages = document.querySelectorAll('.column-image');
-        columnImages.forEach((img, index) => {
-            img.addEventListener('load', function() {
-                console.log(`Картинка ${index + 1} загружена успешно`);
-                this.parentElement.classList.remove('image-not-loaded');
+        // Функция для поиска картинки с разными расширениями
+        async function findImageWithExtensions(baseName, container) {
+            const imageElement = container.querySelector('.column-image');
+            
+            // Пробуем все форматы по очереди
+            for (const format of imageFormats) {
+                const url = `image/${baseName}.${format}`;
                 
-                // Выводим информацию о размере загруженной картинки
-                console.log(`Размер картинки ${index + 1}: ${img.naturalWidth}px × ${img.naturalHeight}px`);
-            });
+                if (await checkImageExists(url)) {
+                    console.log(`Найдена картинка: ${url}`);
+                    imageElement.src = url;
+                    return true;
+                }
+            }
             
-            img.addEventListener('error', function() {
-                console.log(`Ошибка загрузки картинки ${index + 1}`);
-                this.parentElement.classList.add('image-not-loaded');
-            });
+            // Если ни один формат не найден
+            console.log(`Картинка ${baseName} не найдена ни в одном формате`);
+            container.classList.add('image-not-found');
+            return false;
+        }
+        
+        // Загрузка фонового изображения с проверкой форматов
+        async function loadBackgroundImage() {
+            console.log("Поиск фонового изображения...");
             
-            // Клик по картинке
+            for (const format of imageFormats) {
+                const url = `image/front.${format}`;
+                
+                if (await checkImageExists(url)) {
+                    console.log(`Фоновое изображение найдено: ${url}`);
+                    document.body.style.backgroundImage = `url('${url}')`;
+                    document.body.classList.remove('image-not-loaded');
+                    return;
+                }
+            }
+            
+            console.log("Фоновое изображение не найдено ни в одном формате");
+            document.body.classList.add('image-not-loaded');
+        }
+        
+        // Загрузка картинок для колонок
+        async function loadColumnImages() {
+            console.log("Поиск картинок для колонок...");
+            
+            const imageContainers = document.querySelectorAll('.image-container');
+            
+            // Для каждой колонки ищем картинку с соответствующим номером
+            for (let i = 0; i < imageContainers.length; i++) {
+                const container = imageContainers[i];
+                const imageNumber = i + 1;
+                
+                console.log(`Поиск картинки для колонки ${imageNumber}...`);
+                
+                const found = await findImageWithExtensions(imageNumber, container);
+                
+                if (found) {
+                    const img = container.querySelector('.column-image');
+                    img.onload = function() {
+                        console.log(`Картинка ${imageNumber} загружена: ${this.naturalWidth}px × ${this.naturalHeight}px`);
+                        container.classList.add('image-loaded');
+                    };
+                    
+                    img.onerror = function() {
+                        console.log(`Ошибка загрузки картинки ${imageNumber}`);
+                        container.classList.remove('image-loaded');
+                        container.classList.add('image-not-found');
+                    };
+                }
+            }
+        }
+        
+        // Инициализация загрузки изображений
+        async function initImageLoading() {
+            await loadBackgroundImage();
+            await loadColumnImages();
+        }
+        
+        // Запускаем загрузку изображений
+        initImageLoading();
+        
+        // Клик по картинке
+        document.querySelectorAll('.column-image').forEach((img, index) => {
             img.addEventListener('click', function() {
                 console.log(`Картинка ${index + 1} кликнута`);
             });
@@ -682,13 +750,11 @@
             });
         }, 100);
         
-        // Проверка существования файлов
-        console.log("Используемые файлы изображений:");
-        console.log("- Фоновое изображение: image/front.jpg");
-        console.log("- Картинка 1: image/1.jpg");
-        console.log("- Картинка 2: image/2.jpg");
-        console.log("- Картинка 3: image/3.jpg");
-        console.log("Убедитесь, что эти файлы существуют в папке 'image'");
+        // Выводим информацию о поддерживаемых форматах
+        console.log("Поддерживаемые форматы изображений:", imageFormats.join(', '));
+        console.log("Поиск файлов в папке 'image' с именами:");
+        console.log("- front.[формат] для фона");
+        console.log("- 1.[формат], 2.[формат], 3.[формат] для колонок");
     </script>
 </body>
 </html>
