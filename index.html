@@ -12,18 +12,14 @@
         }
         
         body {
-            /* ВСТАВЬ СВОЮ ССЫЛКУ НА ГИФКУ */
             background-image: url('https://i.gifer.com/origin/55/55f1f99ec4fceab6af26e290a9bccdcd.gif');
-            
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            
             min-height: 100vh;
             color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            
             background-color: rgba(0, 0, 0, 0.4);
             background-blend-mode: overlay;
             transition: background-color 0.3s ease;
@@ -45,6 +41,7 @@
             margin-bottom: 25px;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
             line-height: 1.2;
+            animation: fadeIn 1s ease;
         }
         
         .description {
@@ -54,6 +51,13 @@
             line-height: 1.6;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
             padding: 0 15px;
+            animation: fadeIn 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         /* КОНТЕЙНЕР ДЛЯ ТРЕХ КОЛОНОК */
@@ -81,6 +85,35 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.4s ease;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            
+            /* Анимация появления */
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Задержка для каждой колонки */
+        .column:nth-child(1) {
+            animation-delay: 0.5s;
+        }
+        
+        .column:nth-child(2) {
+            animation-delay: 0.7s;
+        }
+        
+        .column:nth-child(3) {
+            animation-delay: 0.9s;
         }
         
         .column:hover {
@@ -98,6 +131,11 @@
             margin-bottom: 30px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .column:hover .column-image {
+            transform: scale(1.03);
         }
         
         /* КНОПКА В КОЛОНКЕ */
@@ -201,6 +239,7 @@
             .column {
                 padding: 20px;
                 min-height: 500px;
+                animation-delay: 0.3s !important;
             }
             
             .column-image {
@@ -220,7 +259,7 @@
 </head>
 <body>
     <div class="content">
-        <h1>Здесь можно будет добавить текст <h1>
+        <h1>Здесь можно будет добавить текст</h1>
         <p class="description">Три колонки с картинкой, кнопкой и текстом. Сайт полностью адаптивный.</p>
         
         <div class="columns-container">
@@ -261,22 +300,30 @@
             </div>
         </div>
         
-        <div id="future-content" style="margin-top: 70px; color: #aaa; font-size: 1.2rem;">
+        <div id="future-content" style="margin-top: 70px; color: #aaa; font-size: 1.2rem; animation: fadeIn 1s ease 1.2s forwards; opacity: 0;">
             <p>Дальше будем добавлять больше функционала если нужно</p>
         </div>
     </div>
 
     <script>
-        // Логируем загрузку
-        console.log("Колонки загружены!");
+        console.log("Сайт загружен!");
         
-        // Можно менять картинки на свои
         const images = document.querySelectorAll('.column-image');
         images.forEach((img, index) => {
             img.addEventListener('click', function() {
                 console.log(`Картинка ${index + 1} кликнута`);
             });
         });
+        
+        // Добавляем класс для перезапуска анимации при необходимости
+        setTimeout(() => {
+            document.querySelectorAll('.column').forEach(column => {
+                column.style.animation = 'none';
+                setTimeout(() => {
+                    column.style.animation = '';
+                }, 10);
+            });
+        }, 100);
     </script>
 </body>
 </html>
