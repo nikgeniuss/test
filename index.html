@@ -3,407 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Романтический вечер - Заказ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Мой адаптивный сайт с гифкой</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffe4f0 50%, #ffd4e8 100%);
+            /* ВСТАВЬ СВОЮ ССЫЛКУ НА ГИФКУ */
+            background-image: url('https://media.giphy.com/media/example/your-gif-link.gif');
+            
+            /* Настройки фона */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            
             min-height: 100vh;
-            padding: 20px;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+            /* Для контраста текста */
+            background-color: rgba(0, 0, 0, 0.4);
+            background-blend-mode: overlay;
+            
+            /* Плавные переходы */
+            transition: background-color 0.3s ease;
+        }
+        
+        .content {
+            padding: 30px 20px;
+            text-align: center;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(2px);
         }
-
-        .container {
-            max-width: 600px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
-        }
-
+        
         h1 {
-            font-family: 'Playfair Display', serif;
-            color: #d63384;
-            font-size: 2.2em;
-            margin-bottom: 15px;
-            text-align: center;
-            line-height: 1.3;
+            font-size: clamp(2rem, 5vw, 4rem);
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
         }
-
-        .subtitle {
-            text-align: center;
-            color: #8b5e83;
-            font-size: 1em;
-            margin-bottom: 35px;
-            font-weight: 300;
+        
+        p {
+            font-size: clamp(1rem, 2.5vw, 1.8rem);
+            max-width: 900px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+            padding: 0 15px;
         }
-
-        .price-section {
-            background: linear-gradient(135deg, #ffd4e8 0%, #ffb3d9 100%);
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .base-price {
-            font-size: 0.9em;
-            color: #8b5e83;
-            margin-bottom: 10px;
-        }
-
-        .total-price {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5em;
-            color: #d63384;
-            font-weight: 700;
-        }
-
-        .services-section {
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            color: #d63384;
-            font-size: 1.3em;
-            margin-bottom: 20px;
-        }
-
-        .service-item {
+        
+        .features {
             display: flex;
-            align-items: center;
-            padding: 15px;
-            background: #fff8fc;
-            border-radius: 15px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+            max-width: 1200px;
         }
-
-        .service-item:hover {
-            background: #ffebf7;
-            transform: translateX(5px);
-            border-color: #ffc4e1;
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 25px;
+            width: 300px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, background 0.3s ease;
         }
-
-        .service-item input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            cursor: pointer;
-            accent-color: #d63384;
-            margin-right: 15px;
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.25);
         }
-
-        .service-info {
-            flex: 1;
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffcc00;
         }
-
-        .service-name {
-            font-weight: 600;
-            color: #8b5e83;
-            margin-bottom: 3px;
-        }
-
-        .service-price {
-            color: #d63384;
-            font-weight: 600;
-            font-size: 1.1em;
-        }
-
-        .contact-section {
-            margin-bottom: 30px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            color: #8b5e83;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ffc4e1;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            background: #fff;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #d63384;
-            box-shadow: 0 0 0 4px rgba(214, 51, 132, 0.1);
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #d63384 0%, #ff69b4 100%);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-            box-shadow: 0 10px 25px rgba(214, 51, 132, 0.3);
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.4);
-        }
-
-        .submit-btn:active {
-            transform: translateY(-1px);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        
+        /* Адаптивность для мобилок */
         @media (max-width: 768px) {
-            .container {
-                padding: 30px 25px;
-                border-radius: 25px;
+            .content {
+                padding: 20px 15px;
             }
-
+            
             h1 {
-                font-size: 1.8em;
+                font-size: 2.2rem;
+                margin-bottom: 20px;
             }
-
-            .total-price {
-                font-size: 2em;
+            
+            p {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
             }
-
-            .service-item {
-                padding: 12px;
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
             }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 15px;
-            }
-
-            .container {
-                padding: 25px 20px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
-
-            .subtitle {
-                font-size: 0.9em;
-            }
-
-            .price-section {
+            
+            .feature-card {
+                width: 100%;
+                max-width: 350px;
                 padding: 20px;
             }
-
-            .total-price {
-                font-size: 1.8em;
+            
+            body {
+                background-attachment: scroll; /* Для мобилок */
+            }
+        }
+        
+        /* Для очень маленьких экранов */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+            
+            .feature-card {
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Закажите романтический вечер для двоих</h1>
-        <p class="subtitle">Создайте незабываемый вечер, полный любви, загадок и романтики</p>
-
-        <div class="price-section">
-            <div class="base-price">Базовая стоимость квеста: 500 лей</div>
-            <div class="total-price" id="totalPrice">500 лей</div>
-        </div>
-
-        <div class="services-section">
-            <h2 class="section-title">Дополнительные услуги</h2>
-            
-            <label class="service-item">
-                <input type="checkbox" data-price="150" onchange="updatePrice()">
-                <div class="service-info">
-                    <div class="service-name">🌹 Букет роз</div>
-                </div>
-                <div class="service-price">+150 лей</div>
-            </label>
-
-            <label class="service-item">
-                <input type="checkbox" data-price="80" onchange="updatePrice()">
-                <div class="service-info">
-                    <div class="service-name">🌺 Лепестки роз по комнате</div>
-                </div>
-                <div class="service-price">+80 лей</div>
-            </label>
-
-            <label class="service-item">
-                <input type="checkbox" data-price="120" onchange="updatePrice()">
-                <div class="service-info">
-                    <div class="service-name">🍷 Бутылка вина</div>
-                </div>
-                <div class="service-price">+120 лей</div>
-            </label>
-
-            <label class="service-item">
-                <input type="checkbox" data-price="50" onchange="updatePrice()">
-                <div class="service-info">
-                    <div class="service-name">🎵 Фоновая музыка</div>
-                </div>
-                <div class="service-price">+50 лей</div>
-            </label>
-
-            <label class="service-item">
-                <input type="checkbox" data-price="200" onchange="updatePrice()">
-                <div class="service-info">
-                    <div class="service-name">📸 Фотосессия после квеста</div>
-                </div>
-                <div class="service-price">+200 лей</div>
-            </label>
-        </div>
-
-        <div class="contact-section">
-            <h2 class="section-title">Контактная информация</h2>
-            
-            <div class="input-group">
-                <label for="name">Имя</label>
-                <input type="text" id="name" placeholder="Введите ваше имя" required>
+    <div class="content">
+        <h1>Мой адаптивный сайт с гифкой-фоном</h1>
+        <p>Это первая версия сайта. Здесь будет что-то интересное. Сайт полностью адаптируется под любой размер экрана.</p>
+        <p>Попробуй изменить размер окна браузера или открой на телефоне!</p>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>Адаптивный дизайн</h3>
+                <p>Сайт идеально выглядит на компьютерах, планшетах и телефонах.</p>
             </div>
-
-            <div class="input-group">
-                <label for="phone">Телефон</label>
-                <input type="tel" id="phone" placeholder="+373 000-000-00" required>
+            <div class="feature-card">
+                <h3>Гифка-фон</h3>
+                <p>Фоном служит ваша гифка, которая загружается по ссылке.</p>
             </div>
-
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="example@mail.ru" required>
-            </div>
-
-            <div class="input-group">
-                <label for="telegram">Telegram</label>
-                <input type="text" id="telegram" placeholder="@username">
+            <div class="feature-card">
+                <h3>Современные эффекты</h3>
+                <p>Плавные переходы, размытие и hover-эффекты.</p>
             </div>
         </div>
-
-        <button class="submit-btn" onclick="submitOrder()">Заказать</button>
+        
+        <div id="future-content" style="margin-top: 50px; color: #aaa;">
+            <p>Здесь будут новые элементы...</p>
+        </div>
     </div>
 
     <script>
-    const BASE_PRICE = 500;
-    
-    // ⚙️ НАСТРОЙКИ TELEGRAM БОТА
-    const TELEGRAM_BOT_TOKEN = '6836324743:AAFIWAOKYDUkbz3ojpNthxPb0WqYtBkfBkg';
-    const TELEGRAM_CHAT_IDS = ['5446866680', '5641551576']; // ✅ список получателей
-    const SUCCESS_PAGE_URL = 'https://nikgeniuss.github.io/vkb/';
-
-    function updatePrice() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        let total = BASE_PRICE;
+        // Простая проверка адаптивности
+        console.log("Ширина экрана: " + window.innerWidth + "px");
         
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                total += parseInt(checkbox.dataset.price);
-            }
+        window.addEventListener('resize', function() {
+            console.log("Новая ширина: " + window.innerWidth + "px");
         });
-
-        document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' лей';
-    }
-
-    async function submitOrder() {
-        const name = document.getElementById('name').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const telegram = document.getElementById('telegram').value.trim();
-
-        if (!name || !phone || !email) {
-            alert('Пожалуйста, заполните все обязательные поля: Имя, Телефон и Email');
-            return;
-        }
-
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        const services = [];
-        let total = BASE_PRICE;
-
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                const serviceName = checkbox.parentElement.querySelector('.service-name').textContent;
-                const price = parseInt(checkbox.dataset.price);
-                services.push(`${serviceName} (+${price} лей)`);
-                total += price;
-            }
-        });
-
-        let message = `🎭 НОВЫЙ ЗАКАЗ РОМАНТИЧЕСКОГО ВЕЧЕРА 🎭\n\n`;
-        message += `👤 Контактная информация:\n`;
-        message += `Имя: ${name}\n`;
-        message += `Телефон: ${phone}\n`;
-        message += `Email: ${email}\n`;
-        if (telegram) {
-            message += `Telegram: ${telegram}\n`;
-        }
-        message += `\n💰 Стоимость:\n`;
-        message += `Базовый квест: 500 лей\n`;
-        if (services.length > 0) {
-            message += `\nДополнительные услуги:\n${services.join('\n')}\n`;
-        } else {
-            message += `Без дополнительных услуг\n`;
-        }
-        message += `\n📊 ИТОГО: ${total} лей`;
-
-        const submitBtn = document.querySelector('.submit-btn');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Отправка...';
-        submitBtn.disabled = true;
-
-        try {
-            // ✅ отправляем сообщение всем получателям по очереди
-            for (const chatId of TELEGRAM_CHAT_IDS) {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                        parse_mode: 'HTML'
-                    })
-                });
-            }
-
-            // ✅ после успешной отправки — переход
-            window.location.href = SUCCESS_PAGE_URL;
-
-        } catch (error) {
-            console.error('Ошибка:', error);
-            alert('Произошла ошибка при отправке заказа. Пожалуйста, свяжитесь с нами напрямую по телефону или email.');
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }
-    }
-</script>
-
+    </script>
 </body>
 </html>
