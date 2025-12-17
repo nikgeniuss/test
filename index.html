@@ -13,9 +13,8 @@
         
         body {
             /* ВСТАВЬ СВОЮ ССЫЛКУ НА ГИФКУ */
-            background-image: url('https://i.gifer.com/origin/55/55f1f99ec4fceab6af26e290a9bccdcd.gif');
+            background-image: url('https://tse3.mm.bing.net/th/id/OIP.z2LN4yvqGwd6uzT4zZQLwQHaHa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3');
             
-            /* Настройки фона */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -25,11 +24,8 @@
             color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             
-            /* Для контраста текста */
             background-color: rgba(0, 0, 0, 0.4);
             background-blend-mode: overlay;
-            
-            /* Плавные переходы */
             transition: background-color 0.3s ease;
         }
         
@@ -51,46 +47,115 @@
             line-height: 1.2;
         }
         
-        p {
+        .description {
             font-size: clamp(1rem, 2.5vw, 1.8rem);
             max-width: 900px;
-            margin: 0 auto 25px;
+            margin: 0 auto 50px;
             line-height: 1.6;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
             padding: 0 15px;
         }
         
-        .features {
+        /* КОНТЕЙНЕР ДЛЯ ТРЕХ КОЛОНОК */
+        .columns-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
-            margin-top: 40px;
-            max-width: 1200px;
+            gap: 40px;
+            max-width: 1400px;
+            width: 100%;
+            margin-top: 20px;
         }
         
-        .feature-card {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
+        /* ОТДЕЛЬНАЯ КОЛОНКА */
+        .column {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
             padding: 25px;
-            width: 300px;
-            backdrop-filter: blur(10px);
+            width: 350px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease, background 0.3s ease;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         
-        .feature-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.25);
+        .column:hover {
+            transform: translateY(-15px);
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
         
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #ffcc00;
+        /* КАРТИНКА В КОЛОНКЕ */
+        .column-image {
+            width: 100%;
+            height: 220px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
         
-        /* Адаптивность для мобилок */
+        /* КНОПКА В КОЛОНКЕ */
+        .column-button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            letter-spacing: 1px;
+            width: 80%;
+            max-width: 250px;
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+        }
+        
+        .column-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(37, 117, 252, 0.6);
+            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+        }
+        
+        /* ТЕКСТ ПОД КНОПКОЙ */
+        .column-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #f0f0f0;
+            text-align: center;
+            padding: 0 10px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 1200px) {
+            .columns-container {
+                gap: 30px;
+            }
+            .column {
+                width: 320px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .columns-container {
+                gap: 30px;
+            }
+            .column {
+                width: 300px;
+                min-height: 580px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .content {
                 padding: 20px 15px;
@@ -101,41 +166,54 @@
                 margin-bottom: 20px;
             }
             
-            p {
+            .description {
                 font-size: 1.2rem;
-                margin-bottom: 20px;
+                margin-bottom: 40px;
             }
             
-            .features {
+            .columns-container {
                 flex-direction: column;
                 align-items: center;
-                gap: 20px;
+                gap: 30px;
             }
             
-            .feature-card {
+            .column {
                 width: 100%;
-                max-width: 350px;
-                padding: 20px;
+                max-width: 450px;
+                min-height: 550px;
             }
             
             body {
-                background-attachment: scroll; /* Для мобилок */
+                background-attachment: scroll;
             }
         }
         
-        /* Для очень маленьких экранов */
         @media (max-width: 480px) {
             h1 {
                 font-size: 1.8rem;
             }
             
-            p {
+            .description {
                 font-size: 1.1rem;
                 padding: 0 10px;
             }
             
-            .feature-card {
-                padding: 15px;
+            .column {
+                padding: 20px;
+                min-height: 500px;
+            }
+            
+            .column-image {
+                height: 180px;
+            }
+            
+            .column-button {
+                padding: 14px 30px;
+                font-size: 1.2rem;
+            }
+            
+            .column-text {
+                font-size: 1rem;
             }
         }
     </style>
@@ -143,35 +221,61 @@
 <body>
     <div class="content">
         <h1>Мой адаптивный сайт с гифкой-фоном</h1>
-        <p>Это первая версия сайта. Здесь будет что-то интересное. Сайт полностью адаптируется под любой размер экрана.</p>
-        <p>Попробуй изменить размер окна браузера или открой на телефоне!</p>
+        <p class="description">Три колонки с картинкой, кнопкой и текстом. Сайт полностью адаптивный.</p>
         
-        <div class="features">
-            <div class="feature-card">
-                <h3>Адаптивный дизайн</h3>
-                <p>Сайт идеально выглядит на компьютерах, планшетах и телефонах.</p>
+        <div class="columns-container">
+            <!-- КОЛОНКА 1 -->
+            <div class="column">
+                <img src="https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.auto&fit=crop&w=600" 
+                     alt="Картинка 1" class="column-image">
+                <button class="column-button" onclick="alert('Вы нажали кнопку 1!')">
+                    Кнопка 1
+                </button>
+                <div class="column-text">
+                    <p>Это текст под кнопкой в первой колонке. Он описывает что-то важное и интересное, связанное с картинкой выше.</p>
+                </div>
             </div>
-            <div class="feature-card">
-                <h3>Гифка-фон</h3>
-                <p>Фоном служит ваша гифка, которая загружается по ссылке.</p>
+            
+            <!-- КОЛОНКА 2 -->
+            <div class="column">
+                <img src="https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.auto&fit=crop&w=600" 
+                     alt="Картинка 2" class="column-image">
+                <button class="column-button" onclick="alert('Вы нажали кнопку 2!')">
+                    Кнопка 2
+                </button>
+                <div class="column-text">
+                    <p>Это текст под кнопкой во второй колонке. Он тоже адаптируется и переносится на маленьких экранах.</p>
+                </div>
             </div>
-            <div class="feature-card">
-                <h3>Современные эффекты</h3>
-                <p>Плавные переходы, размытие и hover-эффекты.</p>
+            
+            <!-- КОЛОНКА 3 -->
+            <div class="column">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.auto&fit=crop&w=600" 
+                     alt="Картинка 3" class="column-image">
+                <button class="column-button" onclick="alert('Вы нажали кнопку 3!')">
+                    Кнопка 3
+                </button>
+                <div class="column-text">
+                    <p>Это текст под кнопкой в третьей колонке. Все три колонки выглядят как столбы с элементами сверху вниз.</p>
+                </div>
             </div>
         </div>
         
-        <div id="future-content" style="margin-top: 50px; color: #aaa;">
-            <p>Здесь будут новые элементы...</p>
+        <div id="future-content" style="margin-top: 70px; color: #aaa; font-size: 1.2rem;">
+            <p>Дальше будем добавлять больше функционала...</p>
         </div>
     </div>
 
     <script>
-        // Простая проверка адаптивности
-        console.log("Ширина экрана: " + window.innerWidth + "px");
+        // Логируем загрузку
+        console.log("Колонки загружены!");
         
-        window.addEventListener('resize', function() {
-            console.log("Новая ширина: " + window.innerWidth + "px");
+        // Можно менять картинки на свои
+        const images = document.querySelectorAll('.column-image');
+        images.forEach((img, index) => {
+            img.addEventListener('click', function() {
+                console.log(`Картинка ${index + 1} кликнута`);
+            });
         });
     </script>
 </body>
