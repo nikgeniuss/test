@@ -101,7 +101,7 @@
             padding: 20px;
             flex: 1;
             min-width: 0;
-            min-height: 550px;
+            /* УБРАЛ фиксированную минимальную высоту */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -147,6 +147,7 @@
             position: relative;
             padding-top: 56.25%; /* Соотношение 16:9 (9/16 = 0.5625 * 100 = 56.25%) */
             transition: transform 0.3s ease;
+            flex-shrink: 0; /* Не сжимается */
         }
         
         .column:hover .image-container {
@@ -173,7 +174,7 @@
             font-size: 1.1rem;
             border-radius: 50px;
             cursor: pointer;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
             font-weight: bold;
             width: 100%;
@@ -186,6 +187,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            flex-shrink: 0; /* Не сжимается */
         }
         
         .column-button:hover {
@@ -214,7 +216,7 @@
             color: #f0f0f0;
             text-align: center;
             padding: 0 5px;
-            flex-grow: 1;
+            /* УБРАЛ flex-grow: 1 - теперь не растягивается */
             display: flex;
             align-items: center;
             overflow-wrap: break-word;
@@ -222,16 +224,15 @@
             hyphens: auto;
             width: 100%;
             overflow: hidden;
+            margin-bottom: 5px; /* Небольшой отступ снизу */
         }
         
         .column-text p {
             width: 100%;
             margin: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            /* УБРАЛ ограничение строк - текст показывается полностью */
+            display: block;
+            overflow: visible;
         }
         
         /* АДАПТИВНОСТЬ */
@@ -241,7 +242,6 @@
             }
             .column {
                 padding: 18px;
-                min-height: 520px;
             }
             .column-button {
                 padding: 10px 18px;
@@ -260,7 +260,6 @@
             }
             .column {
                 padding: 16px;
-                min-height: 500px;
                 border-radius: 15px;
             }
             .image-container {
@@ -283,9 +282,6 @@
             .column-text {
                 font-size: 0.95rem;
                 line-height: 1.5;
-            }
-            .column-text p {
-                -webkit-line-clamp: 5;
             }
         }
         
@@ -311,7 +307,6 @@
             
             .column {
                 padding: 14px;
-                min-height: 480px;
                 border-radius: 12px;
                 animation-delay: 0.3s !important;
             }
@@ -326,7 +321,7 @@
                 padding: 8px 14px;
                 font-size: 0.9rem;
                 border-radius: 30px;
-                margin-bottom: 20px;
+                margin-bottom: 15px;
                 gap: 5px;
             }
             
@@ -343,10 +338,6 @@
                 font-size: 0.9rem;
                 line-height: 1.4;
                 padding: 0;
-            }
-            
-            .column-text p {
-                -webkit-line-clamp: 6;
             }
             
             body {
@@ -375,8 +366,8 @@
                 font-size: 0.85rem;
             }
             
-            .column-text p {
-                -webkit-line-clamp: 7;
+            .column-text {
+                font-size: 0.9rem;
             }
         }
         
@@ -398,7 +389,6 @@
             
             .column {
                 padding: 12px;
-                min-height: 460px;
                 border-radius: 10px;
             }
             
@@ -413,7 +403,7 @@
                 padding: 6px 10px;
                 font-size: 0.8rem;
                 border-radius: 25px;
-                margin-bottom: 15px;
+                margin-bottom: 12px;
                 gap: 4px;
             }
             
@@ -429,17 +419,13 @@
             .column-text {
                 font-size: 0.85rem;
                 line-height: 1.3;
-            }
-            
-            .column-text p {
-                -webkit-line-clamp: 8;
+                margin-bottom: 3px;
             }
         }
         
         @media (max-width: 400px) {
             .column {
                 padding: 10px;
-                min-height: 440px;
             }
             
             .image-container {
@@ -465,16 +451,11 @@
             .column-text {
                 font-size: 0.8rem;
             }
-            
-            .column-text p {
-                -webkit-line-clamp: 9;
-            }
         }
         
         @media (max-width: 360px) {
             .column {
                 padding: 8px;
-                min-height: 420px;
             }
             
             .image-container {
@@ -502,10 +483,6 @@
                 font-size: 0.75rem;
                 line-height: 1.2;
             }
-            
-            .column-text p {
-                -webkit-line-clamp: 10;
-            }
         }
         
         @media (max-width: 320px) {
@@ -523,17 +500,13 @@
                 height: 10px;
             }
             
-            .column-text p {
-                -webkit-line-clamp: 12;
+            .column-text {
+                font-size: 0.7rem;
             }
         }
         
         /* Для очень высоких экранов */
         @media (min-height: 900px) and (max-width: 768px) {
-            .column {
-                min-height: 520px;
-            }
-            
             .image-container {
                 padding-top: 70%; /* Более широкое соотношение для высоких экранов */
             }
