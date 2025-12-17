@@ -101,7 +101,6 @@
             padding: 20px;
             flex: 1;
             min-width: 0;
-            /* УБРАЛ фиксированную минимальную высоту */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -147,7 +146,7 @@
             position: relative;
             padding-top: 56.25%; /* Соотношение 16:9 (9/16 = 0.5625 * 100 = 56.25%) */
             transition: transform 0.3s ease;
-            flex-shrink: 0; /* Не сжимается */
+            flex-shrink: 0;
         }
         
         .column:hover .image-container {
@@ -163,6 +162,30 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
+        }
+        
+        /* Запасной фон для картинки, если файл не загрузился */
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .image-not-loaded::before {
+            content: 'Картинка не загружена';
+            opacity: 1;
         }
         
         /* КНОПКА В КОЛОНКЕ */
@@ -187,7 +210,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            flex-shrink: 0; /* Не сжимается */
+            flex-shrink: 0;
         }
         
         .column-button:hover {
@@ -216,7 +239,6 @@
             color: #f0f0f0;
             text-align: center;
             padding: 0 5px;
-            /* УБРАЛ flex-grow: 1 - теперь не растягивается */
             display: flex;
             align-items: center;
             overflow-wrap: break-word;
@@ -224,13 +246,12 @@
             hyphens: auto;
             width: 100%;
             overflow: hidden;
-            margin-bottom: 5px; /* Небольшой отступ снизу */
+            margin-bottom: 5px;
         }
         
         .column-text p {
             width: 100%;
             margin: 0;
-            /* УБРАЛ ограничение строк - текст показывается полностью */
             display: block;
             overflow: visible;
         }
@@ -346,9 +367,8 @@
         }
         
         @media (max-width: 600px) {
-            /* Меняем соотношение картинки для очень узких экранов */
             .image-container {
-                padding-top: 75%; /* Соотношение 4:3 для мобилок */
+                padding-top: 75%;
             }
             
             .column-button {
@@ -396,7 +416,7 @@
                 border-radius: 8px;
                 border-width: 2px;
                 margin-bottom: 12px;
-                padding-top: 80%; /* Более квадратное соотношение */
+                padding-top: 80%;
             }
             
             .column-button {
@@ -429,7 +449,7 @@
             }
             
             .image-container {
-                padding-top: 85%; /* Еще более квадратное */
+                padding-top: 85%;
                 border-width: 1px;
             }
             
@@ -459,7 +479,7 @@
             }
             
             .image-container {
-                padding-top: 90%; /* Почти квадрат */
+                padding-top: 90%;
                 margin-bottom: 10px;
             }
             
@@ -505,10 +525,9 @@
             }
         }
         
-        /* Для очень высоких экранов */
         @media (min-height: 900px) and (max-width: 768px) {
             .image-container {
-                padding-top: 70%; /* Более широкое соотношение для высоких экранов */
+                padding-top: 70%;
             }
         }
     </style>
@@ -522,8 +541,9 @@
             <!-- КОЛОНКА 1 -->
             <div class="column">
                 <div class="image-container">
-                    <img src="https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.auto&fit=crop&w=600" 
-                         alt="Картинка 1" class="column-image">
+                    <img src="image/1.jpg" 
+                         alt="Картинка 1" class="column-image"
+                         onerror="this.parentElement.classList.add('image-not-loaded')">
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 1!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -539,8 +559,9 @@
             <!-- КОЛОНКА 2 -->
             <div class="column">
                 <div class="image-container">
-                    <img src="https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.auto&fit=crop&w=600" 
-                         alt="Картинка 2" class="column-image">
+                    <img src="image/2.jpg" 
+                         alt="Картинка 2" class="column-image"
+                         onerror="this.parentElement.classList.add('image-not-loaded')">
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 2!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -556,8 +577,9 @@
             <!-- КОЛОНКА 3 -->
             <div class="column">
                 <div class="image-container">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.auto&fit=crop&w=600" 
-                         alt="Картинка 3" class="column-image">
+                    <img src="image/3.jpg" 
+                         alt="Картинка 3" class="column-image"
+                         onerror="this.parentElement.classList.add('image-not-loaded')">
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 3!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -593,13 +615,26 @@
             document.body.classList.add('image-not-loaded');
         };
         
-        const images = document.querySelectorAll('.column-image');
-        images.forEach((img, index) => {
+        // Проверка загрузки картинок в колонках
+        const columnImages = document.querySelectorAll('.column-image');
+        columnImages.forEach((img, index) => {
+            img.addEventListener('load', function() {
+                console.log(`Картинка ${index + 1} загружена успешно`);
+                this.parentElement.classList.remove('image-not-loaded');
+            });
+            
+            img.addEventListener('error', function() {
+                console.log(`Ошибка загрузки картинки ${index + 1}`);
+                this.parentElement.classList.add('image-not-loaded');
+            });
+            
+            // Клик по картинке
             img.addEventListener('click', function() {
                 console.log(`Картинка ${index + 1} кликнута`);
             });
         });
         
+        // Перезапуск анимации
         setTimeout(() => {
             document.querySelectorAll('.column').forEach(column => {
                 column.style.animation = 'none';
@@ -608,6 +643,14 @@
                 }, 10);
             });
         }, 100);
+        
+        // Проверка существования файлов
+        console.log("Используемые файлы изображений:");
+        console.log("- Фоновое изображение: image/front.jpg");
+        console.log("- Картинка 1: image/1.jpg");
+        console.log("- Картинка 2: image/2.jpg");
+        console.log("- Картинка 3: image/3.jpg");
+        console.log("Убедитесь, что эти файлы существуют в папке 'image'");
     </script>
 </body>
 </html>
