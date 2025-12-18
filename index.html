@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLEX</title>
+    <title>FLEX - Лучшее решение для бизнеса | Современные технологии</title>
+    <meta name="description" content="FLEX предлагает инновационные решения для вашего бизнеса. Три ключевых направления: развитие, технологии, поддержка.">
+    <meta name="keywords" content="flex, бизнес решения, технологии, разработка, поддержка, инновации">
+    <meta name="author" content="Компания FLEX">
+    <meta property="og:title" content="FLEX - Лучшее решение для вас">
+    <meta property="og:description" content="Современные технологии для вашего бизнеса">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FLEX - Лучшее решение">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -128,7 +136,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* КОНТЕЙНЕР ДЛЯ ТРЕХ КОЛОНОК */
         .columns-container {
             display: flex;
             flex-wrap: nowrap;
@@ -140,7 +147,6 @@
             margin-top: 20px;
         }
         
-        /* ОТДЕЛЬНАЯ КОЛОНКА */
         .column {
             background: rgba(255, 255, 255, 0.12);
             border-radius: 20px;
@@ -181,7 +187,6 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
         
-        /* КОНТЕЙНЕР ДЛЯ КАРТИНКИ БЕЗ ФИКСИРОВАННЫХ ПРОПОРЦИЙ */
         .image-container {
             width: 100%;
             margin-bottom: 20px;
@@ -203,7 +208,6 @@
             transform: scale(1.03);
         }
         
-        /* КАРТИНКА В КОЛОНКЕ - СОХРАНЯЕТ ОРИГИНАЛЬНЫЕ ПРОПОРЦИИ */
         .column-image {
             width: 100%;
             height: auto;
@@ -213,7 +217,6 @@
             display: block;
         }
         
-        /* Стиль для картинки ремонта */
         .repair-image {
             width: 80%;
             height: auto;
@@ -222,7 +225,6 @@
             filter: brightness(0.9) sepia(0.3) saturate(0.8);
         }
         
-        /* Запасной фон для картинки, если файл не загрузился */
         .image-container::before {
             content: '';
             position: absolute;
@@ -246,7 +248,6 @@
             pointer-events: none;
         }
         
-        /* Сообщение о ремонте */
         .repair-message {
             position: absolute;
             bottom: 10px;
@@ -272,7 +273,6 @@
             opacity: 1;
         }
         
-        /* КОНТЕЙНЕР ДЛЯ ИКОНОК РЕМОНТА */
         .repair-icons {
             position: absolute;
             top: 50%;
@@ -286,7 +286,6 @@
             display: none;
         }
         
-        /* Анимация для гаечного ключа */
         @keyframes wrenchAnimation {
             0% { transform: rotate(0deg); }
             25% { transform: rotate(30deg); }
@@ -295,7 +294,6 @@
             100% { transform: rotate(0deg); }
         }
         
-        /* Анимация для шестерёнки */
         @keyframes gearAnimation {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -316,7 +314,6 @@
             filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.5));
         }
         
-        /* КНОПКА В КОЛОНКЕ */
         .column-button {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
@@ -360,7 +357,6 @@
             white-space: nowrap;
         }
         
-        /* ТЕКСТ ПОД КНОПКОЙ */
         .column-text {
             font-size: 1rem;
             line-height: 1.6;
@@ -384,7 +380,6 @@
             overflow: visible;
         }
         
-        /* АДАПТИВНОСТЬ */
         @media (max-width: 1200px) {
             .columns-container {
                 gap: 15px;
@@ -710,17 +705,13 @@
         <p class="description">Лучшее решение для вас</p>
         
         <div class="columns-container">
-            <!-- КОЛОНКА 1 -->
             <div class="column">
                 <div class="image-container">
-                    <!-- Источник будет установлен JavaScript -->
                     <img src="" alt="Картинка 1" class="column-image">
-                    <!-- Иконки ремонта -->
                     <div class="repair-icons">
                         <i class="fas fa-wrench repair-wrench"></i>
                         <i class="fas fa-cog repair-gear"></i>
                     </div>
-                    <!-- Сообщение о ремонте -->
                     <div class="repair-message">Идет обновление контента</div>
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 1!')">
@@ -734,17 +725,13 @@
                 </div>
             </div>
             
-            <!-- КОЛОНКА 2 -->
             <div class="column">
                 <div class="image-container">
-                    <!-- Источник будет установлен JavaScript -->
                     <img src="" alt="Картинка 2" class="column-image">
-                    <!-- Иконки ремонта -->
                     <div class="repair-icons">
                         <i class="fas fa-wrench repair-wrench"></i>
                         <i class="fas fa-cog repair-gear"></i>
                     </div>
-                    <!-- Сообщение о ремонте -->
                     <div class="repair-message">Идет обновление контента</div>
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 2!')">
@@ -758,17 +745,13 @@
                 </div>
             </div>
             
-            <!-- КОЛОНКА 3 -->
             <div class="column">
                 <div class="image-container">
-                    <!-- Источник будет установлен JavaScript -->
                     <img src="" alt="Картинка 3" class="column-image">
-                    <!-- Иконки ремонта -->
                     <div class="repair-icons">
                         <i class="fas fa-wrench repair-wrench"></i>
                         <i class="fas fa-cog repair-gear"></i>
                     </div>
-                    <!-- Сообщение о ремонте -->
                     <div class="repair-message">Идет обновление контента</div>
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 3!')">
@@ -791,13 +774,10 @@
     <script>
         console.log("Сайт загружен!");
         
-        // Форматы изображений для проверки
         const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
         
-        // ОДНА ОБЩАЯ картинка ремонта для всех колонок
         const REPAIR_IMAGE_URL = 'https://cdn.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg';
         
-        // Функция для проверки существования файла
         async function checkImageExists(url) {
             try {
                 const response = await fetch(url, { method: 'HEAD' });
@@ -807,12 +787,10 @@
             }
         }
         
-        // Функция для поиска картинки с разными расширениями
         async function findImageWithExtensions(baseName, container) {
             const imageElement = container.querySelector('.column-image');
             const repairIcons = container.querySelector('.repair-icons');
             
-            // Пробуем все форматы по очереди
             for (const format of imageFormats) {
                 const url = `image/${baseName}.${format}`;
                 
@@ -823,17 +801,14 @@
                 }
             }
             
-            // Если ни один формат не найден, используем ОБЩУЮ картинку ремонта
             console.log(`Картинка ${baseName} не найдена, используем общую картинку ремонта`);
             imageElement.src = REPAIR_IMAGE_URL;
             imageElement.classList.add('repair-image');
             repairIcons.style.display = 'flex';
             container.classList.add('image-not-found');
             
-            // Добавляем обработчик ошибок для запасной картинки
             imageElement.onerror = function() {
                 console.log(`Запасная картинка ремонта не загрузилась для колонки ${baseName}`);
-                // Показываем только иконки ремонта
                 repairIcons.style.display = 'flex';
                 container.classList.add('image-not-found');
             };
@@ -841,7 +816,6 @@
             return false;
         }
         
-        // Загрузка фонового изображения с проверкой форматов
         async function loadBackgroundImage() {
             console.log("Поиск фонового изображения...");
             
@@ -860,20 +834,17 @@
             document.body.classList.add('image-not-loaded');
         }
         
-        // Загрузка картинок для колонок
         async function loadColumnImages() {
             console.log("Поиск картинок для колонок...");
             
             const imageContainers = document.querySelectorAll('.image-container');
             
-            // Для каждой колонки ищем картинку с соответствующим номером
             for (let i = 0; i < imageContainers.length; i++) {
                 const container = imageContainers[i];
                 const imageNumber = i + 1;
                 
                 console.log(`Поиск картинки для колонки ${imageNumber}...`);
                 
-                // Добавляем обработчик загрузки для оригинальной картинки
                 const img = container.querySelector('.column-image');
                 img.onload = function() {
                     console.log(`Картинка ${imageNumber} загружена: ${this.naturalWidth}px × ${this.naturalHeight}px`);
@@ -881,21 +852,17 @@
                     container.querySelector('.repair-icons').style.display = 'none';
                 };
                 
-                // Ищем картинку (если не найдена, автоматически загрузится общая картинка ремонта)
                 await findImageWithExtensions(imageNumber, container);
             }
         }
         
-        // Инициализация загрузки изображений
         async function initImageLoading() {
             await loadBackgroundImage();
             await loadColumnImages();
         }
         
-        // Запускаем загрузку изображений
         initImageLoading();
         
-        // Клик по картинке
         document.querySelectorAll('.column-image').forEach((img, index) => {
             img.addEventListener('click', function() {
                 console.log(`Картинка ${index + 1} кликнута`);
@@ -905,7 +872,6 @@
             });
         });
         
-        // Перезапуск анимации
         setTimeout(() => {
             document.querySelectorAll('.column').forEach(column => {
                 column.style.animation = 'none';
@@ -915,7 +881,6 @@
             });
         }, 100);
         
-        // Выводим информацию о поддерживаемых форматах
         console.log("Поддерживаемые форматы изображений:", imageFormats.join(', '));
         console.log("Поиск файлов в папке 'image' с именами:");
         console.log("- front.[формат] для фона");
