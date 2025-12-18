@@ -350,36 +350,6 @@
             flex-shrink: 0;
         }
         
-        .button-text {
-            flex-shrink: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        .column-text {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: #f0f0f0;
-            text-align: center;
-            padding: 0 5px;
-            display: flex;
-            align-items: center;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            hyphens: auto;
-            width: 100%;
-            overflow: hidden;
-            margin-bottom: 5px;
-        }
-        
-        .column-text p {
-            width: 100%;
-            margin: 0;
-            display: block;
-            overflow: visible;
-        }
-        
         @media (max-width: 1200px) {
             .columns-container {
                 gap: 15px;
@@ -445,13 +415,6 @@
                 width: 18px;
                 height: 18px;
             }
-            .button-text {
-                font-size: 0.95rem;
-            }
-            .column-text {
-                font-size: 0.95rem;
-                line-height: 1.5;
-            }
         }
         
         @media (max-width: 768px) {
@@ -515,16 +478,6 @@
                 height: 16px;
             }
             
-            .button-text {
-                font-size: 0.9rem;
-            }
-            
-            .column-text {
-                font-size: 0.9rem;
-                line-height: 1.4;
-                padding: 0;
-            }
-            
             body {
                 background-attachment: scroll;
             }
@@ -564,14 +517,6 @@
             .button-icon {
                 width: 15px;
                 height: 15px;
-            }
-            
-            .button-text {
-                font-size: 0.85rem;
-            }
-            
-            .column-text {
-                font-size: 0.9rem;
             }
         }
         
@@ -635,16 +580,6 @@
                 width: 14px;
                 height: 14px;
             }
-            
-            .button-text {
-                font-size: 0.8rem;
-            }
-            
-            .column-text {
-                font-size: 0.85rem;
-                line-height: 1.3;
-                margin-bottom: 3px;
-            }
         }
         
         @media (max-width: 400px) {
@@ -688,14 +623,6 @@
                 width: 12px;
                 height: 12px;
             }
-            
-            .button-text {
-                font-size: 0.75rem;
-            }
-            
-            .column-text {
-                font-size: 0.8rem;
-            }
         }
     </style>
 </head>
@@ -718,11 +645,7 @@
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
                     </svg>
-                    <span class="button-text">Наш телеграмм</span>
                 </button>
-                <div class="column-text">
-                    <p>Это текст под кнопкой в первой колонке. Он описывает что-то важное и интересное, связанное с картинкой выше.</p>
-                </div>
             </div>
             
             <div class="column">
@@ -738,11 +661,7 @@
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
                     </svg>
-                    <span class="button-text">Наш телеграмм</span>
                 </button>
-                <div class="column-text">
-                    <p>Это текст под кнопкой во второй колонке. Он тоже адаптируется и переносится на маленьких экранах.</p>
-                </div>
             </div>
             
             <div class="column">
@@ -758,11 +677,7 @@
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
                     </svg>
-                    <span class="button-text">Наш телеграмм</span>
                 </button>
-                <div class="column-text">
-                    <p>Это текст под кнопкой в третьей колонке. Все три колонки выглядят как столбы с элементами сверху вниз.</p>
-                </div>
             </div>
         </div>
         
