@@ -59,12 +59,11 @@
         }
         
         h1 {
-            font-size: clamp(3rem, 10vw, 7rem); /* Увеличен размер */
-            margin-bottom: 15px; /* Уменьшен отступ */
+            font-size: clamp(3rem, 10vw, 7rem);
+            margin-bottom: 15px;
             line-height: 1;
             animation: fadeIn 1s ease;
             
-            /* Золотистый градиент */
             background: linear-gradient(135deg, 
                 #FFD700 0%, 
                 #FFEC8B 25%, 
@@ -75,21 +74,18 @@
             background-clip: text;
             color: transparent;
             
-            /* Эффекты для золота */
             text-shadow: 
                 0 0 10px rgba(255, 215, 0, 0.3),
                 0 0 20px rgba(255, 215, 0, 0.2),
                 0 0 30px rgba(255, 215, 0, 0.1),
                 2px 2px 4px rgba(0, 0, 0, 0.8);
             
-            /* Стили букв */
             font-weight: 900;
             letter-spacing: 2px;
             text-transform: uppercase;
             font-family: 'Arial Black', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        /* Добавим эффект свечения при наведении */
         h1:hover {
             animation: goldGlow 2s infinite alternate;
         }
@@ -113,7 +109,7 @@
         }
         
         .description {
-            font-size: clamp(1.2rem, 3vw, 2.2rem); /* Увеличен размер */
+            font-size: clamp(1.2rem, 3vw, 2.2rem);
             max-width: 900px;
             margin: 0 auto 50px;
             line-height: 1.6;
@@ -122,7 +118,6 @@
             animation: fadeIn 1s ease 0.3s forwards;
             opacity: 0;
             
-            /* Слегка золотистый оттенок для описания */
             color: #FFF8DC;
             font-weight: 300;
             letter-spacing: 1px;
@@ -201,6 +196,7 @@
             justify-content: center;
             align-items: center;
             background: rgba(0, 0, 0, 0.1);
+            min-height: 200px; /* Минимальная высота для контейнера */
         }
         
         .column:hover .image-container {
@@ -217,37 +213,79 @@
             display: block;
         }
         
+        /* Стиль для картинки ремонта */
+        .repair-image {
+            width: 80%;
+            height: auto;
+            max-height: 250px;
+            opacity: 0.8;
+            filter: brightness(0.9);
+        }
+        
         /* Запасной фон для картинки, если файл не загрузился */
         .image-container::before {
-            content: 'Загрузка картинки...';
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 1.2rem;
             font-weight: bold;
             z-index: 1;
-            opacity: 1;
+            opacity: 0;
             transition: opacity 0.3s ease;
             padding: 20px;
             text-align: center;
-        }
-        
-        .image-container.image-loaded::before {
-            opacity: 0;
             pointer-events: none;
         }
         
+        /* Сообщение о ремонте */
+        .repair-message {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #f39c12;
+            font-size: 0.9rem;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            border-radius: 0 0 12px 12px;
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
         .image-container.image-not-found::before {
-            content: 'Картинка не найдена';
-            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
             opacity: 1;
+        }
+        
+        .image-container.image-not-found .repair-message {
+            opacity: 1;
+        }
+        
+        /* Анимация для иконки ремонта */
+        @keyframes wrenchAnimation {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-15deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        .repair-icon {
+            font-size: 3rem;
+            color: #f39c12;
+            margin-bottom: 15px;
+            animation: wrenchAnimation 2s infinite;
         }
         
         /* КНОПКА В КОЛОНКЕ */
@@ -329,6 +367,9 @@
             .column-image {
                 max-height: 280px;
             }
+            .repair-image {
+                max-height: 230px;
+            }
             .column-button {
                 padding: 10px 18px;
                 font-size: 1rem;
@@ -351,9 +392,13 @@
             .image-container {
                 border-radius: 12px;
                 border-width: 2px;
+                min-height: 180px;
             }
             .column-image {
                 max-height: 250px;
+            }
+            .repair-image {
+                max-height: 200px;
             }
             .column-button {
                 padding: 9px 16px;
@@ -404,10 +449,19 @@
                 border-radius: 10px;
                 border-width: 2px;
                 margin-bottom: 15px;
+                min-height: 160px;
             }
             
             .column-image {
                 max-height: 220px;
+            }
+            
+            .repair-image {
+                max-height: 180px;
+            }
+            
+            .repair-icon {
+                font-size: 2.5rem;
             }
             
             .column-button {
@@ -446,6 +500,18 @@
             
             .column-image {
                 max-height: 200px;
+            }
+            
+            .repair-image {
+                max-height: 160px;
+            }
+            
+            .repair-icon {
+                font-size: 2rem;
+            }
+            
+            .repair-message {
+                font-size: 0.8rem;
             }
             
             .column-button {
@@ -494,10 +560,23 @@
                 border-radius: 8px;
                 border-width: 2px;
                 margin-bottom: 12px;
+                min-height: 140px;
             }
             
             .column-image {
                 max-height: 180px;
+            }
+            
+            .repair-image {
+                max-height: 140px;
+            }
+            
+            .repair-icon {
+                font-size: 1.8rem;
+            }
+            
+            .repair-message {
+                font-size: 0.75rem;
             }
             
             .column-button {
@@ -536,10 +615,20 @@
             
             .image-container {
                 border-width: 1px;
+                min-height: 120px;
             }
             
             .column-image {
                 max-height: 160px;
+            }
+            
+            .repair-image {
+                max-height: 120px;
+                width: 70%;
+            }
+            
+            .repair-icon {
+                font-size: 1.5rem;
             }
             
             .column-button {
@@ -561,95 +650,6 @@
                 font-size: 0.8rem;
             }
         }
-        
-        @media (max-width: 360px) {
-            h1 {
-                font-size: clamp(1.4rem, 4vw, 2.5rem);
-            }
-            
-            .column {
-                padding: 8px;
-            }
-            
-            .image-container {
-                margin-bottom: 10px;
-            }
-            
-            .column-image {
-                max-height: 140px;
-            }
-            
-            .column-button {
-                padding: 4px 6px;
-                font-size: 0.7rem;
-                gap: 3px;
-                border-radius: 20px;
-            }
-            
-            .button-icon {
-                width: 11px;
-                height: 11px;
-            }
-            
-            .button-text {
-                font-size: 0.7rem;
-            }
-            
-            .column-text {
-                font-size: 0.75rem;
-                line-height: 1.2;
-            }
-        }
-        
-        @media (max-width: 320px) {
-            h1 {
-                font-size: clamp(1.2rem, 3vw, 2rem);
-            }
-            
-            .column-image {
-                max-height: 120px;
-            }
-            
-            .column-button {
-                font-size: 0.65rem;
-                padding: 3px 5px;
-            }
-            
-            .button-text {
-                font-size: 0.65rem;
-            }
-            
-            .button-icon {
-                width: 10px;
-                height: 10px;
-            }
-            
-            .column-text {
-                font-size: 0.7rem;
-            }
-        }
-        
-        /* Для очень высоких экранов */
-        @media (min-height: 900px) and (max-width: 768px) {
-            h1 {
-                font-size: clamp(3rem, 9vw, 6rem);
-            }
-            
-            .column-image {
-                max-height: 250px;
-            }
-        }
-        
-        /* Для очень широких экранов */
-        @media (min-width: 1400px) {
-            h1 {
-                font-size: clamp(4rem, 12vw, 8rem);
-            }
-            
-            .column-image {
-                max-height: 350px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -663,6 +663,12 @@
                 <div class="image-container">
                     <!-- Источник будет установлен JavaScript -->
                     <img src="" alt="Картинка 1" class="column-image">
+                    <!-- Иконка ремонта -->
+                    <div class="repair-icon" style="display: none;">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <!-- Сообщение о ремонте -->
+                    <div class="repair-message">Идет обновление контента</div>
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 1!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -680,6 +686,12 @@
                 <div class="image-container">
                     <!-- Источник будет установлен JavaScript -->
                     <img src="" alt="Картинка 2" class="column-image">
+                    <!-- Иконка ремонта -->
+                    <div class="repair-icon" style="display: none;">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <!-- Сообщение о ремонте -->
+                    <div class="repair-message">Идет обновление контента</div>
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 2!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -697,6 +709,12 @@
                 <div class="image-container">
                     <!-- Источник будет установлен JavaScript -->
                     <img src="" alt="Картинка 3" class="column-image">
+                    <!-- Иконка ремонта -->
+                    <div class="repair-icon" style="display: none;">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <!-- Сообщение о ремонте -->
+                    <div class="repair-message">Идет обновление контента</div>
                 </div>
                 <button class="column-button" onclick="alert('Вы нажали кнопку 3!')">
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -721,6 +739,13 @@
         // Форматы изображений для проверки
         const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
         
+        // URL запасных картинок для ремонта (можно использовать онлайн или локальные)
+        const repairImages = [
+            'https://cdn.pixabay.com/photo/2017/06/20/08/12/maintenance-2422173_1280.png',
+            'https://cdn.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg',
+            'https://cdn.pixabay.com/photo/2018/05/04/07/58/under-construction-3373566_1280.jpg'
+        ];
+        
         // Функция для проверки существования файла
         async function checkImageExists(url) {
             try {
@@ -732,8 +757,9 @@
         }
         
         // Функция для поиска картинки с разными расширениями
-        async function findImageWithExtensions(baseName, container) {
+        async function findImageWithExtensions(baseName, container, index) {
             const imageElement = container.querySelector('.column-image');
+            const repairIcon = container.querySelector('.repair-icon');
             
             // Пробуем все форматы по очереди
             for (const format of imageFormats) {
@@ -746,9 +772,21 @@
                 }
             }
             
-            // Если ни один формат не найден
-            console.log(`Картинка ${baseName} не найдена ни в одном формате`);
+            // Если ни один формат не найден, используем запасную картинку ремонта
+            console.log(`Картинка ${baseName} не найдена, используем запасную`);
+            imageElement.src = repairImages[index];
+            imageElement.classList.add('repair-image');
+            repairIcon.style.display = 'flex';
             container.classList.add('image-not-found');
+            
+            // Добавляем обработчик ошибок для запасной картинки
+            imageElement.onerror = function() {
+                console.log(`Запасная картинка тоже не загрузилась для колонки ${baseName}`);
+                // Показываем только иконку ремонта
+                repairIcon.style.display = 'flex';
+                container.classList.add('image-not-found');
+            };
+            
             return false;
         }
         
@@ -784,21 +822,15 @@
                 
                 console.log(`Поиск картинки для колонки ${imageNumber}...`);
                 
-                const found = await findImageWithExtensions(imageNumber, container);
+                // Добавляем обработчик загрузки для оригинальной картинки
+                const img = container.querySelector('.column-image');
+                img.onload = function() {
+                    console.log(`Картинка ${imageNumber} загружена: ${this.naturalWidth}px × ${this.naturalHeight}px`);
+                    container.classList.remove('image-not-found');
+                };
                 
-                if (found) {
-                    const img = container.querySelector('.column-image');
-                    img.onload = function() {
-                        console.log(`Картинка ${imageNumber} загружена: ${this.naturalWidth}px × ${this.naturalHeight}px`);
-                        container.classList.add('image-loaded');
-                    };
-                    
-                    img.onerror = function() {
-                        console.log(`Ошибка загрузки картинки ${imageNumber}`);
-                        container.classList.remove('image-loaded');
-                        container.classList.add('image-not-found');
-                    };
-                }
+                // Ищем картинку (если не найдена, автоматически загрузится запасная)
+                await findImageWithExtensions(imageNumber, container, i);
             }
         }
         
@@ -815,6 +847,9 @@
         document.querySelectorAll('.column-image').forEach((img, index) => {
             img.addEventListener('click', function() {
                 console.log(`Картинка ${index + 1} кликнута`);
+                if (this.classList.contains('repair-image')) {
+                    alert('Это запасная картинка. Оригинальная картинка в процессе обновления!');
+                }
             });
         });
         
@@ -833,6 +868,7 @@
         console.log("Поиск файлов в папке 'image' с именами:");
         console.log("- front.[формат] для фона");
         console.log("- 1.[формат], 2.[формат], 3.[формат] для колонок");
+        console.log("Если файлы не найдены, будут использованы запасные картинки ремонта");
     </script>
 </body>
 </html>
