@@ -59,15 +59,61 @@
         }
         
         h1 {
-            font-size: clamp(2rem, 5vw, 4rem);
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-            line-height: 1.2;
+            font-size: clamp(3rem, 10vw, 7rem); /* Увеличен размер */
+            margin-bottom: 15px; /* Уменьшен отступ */
+            line-height: 1;
             animation: fadeIn 1s ease;
+            
+            /* Золотистый градиент */
+            background: linear-gradient(135deg, 
+                #FFD700 0%, 
+                #FFEC8B 25%, 
+                #FFFACD 50%, 
+                #FFEC8B 75%, 
+                #FFD700 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            
+            /* Эффекты для золота */
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.3),
+                0 0 20px rgba(255, 215, 0, 0.2),
+                0 0 30px rgba(255, 215, 0, 0.1),
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            
+            /* Стили букв */
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Arial Black', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Добавим эффект свечения при наведении */
+        h1:hover {
+            animation: goldGlow 2s infinite alternate;
+        }
+        
+        @keyframes goldGlow {
+            from {
+                text-shadow: 
+                    0 0 10px rgba(255, 215, 0, 0.3),
+                    0 0 20px rgba(255, 215, 0, 0.2),
+                    0 0 30px rgba(255, 215, 0, 0.1),
+                    2px 2px 4px rgba(0, 0, 0, 0.8);
+            }
+            to {
+                text-shadow: 
+                    0 0 15px rgba(255, 215, 0, 0.5),
+                    0 0 25px rgba(255, 215, 0, 0.4),
+                    0 0 35px rgba(255, 215, 0, 0.3),
+                    2px 2px 4px rgba(0, 0, 0, 0.8),
+                    0 0 40px rgba(255, 215, 0, 0.2);
+            }
         }
         
         .description {
-            font-size: clamp(1rem, 2.5vw, 1.8rem);
+            font-size: clamp(1.2rem, 3vw, 2.2rem); /* Увеличен размер */
             max-width: 900px;
             margin: 0 auto 50px;
             line-height: 1.6;
@@ -75,6 +121,11 @@
             padding: 0 15px;
             animation: fadeIn 1s ease 0.3s forwards;
             opacity: 0;
+            
+            /* Слегка золотистый оттенок для описания */
+            color: #FFF8DC;
+            font-weight: 300;
+            letter-spacing: 1px;
         }
         
         @keyframes fadeIn {
@@ -329,8 +380,8 @@
             }
             
             h1 {
-                font-size: 2rem;
-                margin-bottom: 20px;
+                font-size: clamp(2.5rem, 8vw, 5rem);
+                margin-bottom: 10px;
             }
             
             .description {
@@ -388,6 +439,11 @@
         }
         
         @media (max-width: 600px) {
+            h1 {
+                font-size: clamp(2rem, 7vw, 4rem);
+                letter-spacing: 1px;
+            }
+            
             .column-image {
                 max-height: 200px;
             }
@@ -414,7 +470,8 @@
         
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.6rem;
+                font-size: clamp(1.8rem, 6vw, 3.5rem);
+                margin-bottom: 8px;
             }
             
             .description {
@@ -468,6 +525,11 @@
         }
         
         @media (max-width: 400px) {
+            h1 {
+                font-size: clamp(1.6rem, 5vw, 3rem);
+                letter-spacing: 0.5px;
+            }
+            
             .column {
                 padding: 10px;
             }
@@ -501,6 +563,10 @@
         }
         
         @media (max-width: 360px) {
+            h1 {
+                font-size: clamp(1.4rem, 4vw, 2.5rem);
+            }
+            
             .column {
                 padding: 8px;
             }
@@ -536,6 +602,10 @@
         }
         
         @media (max-width: 320px) {
+            h1 {
+                font-size: clamp(1.2rem, 3vw, 2rem);
+            }
+            
             .column-image {
                 max-height: 120px;
             }
@@ -561,6 +631,10 @@
         
         /* Для очень высоких экранов */
         @media (min-height: 900px) and (max-width: 768px) {
+            h1 {
+                font-size: clamp(3rem, 9vw, 6rem);
+            }
+            
             .column-image {
                 max-height: 250px;
             }
@@ -568,6 +642,10 @@
         
         /* Для очень широких экранов */
         @media (min-width: 1400px) {
+            h1 {
+                font-size: clamp(4rem, 12vw, 8rem);
+            }
+            
             .column-image {
                 max-height: 350px;
             }
