@@ -314,39 +314,36 @@
             filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.5));
         }
         
+        /* КРУГЛЫЕ КНОПКИ С КРУПНЫМИ ИКОНКАМИ */
         .column-button {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 1.1rem;
-            border-radius: 50px;
+            padding: 20px;
+            border-radius: 50%;
             cursor: pointer;
             margin-bottom: 20px;
             transition: all 0.3s ease;
             font-weight: bold;
-            width: 100%;
-            max-width: 100%;
+            width: 70px;
+            height: 70px;
             box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
             overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
             flex-shrink: 0;
         }
         
         .column-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(37, 117, 252, 0.6);
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(37, 117, 252, 0.6);
             background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
         }
         
         .button-icon {
-            width: 22px;
-            height: 22px;
+            width: 36px;
+            height: 36px;
             flex-shrink: 0;
         }
         
@@ -370,13 +367,13 @@
                 font-size: 2.2rem;
             }
             .column-button {
-                padding: 10px 18px;
-                font-size: 1rem;
-                gap: 7px;
+                width: 65px;
+                height: 65px;
+                padding: 18px;
             }
             .button-icon {
-                width: 20px;
-                height: 20px;
+                width: 32px;
+                height: 32px;
             }
         }
         
@@ -406,14 +403,13 @@
                 font-size: 2rem;
             }
             .column-button {
-                padding: 9px 16px;
-                font-size: 0.95rem;
-                gap: 6px;
-                border-radius: 40px;
+                width: 60px;
+                height: 60px;
+                padding: 16px;
             }
             .button-icon {
-                width: 18px;
-                height: 18px;
+                width: 30px;
+                height: 30px;
             }
         }
         
@@ -466,16 +462,15 @@
             }
             
             .column-button {
-                padding: 8px 14px;
-                font-size: 0.9rem;
-                border-radius: 30px;
+                width: 55px;
+                height: 55px;
+                padding: 14px;
                 margin-bottom: 15px;
-                gap: 5px;
             }
             
             .button-icon {
-                width: 16px;
-                height: 16px;
+                width: 28px;
+                height: 28px;
             }
             
             body {
@@ -509,14 +504,14 @@
             }
             
             .column-button {
-                padding: 7px 12px;
-                font-size: 0.85rem;
-                gap: 4px;
+                width: 50px;
+                height: 50px;
+                padding: 12px;
             }
             
             .button-icon {
-                width: 15px;
-                height: 15px;
+                width: 26px;
+                height: 26px;
             }
         }
         
@@ -569,16 +564,15 @@
             }
             
             .column-button {
-                padding: 6px 10px;
-                font-size: 0.8rem;
-                border-radius: 25px;
+                width: 45px;
+                height: 45px;
+                padding: 10px;
                 margin-bottom: 12px;
-                gap: 4px;
             }
             
             .button-icon {
-                width: 14px;
-                height: 14px;
+                width: 24px;
+                height: 24px;
             }
         }
         
@@ -614,14 +608,14 @@
             }
             
             .column-button {
-                padding: 5px 8px;
-                font-size: 0.75rem;
-                gap: 3px;
+                width: 40px;
+                height: 40px;
+                padding: 8px;
             }
             
             .button-icon {
-                width: 12px;
-                height: 12px;
+                width: 22px;
+                height: 22px;
             }
         }
     </style>
