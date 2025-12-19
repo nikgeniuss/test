@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель FLEX</title>
+    <title>Админ-панель FLEX GitHub API</title>
     <style>
         * {
             margin: 0;
@@ -95,6 +95,8 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            min-height: 56px;
         }
         
         .login-btn {
@@ -210,6 +212,80 @@
             font-size: 13px;
         }
         
+        /* Индикатор загрузки */
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+        
+        .loading .loader {
+            display: block;
+        }
+        
+        .loading .btn-text {
+            opacity: 0;
+        }
+        
+        .button-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Стили для валидации */
+        .valid {
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.3) !important;
+        }
+        
+        .invalid {
+            border-color: #e74c3c !important;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3) !important;
+        }
+        
+        .validation-hint {
+            margin-top: 5px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .validation-hint.valid {
+            color: #2ecc71;
+            display: block;
+        }
+        
+        .validation-hint.invalid {
+            color: #e74c3c;
+            display: block;
+        }
+        
+        .github-info {
+            background: rgba(36, 41, 46, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #6e40c9;
+        }
+        
+        .github-info h3 {
+            color: #6e40c9;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 25px;
@@ -242,6 +318,10 @@
                 padding: 12px;
                 font-size: 15px;
             }
+            
+            button {
+                min-height: 50px;
+            }
         }
     </style>
 </head>
@@ -249,45 +329,95 @@
     <div class="container">
         <!-- Секция входа -->
         <div class="login-section" id="loginSection">
-            <h1>🔐 Админ-панель FLEX</h1>
-            <div class="form-group">
-                <label for="password">Пароль для доступа:</label>
-                <input type="password" id="password" placeholder="Введите пароль" autofocus>
+            <h1>🔐 Админ-панель FLEX GitHub API</h1>
+            
+            <div class="github-info">
+                <h3>🐙 Настройки GitHub</h3>
+                <div class="form-group">
+                    <label for="githubToken">GitHub Personal Access Token:</label>
+                    <input type="password" id="githubToken" 
+                           placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                           autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="githubRepo">Репозиторий (username/repo):</label>
+                    <input type="text" id="githubRepo" 
+                           placeholder="yourusername/your-repo"
+                           value="Ex-Flex/flex">
+                </div>
+                <div class="form-group">
+                    <label for="githubBranch">Ветка:</label>
+                    <input type="text" id="githubBranch" 
+                           placeholder="main"
+                           value="main">
+                </div>
             </div>
-            <button class="login-btn" onclick="checkPassword()">Войти в админ-панель</button>
+            
+            <div class="form-group">
+                <label for="password">🔑 Пароль админ-панели:</label>
+                <input type="password" id="password" 
+                       placeholder="Введите пароль админ-панели"
+                       autocomplete="off">
+            </div>
+            
+            <button class="login-btn" onclick="checkAndLogin()" id="loginButton">
+                <div class="button-content">
+                    <div class="loader" id="loginLoader"></div>
+                    <span class="btn-text">🔗 Подключиться к GitHub и войти</span>
+                </div>
+            </button>
+            
             <div class="password-note">
-                <p>Пароль выдается администратором сайта</p>
+                <p><strong>GitHub Token:</strong> создайте в GitHub Settings → Developer settings</p>
                 <p><a href="./" style="color: #3498db; text-decoration: none;">← Вернуться на главную страницу</a></p>
             </div>
         </div>
         
         <!-- Секция администратора -->
         <div class="admin-section" id="adminSection">
-            <h1>⚙️ Редактирование Telegram ссылок</h1>
+            <div class="github-info">
+                <h3>✅ Подключено к GitHub</h3>
+                <p id="repoInfo">Репозиторий: <span id="currentRepo"></span></p>
+                <p id="branchInfo">Ветка: <span id="currentBranch"></span></p>
+            </div>
+            
+            <h1>⚙️ Редактирование Telegram ссылок через GitHub API</h1>
             
             <div class="form-group">
                 <label for="link1">📱 Ссылка для первой кнопки (Telegram 1):</label>
-                <input type="text" id="link1" placeholder="tg://resolve?domain=Ex_Flex">
+                <input type="text" id="link1" placeholder="tg://resolve?domain=Ex_Flex" 
+                       oninput="validateTelegramLink(this)">
+                <div class="validation-hint" id="hint1"></div>
             </div>
             
             <div class="form-group">
                 <label for="link2">📱 Ссылка для второй кнопки (Telegram 2):</label>
-                <input type="text" id="link2" placeholder="https://t.me/+ef-zedL8qyhkNWYy">
+                <input type="text" id="link2" placeholder="https://t.me/+ef-zedL8qyhkNWYy"
+                       oninput="validateTelegramLink(this)">
+                <div class="validation-hint" id="hint2"></div>
             </div>
             
             <div class="form-group">
                 <label for="link3">📱 Ссылка для третьей кнопки (Telegram 3):</label>
-                <input type="text" id="link3" placeholder="https://t.me/your_group_3">
+                <input type="text" id="link3" placeholder="https://t.me/your_group_3"
+                       oninput="validateTelegramLink(this)">
+                <div class="validation-hint" id="hint3"></div>
             </div>
             
             <div class="message" id="message"></div>
             
             <div class="buttons">
-                <button class="load-btn" onclick="loadConfig()">
-                    📥 Загрузить текущие ссылки
+                <button class="load-btn" onclick="loadConfigFromGitHub()" id="loadButton">
+                    <div class="button-content">
+                        <div class="loader" id="loadLoader"></div>
+                        <span class="btn-text">📥 Загрузить из GitHub</span>
+                    </div>
                 </button>
-                <button class="save-btn" onclick="saveConfig()">
-                    💾 Сохранить и скачать config.json
+                <button class="save-btn" onclick="saveConfigToGitHub()" id="saveButton">
+                    <div class="button-content">
+                        <div class="loader" id="saveLoader"></div>
+                        <span class="btn-text">💾 Сохранить в GitHub</span>
+                    </div>
                 </button>
             </div>
             
@@ -296,161 +426,431 @@
             </button>
             
             <div class="instructions">
-                <h3>📋 Как это работает:</h3>
+                <h3>📋 Как работает GitHub API:</h3>
                 <ul>
-                    <li>Нажмите "Загрузить текущие ссылки", чтобы увидеть актуальные настройки.</li>
-                    <li>Отредактируйте ссылки в полях выше.</li>
-                    <li>Нажмите "Сохранить и скачать config.json" — файл скачается на ваш компьютер.</li>
-                    <li><strong>Замените старый файл <code>config.json</code> в репозитории GitHub на новый.</strong></li>
-                    <li>Сделайте коммит и пуш. Через 1-2 минуты изменения появятся на сайте.</li>
+                    <li>Конфигурация хранится в файле <code>config.json</code> в вашем репозитории</li>
+                    <li>При загрузке - читаем файл через GitHub API</li>
+                    <li>При сохранении - обновляем файл через GitHub API</li>
+                    <li>Изменения сразу появляются на сайте через GitHub Pages</li>
                 </ul>
-                <p><strong>Важно:</strong> Этот интерфейс только генерирует файл конфигурации. Чтобы изменения вступили в силу, вы должны вручную заменить файл в репозитории GitHub[citation:10].</p>
+                <p><strong>GitHub API Endpoints:</strong></p>
+                <ul>
+                    <li><code>GET /repos/{owner}/{repo}/contents/{path}</code> - получить файл</li>
+                    <li><code>PUT /repos/{owner}/{repo}/contents/{path}</code> - обновить файл</li>
+                </ul>
+                <p><strong>Важно:</strong> Токен должен иметь права на запись в репозиторий.</p>
             </div>
         </div>
     </div>
 
     <script>
         // === КОНФИГУРАЦИЯ ===
-        // Замените этот пароль на свой собственный!
         const ADMIN_PASSWORD = "flex2024";
+        const CONFIG_FILE = "config.json";
         
-        // === ФУНКЦИИ УПРАВЛЕНИЯ ИНТЕРФЕЙСОМ ===
+        let githubToken = null;
+        let githubRepo = null;
+        let githubOwner = null;
+        let githubRepoName = null;
+        let githubBranch = "main";
+        let currentSha = null; // SHA текущего файла для обновления
+
+        // === УТИЛИТЫ ===
+        function showLoader(buttonId, loaderId, show = true) {
+            const button = document.getElementById(buttonId);
+            const loader = document.getElementById(loaderId);
+            
+            if (show) {
+                button.classList.add('loading');
+                button.disabled = true;
+            } else {
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+
         function showMessage(text, type = 'info') {
             const messageDiv = document.getElementById('message');
             messageDiv.textContent = text;
             messageDiv.className = `message ${type}`;
             messageDiv.style.display = 'block';
             
-            // Автоматически скрываем сообщения об ошибках и успехе
             if (type !== 'info') {
                 setTimeout(() => {
                     messageDiv.style.display = 'none';
                 }, 5000);
             }
         }
-        
+
         function showAdminPanel() {
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('adminSection').style.display = 'block';
-            // После входа пробуем загрузить текущий конфиг
-            loadConfig();
-        }
-        
-        function checkPassword() {
-            const passwordInput = document.getElementById('password').value;
             
-            if (passwordInput === ADMIN_PASSWORD) {
-                // Сохраняем факт авторизации в sessionStorage
-                sessionStorage.setItem('admin_auth', 'true');
-                showAdminPanel();
-                showMessage('Успешный вход в админ-панель!', 'success');
-            } else {
-                showMessage('Неверный пароль! Попробуйте еще раз.', 'error');
-                // Небольшая анимация при ошибке
-                const input = document.getElementById('password');
-                input.style.borderColor = '#e74c3c';
-                setTimeout(() => {
-                    input.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                }, 1000);
+            // Показываем информацию о репозитории
+            document.getElementById('currentRepo').textContent = githubRepo;
+            document.getElementById('currentBranch').textContent = githubBranch;
+            
+            // Загружаем текущую конфигурацию
+            loadConfigFromGitHub();
+        }
+
+        // === ПОДТВЕРЖДЕНИЕ ВЫХОДА ===
+        function logout() {
+            if (confirm('Вы уверены, что хотите выйти из админ-панели?\nТокен GitHub будет удален из памяти.')) {
+                githubToken = null;
+                githubRepo = null;
+                currentSha = null;
+                
+                localStorage.removeItem('flex_github_token');
+                localStorage.removeItem('flex_github_repo');
+                localStorage.removeItem('flex_github_branch');
+                
+                location.reload();
             }
         }
-        
-        function logout() {
-            sessionStorage.removeItem('admin_auth');
-            location.reload();
+
+        // === ВАЛИДАЦИЯ ССЫЛОК ===
+        function isValidTelegramLink(link) {
+            if (!link.trim()) return false;
+            
+            const telegramPatterns = [
+                /^tg:\/\/resolve\?domain=[a-zA-Z0-9_]{5,32}$/,
+                /^tg:\/\/resolve\?domain=[a-zA-Z0-9_]{5,32}&[a-zA-Z0-9_=&-]+$/,
+                /^https?:\/\/(t\.me|telegram\.me)\/[a-zA-Z0-9_]{5,32}$/,
+                /^https?:\/\/(t\.me|telegram\.me)\/joinchat\/[a-zA-Z0-9_-]{22}$/,
+                /^https?:\/\/(t\.me|telegram\.me)\/\+[a-zA-Z0-9_-]{12,}$/,
+                /^https?:\/\/(t\.me|telegram\.me)\/c\/\d+$/,
+            ];
+            
+            return telegramPatterns.some(pattern => pattern.test(link.trim()));
         }
-        
-        // Проверяем авторизацию при загрузке страницы
-        if (sessionStorage.getItem('admin_auth') === 'true') {
-            showAdminPanel();
+
+        function validateTelegramLink(input) {
+            const value = input.value.trim();
+            const hintId = input.id.replace('link', 'hint');
+            const hint = document.getElementById(hintId);
+            
+            if (!value) {
+                input.classList.remove('valid', 'invalid');
+                hint.className = 'validation-hint';
+                hint.textContent = '';
+                return false;
+            }
+            
+            if (isValidTelegramLink(value)) {
+                input.classList.remove('invalid');
+                input.classList.add('valid');
+                hint.className = 'validation-hint valid';
+                hint.textContent = '✓ Корректная Telegram ссылка';
+                return true;
+            } else {
+                input.classList.remove('valid');
+                input.classList.add('invalid');
+                hint.className = 'validation-hint invalid';
+                hint.textContent = '✗ Некорректный формат. Используйте: tg://resolve?domain=username или https://t.me/username';
+                return false;
+            }
         }
-        
-        // === ФУНКЦИИ РАБОТЫ С КОНФИГУРАЦИЕЙ ===
-        async function loadConfig() {
+
+        function validateAllLinks() {
+            const link1 = document.getElementById('link1');
+            const link2 = document.getElementById('link2');
+            const link3 = document.getElementById('link3');
+            
+            return validateTelegramLink(link1) && 
+                   validateTelegramLink(link2) && 
+                   validateTelegramLink(link3);
+        }
+
+        // === GITHUB API ФУНКЦИИ ===
+        async function testGitHubConnection() {
             try {
-                showMessage('Загружаю текущие настройки...', 'info');
+                const response = await fetch(`https://api.github.com/repos/${githubRepo}`, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
                 
-                // Пробуем загрузить текущий config.json
-                const response = await fetch('config.json');
+                if (response.status === 401) {
+                    throw new Error('Неверный GitHub токен');
+                }
+                if (response.status === 404) {
+                    throw new Error('Репозиторий не найден');
+                }
                 if (!response.ok) {
-                    // Если файла нет, просто загружаем значения по умолчанию
-                    document.getElementById('link1').value = 'tg://resolve?domain=Ex_Flex';
-                    document.getElementById('link2').value = 'https://t.me/+ef-zedL8qyhkNWYy';
-                    document.getElementById('link3').value = 'https://t.me/ваша_группа_3';
-                    showMessage('Файл config.json не найден. Используются значения по умолчанию.', 'info');
+                    throw new Error(`GitHub API ошибка: ${response.status}`);
+                }
+                
+                const repoData = await response.json();
+                return {
+                    success: true,
+                    repo: repoData
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+
+        async function checkAndLogin() {
+            const token = document.getElementById('githubToken').value.trim();
+            const repo = document.getElementById('githubRepo').value.trim();
+            const branch = document.getElementById('githubBranch').value.trim() || 'main';
+            const password = document.getElementById('password').value;
+            
+            // Валидация ввода
+            if (!token) {
+                showMessage('Введите GitHub Personal Access Token', 'error');
+                return;
+            }
+            
+            if (!repo || !repo.includes('/')) {
+                showMessage('Введите репозиторий в формате: username/repo', 'error');
+                return;
+            }
+            
+            if (!password) {
+                showMessage('Введите пароль админ-панели', 'error');
+                return;
+            }
+            
+            if (password !== ADMIN_PASSWORD) {
+                showMessage('Неверный пароль админ-панели', 'error');
+                return;
+            }
+            
+            showLoader('loginButton', 'loginLoader', true);
+            
+            try {
+                // Сохраняем данные
+                githubToken = token;
+                githubRepo = repo;
+                githubBranch = branch;
+                
+                // Парсим username и repo name
+                const [owner, repoName] = repo.split('/');
+                githubOwner = owner;
+                githubRepoName = repoName;
+                
+                // Проверяем подключение к GitHub
+                showMessage('Проверяю подключение к GitHub...', 'info');
+                
+                const connectionTest = await testGitHubConnection();
+                
+                if (!connectionTest.success) {
+                    showMessage(`Ошибка подключения к GitHub: ${connectionTest.error}`, 'error');
+                    showLoader('loginButton', 'loginLoader', false);
                     return;
                 }
                 
-                const config = await response.json();
+                // Сохраняем в localStorage
+                localStorage.setItem('flex_github_token', token);
+                localStorage.setItem('flex_github_repo', repo);
+                localStorage.setItem('flex_github_branch', branch);
                 
-                // Заполняем форму значениями из конфига
+                showAdminPanel();
+                showMessage('✅ Успешно подключено к GitHub!', 'success');
+                
+            } catch (error) {
+                console.error('Ошибка входа:', error);
+                showMessage(`Ошибка: ${error.message}`, 'error');
+            } finally {
+                showLoader('loginButton', 'loginLoader', false);
+            }
+        }
+
+        async function loadConfigFromGitHub() {
+            if (!githubToken || !githubRepo) {
+                showMessage('Сначала подключитесь к GitHub', 'error');
+                return;
+            }
+            
+            showLoader('loadButton', 'loadLoader', true);
+            
+            try {
+                const url = `https://api.github.com/repos/${githubRepo}/contents/${CONFIG_FILE}?ref=${githubBranch}`;
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (response.status === 404) {
+                    // Файл не существует, используем значения по умолчанию
+                    document.getElementById('link1').value = 'tg://resolve?domain=Ex_Flex';
+                    document.getElementById('link2').value = 'https://t.me/+ef-zedL8qyhkNWYy';
+                    document.getElementById('link3').value = 'https://t.me/ваша_группа_3';
+                    
+                    // Валидируем значения по умолчанию
+                    validateTelegramLink(document.getElementById('link1'));
+                    validateTelegramLink(document.getElementById('link2'));
+                    validateTelegramLink(document.getElementById('link3'));
+                    
+                    showMessage('Файл config.json не найден. Используются значения по умолчанию.', 'info');
+                    showLoader('loadButton', 'loadLoader', false);
+                    return;
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`GitHub API ошибка: ${response.status}`);
+                }
+                
+                const fileData = await response.json();
+                
+                // Декодируем содержимое файла (base64)
+                const content = atob(fileData.content);
+                const config = JSON.parse(content);
+                
+                // Сохраняем SHA для будущего обновления
+                currentSha = fileData.sha;
+                
+                // Заполняем поля
                 if (config.telegramLinks && config.telegramLinks.length >= 3) {
                     document.getElementById('link1').value = config.telegramLinks[0] || '';
                     document.getElementById('link2').value = config.telegramLinks[1] || '';
                     document.getElementById('link3').value = config.telegramLinks[2] || '';
-                    showMessage('Текущие настройки успешно загружены!', 'success');
+                    
+                    // Валидируем значения
+                    validateTelegramLink(document.getElementById('link1'));
+                    validateTelegramLink(document.getElementById('link2'));
+                    validateTelegramLink(document.getElementById('link3'));
+                    
+                    showMessage('Конфигурация успешно загружена из GitHub!', 'success');
                 } else {
                     throw new Error('Некорректный формат config.json');
                 }
+                
             } catch (error) {
-                console.error('Ошибка загрузки конфига:', error);
-                showMessage(`Ошибка: ${error.message}. Проверьте файл config.json.`, 'error');
+                console.error('Ошибка загрузки:', error);
+                showMessage(`Ошибка загрузки: ${error.message}`, 'error');
+            } finally {
+                showLoader('loadButton', 'loadLoader', false);
             }
         }
-        
-        function saveConfig() {
+
+        async function saveConfigToGitHub() {
+            if (!githubToken || !githubRepo) {
+                showMessage('Сначала подключитесь к GitHub', 'error');
+                return;
+            }
+            
+            // Валидация ссылок
+            if (!validateAllLinks()) {
+                showMessage('Пожалуйста, исправьте ошибки в полях ввода!', 'error');
+                return;
+            }
+            
+            const link1 = document.getElementById('link1').value.trim();
+            const link2 = document.getElementById('link2').value.trim();
+            const link3 = document.getElementById('link3').value.trim();
+            
+            if (!link1 || !link2 || !link3) {
+                showMessage('Все три поля должны быть заполнены!', 'error');
+                return;
+            }
+            
+            if (!confirm('Вы уверены, что хотите обновить конфигурацию на GitHub?\nЭто изменит файл config.json в репозитории.')) {
+                return;
+            }
+            
+            showLoader('saveButton', 'saveLoader', true);
+            
             try {
-                // Получаем значения из полей
-                const link1 = document.getElementById('link1').value.trim();
-                const link2 = document.getElementById('link2').value.trim();
-                const link3 = document.getElementById('link3').value.trim();
-                
-                // Простая валидация
-                if (!link1 || !link2 || !link3) {
-                    throw new Error('Все три поля должны быть заполнены!');
-                }
-                
-                // Создаём объект конфигурации
+                // Создаем объект конфигурации
                 const config = {
-                    telegramLinks: [link1, link2, link3]
+                    telegramLinks: [link1, link2, link3],
+                    version: '1.0',
+                    lastModified: new Date().toISOString(),
+                    modifiedBy: 'admin-panel'
                 };
                 
-                // Конвертируем в JSON с красивым форматированием
-                const jsonString = JSON.stringify(config, null, 2);
+                const content = JSON.stringify(config, null, 2);
+                const contentBase64 = btoa(unescape(encodeURIComponent(content)));
                 
-                // Создаём и скачиваем файл
-                const blob = new Blob([jsonString], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'config.json';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                const url = `https://api.github.com/repos/${githubRepo}/contents/${CONFIG_FILE}`;
                 
-                showMessage('Файл config.json успешно скачан! Теперь загрузите его в репозиторий GitHub.', 'success');
+                const body = {
+                    message: `Update ${CONFIG_FILE} via admin panel`,
+                    content: contentBase64,
+                    branch: githubBranch,
+                    ...(currentSha ? { sha: currentSha } : {})
+                };
+                
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Обновляем SHA нового файла
+                    currentSha = result.content.sha;
+                    
+                    showMessage('✅ Конфигурация успешно сохранена в GitHub!', 'success');
+                    
+                    // Показываем ссылку на коммит
+                    if (result.commit && result.commit.html_url) {
+                        setTimeout(() => {
+                            showMessage(`Коммит создан: ${result.commit.html_url}`, 'info');
+                        }, 2000);
+                    }
+                } else {
+                    let errorMsg = 'Ошибка сохранения';
+                    if (result.message) {
+                        errorMsg += `: ${result.message}`;
+                    }
+                    throw new Error(errorMsg);
+                }
                 
             } catch (error) {
-                showMessage(`Ошибка: ${error.message}`, 'error');
+                console.error('Ошибка сохранения:', error);
+                showMessage(`Ошибка сохранения: ${error.message}`, 'error');
+            } finally {
+                setTimeout(() => {
+                    showLoader('saveButton', 'saveLoader', false);
+                }, 1000);
             }
         }
-        
-        // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
-        // Автовход при нажатии Enter в поле пароля
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
+
+        // === ИНИЦИАЛИЗАЦИЯ ===
+        document.addEventListener('DOMContentLoaded', () => {
+            // Проверяем сохраненные данные GitHub
+            const savedToken = localStorage.getItem('flex_github_token');
+            const savedRepo = localStorage.getItem('flex_github_repo');
+            const savedBranch = localStorage.getItem('flex_github_branch');
+            
+            if (savedToken && savedRepo) {
+                // Автозаполняем поля
+                document.getElementById('githubToken').value = savedToken;
+                document.getElementById('githubRepo').value = savedRepo;
+                if (savedBranch) {
+                    document.getElementById('githubBranch').value = savedBranch;
+                }
+                
+                // Предлагаем войти
+                showMessage('Найдены сохраненные данные GitHub. Введите пароль и нажмите "Войти"', 'info');
             }
+            
+            // Автовход при нажатии Enter
+            document.getElementById('password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkAndLogin();
+                }
+            });
         });
-        
-        // Автозагрузка конфига при открытии админ-панели
-        if (sessionStorage.getItem('admin_auth') === 'true') {
-            // Небольшая задержка, чтобы DOM точно был готов
-            setTimeout(loadConfig, 100);
-        }
-        
-        console.log('Админ-панель FLEX загружена. Для входа используйте пароль.');
+
+        console.log('Админ-панель FLEX GitHub API загружена');
     </script>
 </body>
 </html>
