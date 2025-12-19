@@ -1,0 +1,198 @@
+<script>
+    console.log("Сайт загружен!");
+    
+    const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
+    const REPAIR_IMAGE_URL = 'https://cdn.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg';
+    
+    // Ссылки по умолчанию (если config.json не загрузится)
+    let telegramLinks = [
+        'tg://resolve?domain=Ex_Flex',
+        'https://t.me/+ef-zedL8qyhkNWYy',
+        'https://t.me/ваша_группа_3'
+    ];
+    
+    // Функция загрузки конфигурации из config.json (только ссылки)
+    async function loadTelegramLinks() {
+        try {
+            const response = await fetch('config.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            
+            if (data.telegramLinks && Array.isArray(data.telegramLinks)) {
+                telegramLinks = data.telegramLinks;
+                console.log('Telegram ссылки загружены из config.json:', telegramLinks);
+            } else {
+                console.warn('В config.json нет массива telegramLinks, используем ссылки по умолчанию');
+            }
+            
+            return true;
+        } catch (error) {
+            console.warn('Не удалось загрузить config.json, используем ссылки по умолчанию:', error.message);
+            return false;
+        }
+    }
+    
+    // Функция для отслеживания кликов по Telegram
+    function trackTelegramClick(buttonNumber) {
+        console.log(`Кликнута кнопка Telegram ${buttonNumber}`);
+        
+        // Аналитика (если есть)
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'telegram_click', {
+                'event_category': 'engagement',
+                'event_label': `telegram_button_${buttonNumber}`,
+                'value': 1
+            });
+        }
+        
+        // Задержка для логирования
+        setTimeout(() => {
+            const link = telegramLinks[buttonNumber - 1];
+            console.log(`Переход в Telegram группу ${buttonNumber}: ${link}`);
+        }, 100);
+        
+        return true;
+    }
+    
+    async function checkImageExists(url) {
+        try {
+            const response = await fetch(url, { method: 'HEAD' });
+            return response.ok;
+        } catch (error) {
+            return false;
+        }
+    }
+    
+    async function findImageWithExtensions(baseName, container) {
+        const imageElement = container.querySelector('.column-image');
+        const repairIcons = container.querySelector('.repair-icons');
+        
+        for (const format of imageFormats) {
+            const url = `image/${baseName}.${format}`;
+            
+            if (await checkImageExists(url)) {
+                console.log(`Найдена картинка: ${url}`);
+                imageElement.src = url;
+                return true;
+            }
+        }
+        
+        console.log(`Картинка ${baseName} не найдена, используем общую картинку ремонта`);
+        imageElement.src = REPAIR_IMAGE_URL;
+        imageElement.classList.add('repair-image');
+        repairIcons.style.display = 'flex';
+        container.classList.add('image-not-found');
+        
+        imageElement.onerror = function() {
+            console.log(`Запасная картинка ремонта не загрузилась для колонки ${baseName}`);
+            repairIcons.style.display = 'flex';
+            container.classList.add('image-not-found');
+        };
+        
+        return false;
+    }
+    
+    async function loadBackgroundImage() {
+        console.log("Поиск фонового изображения...");
+        
+        for (const format of imageFormats) {
+            const url = `image/front.${format}`;
+            
+            if (await checkImageExists(url)) {
+                console.log(`Фоновое изображение найдено: ${url}`);
+                document.body.style.backgroundImage = `url('${url}')`;
+                document.body.classList.remove('image-not-loaded');
+                return;
+            }
+        }
+        
+        console.log("Фоновое изображение не найдено ни в одном формате");
+        document.body.classList.add('image-not-loaded');
+    }
+    
+    async function loadColumnImages() {
+        console.log("Поиск картинок для колонок...");
+        
+        const imageContainers = document.querySelectorAll('.image-container');
+        
+        for (let i = 0; i < imageContainers.length; i++) {
+            const container = imageContainers[i];
+            const imageNumber = i + 1;
+            
+            console.log(`Поиск картинки для колонки ${imageNumber}...`);
+            
+            const img = container.querySelector('.column-image');
+            img.onload = function() {
+                console.log(`Картинка ${imageNumber} загружена: ${this.naturalWidth}px × ${this.naturalHeight}px`);
+                container.classList.remove('image-not-found');
+                container.querySelector('.repair-icons').style.display = 'none';
+            };
+            
+            await findImageWithExtensions(imageNumber, container);
+        }
+    }
+    
+    // Инициализация ссылок
+    function initTelegramLinks() {
+        const buttons = document.querySelectorAll('.column-button');
+        buttons.forEach((button, index) => {
+            if (index < telegramLinks.length) {
+                button.href = telegramLinks[index];
+                // Добавляем title для доступности
+                button.title = `Перейти в Telegram группу ${index + 1}`;
+                
+                // Обновляем обработчик onclick
+                button.setAttribute('onclick', `trackTelegramClick(${index + 1})`);
+            }
+        });
+        
+        console.log('Telegram ссылки установлены:', telegramLinks);
+    }
+    
+    async function init() {
+        console.log("Инициализация сайта...");
+        
+        // Загружаем ссылки из config.json
+        await loadTelegramLinks();
+        
+        // Инициализируем ссылки на кнопках
+        initTelegramLinks();
+        
+        // Загружаем изображения (все без изменений)
+        await loadBackgroundImage();
+        await loadColumnImages();
+        
+        console.log("Инициализация завершена");
+    }
+    
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', init);
+    
+    // Остальной код без изменений
+    document.querySelectorAll('.column-image').forEach((img, index) => {
+        img.addEventListener('click', function() {
+            console.log(`Картинка ${index + 1} кликнута`);
+            if (this.classList.contains('repair-image')) {
+                alert('Это запасная картинка. Оригинальная картинка в процессе обновления!');
+            }
+        });
+    });
+    
+    setTimeout(() => {
+        document.querySelectorAll('.column').forEach(column => {
+            column.style.animation = 'none';
+            setTimeout(() => {
+                column.style.animation = '';
+            }, 10);
+        });
+    }, 100);
+    
+    console.log("Поддерживаемые форматы изображений:", imageFormats.join(', '));
+    console.log("Поиск файлов в папке 'image' с именами:");
+    console.log("- front.[формат] для фона");
+    console.log("- 1.[формат], 2.[формат], 3.[формат] для колонок");
+    console.log("Если файлы не найдены, будет использована ОБЩАЯ картинка ремонта:");
+    console.log(REPAIR_IMAGE_URL);
+</script>
