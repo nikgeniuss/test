@@ -1,198 +1,456 @@
-<script>
-    console.log("Сайт загружен!");
-    
-    const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
-    const REPAIR_IMAGE_URL = 'https://cdn.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg';
-    
-    // Ссылки по умолчанию (если config.json не загрузится)
-    let telegramLinks = [
-        'tg://resolve?domain=Ex_Flex',
-        'https://t.me/+ef-zedL8qyhkNWYy',
-        'https://t.me/ваша_группа_3'
-    ];
-    
-    // Функция загрузки конфигурации из config.json (только ссылки)
-    async function loadTelegramLinks() {
-        try {
-            const response = await fetch('config.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель FLEX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .login-section {
+            display: block;
+        }
+        
+        .admin-section {
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #FFEC8B;
+            font-size: 1.1rem;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #6a11cb;
+            box-shadow: 0 0 15px rgba(106, 17, 203, 0.5);
+            background: rgba(0, 0, 0, 0.4);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            width: 100%;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3);
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(56, 239, 125, 0.3);
+        }
+        
+        .load-btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+        
+        .load-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+        }
+        
+        .logout-btn {
+            background: linear-gradient(135deg, #f46b45 0%, #eea849 100%);
+            color: white;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(244, 107, 69, 0.3);
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+            display: block;
+        }
+        
+        .error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            display: block;
+        }
+        
+        .info {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid #3498db;
+            color: #3498db;
+            display: block;
+        }
+        
+        .password-note {
+            text-align: center;
+            margin-top: 20px;
+            color: #aaa;
+            font-size: 14px;
+            font-style: italic;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .instructions h3 {
+            color: #FFD700;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .instructions ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
             }
-            const data = await response.json();
             
-            if (data.telegramLinks && Array.isArray(data.telegramLinks)) {
-                telegramLinks = data.telegramLinks;
-                console.log('Telegram ссылки загружены из config.json:', telegramLinks);
+            .buttons {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            label {
+                font-size: 1rem;
+            }
+            
+            input[type="text"],
+            input[type="password"] {
+                padding: 12px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Секция входа -->
+        <div class="login-section" id="loginSection">
+            <h1>🔐 Админ-панель FLEX</h1>
+            <div class="form-group">
+                <label for="password">Пароль для доступа:</label>
+                <input type="password" id="password" placeholder="Введите пароль" autofocus>
+            </div>
+            <button class="login-btn" onclick="checkPassword()">Войти в админ-панель</button>
+            <div class="password-note">
+                <p>Пароль выдается администратором сайта</p>
+                <p><a href="./" style="color: #3498db; text-decoration: none;">← Вернуться на главную страницу</a></p>
+            </div>
+        </div>
+        
+        <!-- Секция администратора -->
+        <div class="admin-section" id="adminSection">
+            <h1>⚙️ Редактирование Telegram ссылок</h1>
+            
+            <div class="form-group">
+                <label for="link1">📱 Ссылка для первой кнопки (Telegram 1):</label>
+                <input type="text" id="link1" placeholder="tg://resolve?domain=Ex_Flex">
+            </div>
+            
+            <div class="form-group">
+                <label for="link2">📱 Ссылка для второй кнопки (Telegram 2):</label>
+                <input type="text" id="link2" placeholder="https://t.me/+ef-zedL8qyhkNWYy">
+            </div>
+            
+            <div class="form-group">
+                <label for="link3">📱 Ссылка для третьей кнопки (Telegram 3):</label>
+                <input type="text" id="link3" placeholder="https://t.me/your_group_3">
+            </div>
+            
+            <div class="message" id="message"></div>
+            
+            <div class="buttons">
+                <button class="load-btn" onclick="loadConfig()">
+                    📥 Загрузить текущие ссылки
+                </button>
+                <button class="save-btn" onclick="saveConfig()">
+                    💾 Сохранить и скачать config.json
+                </button>
+            </div>
+            
+            <button class="logout-btn" onclick="logout()">
+                🚪 Выйти из админ-панели
+            </button>
+            
+            <div class="instructions">
+                <h3>📋 Как это работает:</h3>
+                <ul>
+                    <li>Нажмите "Загрузить текущие ссылки", чтобы увидеть актуальные настройки.</li>
+                    <li>Отредактируйте ссылки в полях выше.</li>
+                    <li>Нажмите "Сохранить и скачать config.json" — файл скачается на ваш компьютер.</li>
+                    <li><strong>Замените старый файл <code>config.json</code> в репозитории GitHub на новый.</strong></li>
+                    <li>Сделайте коммит и пуш. Через 1-2 минуты изменения появятся на сайте.</li>
+                </ul>
+                <p><strong>Важно:</strong> Этот интерфейс только генерирует файл конфигурации. Чтобы изменения вступили в силу, вы должны вручную заменить файл в репозитории GitHub[citation:10].</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === КОНФИГУРАЦИЯ ===
+        // Замените этот пароль на свой собственный!
+        const ADMIN_PASSWORD = "flex2024";
+        
+        // === ФУНКЦИИ УПРАВЛЕНИЯ ИНТЕРФЕЙСОМ ===
+        function showMessage(text, type = 'info') {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            // Автоматически скрываем сообщения об ошибках и успехе
+            if (type !== 'info') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        function showAdminPanel() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminSection').style.display = 'block';
+            // После входа пробуем загрузить текущий конфиг
+            loadConfig();
+        }
+        
+        function checkPassword() {
+            const passwordInput = document.getElementById('password').value;
+            
+            if (passwordInput === ADMIN_PASSWORD) {
+                // Сохраняем факт авторизации в sessionStorage
+                sessionStorage.setItem('admin_auth', 'true');
+                showAdminPanel();
+                showMessage('Успешный вход в админ-панель!', 'success');
             } else {
-                console.warn('В config.json нет массива telegramLinks, используем ссылки по умолчанию');
-            }
-            
-            return true;
-        } catch (error) {
-            console.warn('Не удалось загрузить config.json, используем ссылки по умолчанию:', error.message);
-            return false;
-        }
-    }
-    
-    // Функция для отслеживания кликов по Telegram
-    function trackTelegramClick(buttonNumber) {
-        console.log(`Кликнута кнопка Telegram ${buttonNumber}`);
-        
-        // Аналитика (если есть)
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'telegram_click', {
-                'event_category': 'engagement',
-                'event_label': `telegram_button_${buttonNumber}`,
-                'value': 1
-            });
-        }
-        
-        // Задержка для логирования
-        setTimeout(() => {
-            const link = telegramLinks[buttonNumber - 1];
-            console.log(`Переход в Telegram группу ${buttonNumber}: ${link}`);
-        }, 100);
-        
-        return true;
-    }
-    
-    async function checkImageExists(url) {
-        try {
-            const response = await fetch(url, { method: 'HEAD' });
-            return response.ok;
-        } catch (error) {
-            return false;
-        }
-    }
-    
-    async function findImageWithExtensions(baseName, container) {
-        const imageElement = container.querySelector('.column-image');
-        const repairIcons = container.querySelector('.repair-icons');
-        
-        for (const format of imageFormats) {
-            const url = `image/${baseName}.${format}`;
-            
-            if (await checkImageExists(url)) {
-                console.log(`Найдена картинка: ${url}`);
-                imageElement.src = url;
-                return true;
+                showMessage('Неверный пароль! Попробуйте еще раз.', 'error');
+                // Небольшая анимация при ошибке
+                const input = document.getElementById('password');
+                input.style.borderColor = '#e74c3c';
+                setTimeout(() => {
+                    input.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                }, 1000);
             }
         }
         
-        console.log(`Картинка ${baseName} не найдена, используем общую картинку ремонта`);
-        imageElement.src = REPAIR_IMAGE_URL;
-        imageElement.classList.add('repair-image');
-        repairIcons.style.display = 'flex';
-        container.classList.add('image-not-found');
-        
-        imageElement.onerror = function() {
-            console.log(`Запасная картинка ремонта не загрузилась для колонки ${baseName}`);
-            repairIcons.style.display = 'flex';
-            container.classList.add('image-not-found');
-        };
-        
-        return false;
-    }
-    
-    async function loadBackgroundImage() {
-        console.log("Поиск фонового изображения...");
-        
-        for (const format of imageFormats) {
-            const url = `image/front.${format}`;
-            
-            if (await checkImageExists(url)) {
-                console.log(`Фоновое изображение найдено: ${url}`);
-                document.body.style.backgroundImage = `url('${url}')`;
-                document.body.classList.remove('image-not-loaded');
-                return;
-            }
+        function logout() {
+            sessionStorage.removeItem('admin_auth');
+            location.reload();
         }
         
-        console.log("Фоновое изображение не найдено ни в одном формате");
-        document.body.classList.add('image-not-loaded');
-    }
-    
-    async function loadColumnImages() {
-        console.log("Поиск картинок для колонок...");
-        
-        const imageContainers = document.querySelectorAll('.image-container');
-        
-        for (let i = 0; i < imageContainers.length; i++) {
-            const container = imageContainers[i];
-            const imageNumber = i + 1;
-            
-            console.log(`Поиск картинки для колонки ${imageNumber}...`);
-            
-            const img = container.querySelector('.column-image');
-            img.onload = function() {
-                console.log(`Картинка ${imageNumber} загружена: ${this.naturalWidth}px × ${this.naturalHeight}px`);
-                container.classList.remove('image-not-found');
-                container.querySelector('.repair-icons').style.display = 'none';
-            };
-            
-            await findImageWithExtensions(imageNumber, container);
+        // Проверяем авторизацию при загрузке страницы
+        if (sessionStorage.getItem('admin_auth') === 'true') {
+            showAdminPanel();
         }
-    }
-    
-    // Инициализация ссылок
-    function initTelegramLinks() {
-        const buttons = document.querySelectorAll('.column-button');
-        buttons.forEach((button, index) => {
-            if (index < telegramLinks.length) {
-                button.href = telegramLinks[index];
-                // Добавляем title для доступности
-                button.title = `Перейти в Telegram группу ${index + 1}`;
+        
+        // === ФУНКЦИИ РАБОТЫ С КОНФИГУРАЦИЕЙ ===
+        async function loadConfig() {
+            try {
+                showMessage('Загружаю текущие настройки...', 'info');
                 
-                // Обновляем обработчик onclick
-                button.setAttribute('onclick', `trackTelegramClick(${index + 1})`);
+                // Пробуем загрузить текущий config.json
+                const response = await fetch('config.json');
+                if (!response.ok) {
+                    // Если файла нет, просто загружаем значения по умолчанию
+                    document.getElementById('link1').value = 'tg://resolve?domain=Ex_Flex';
+                    document.getElementById('link2').value = 'https://t.me/+ef-zedL8qyhkNWYy';
+                    document.getElementById('link3').value = 'https://t.me/ваша_группа_3';
+                    showMessage('Файл config.json не найден. Используются значения по умолчанию.', 'info');
+                    return;
+                }
+                
+                const config = await response.json();
+                
+                // Заполняем форму значениями из конфига
+                if (config.telegramLinks && config.telegramLinks.length >= 3) {
+                    document.getElementById('link1').value = config.telegramLinks[0] || '';
+                    document.getElementById('link2').value = config.telegramLinks[1] || '';
+                    document.getElementById('link3').value = config.telegramLinks[2] || '';
+                    showMessage('Текущие настройки успешно загружены!', 'success');
+                } else {
+                    throw new Error('Некорректный формат config.json');
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки конфига:', error);
+                showMessage(`Ошибка: ${error.message}. Проверьте файл config.json.`, 'error');
+            }
+        }
+        
+        function saveConfig() {
+            try {
+                // Получаем значения из полей
+                const link1 = document.getElementById('link1').value.trim();
+                const link2 = document.getElementById('link2').value.trim();
+                const link3 = document.getElementById('link3').value.trim();
+                
+                // Простая валидация
+                if (!link1 || !link2 || !link3) {
+                    throw new Error('Все три поля должны быть заполнены!');
+                }
+                
+                // Создаём объект конфигурации
+                const config = {
+                    telegramLinks: [link1, link2, link3]
+                };
+                
+                // Конвертируем в JSON с красивым форматированием
+                const jsonString = JSON.stringify(config, null, 2);
+                
+                // Создаём и скачиваем файл
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'config.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showMessage('Файл config.json успешно скачан! Теперь загрузите его в репозиторий GitHub.', 'success');
+                
+            } catch (error) {
+                showMessage(`Ошибка: ${error.message}`, 'error');
+            }
+        }
+        
+        // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
+        // Автовход при нажатии Enter в поле пароля
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
             }
         });
         
-        console.log('Telegram ссылки установлены:', telegramLinks);
-    }
-    
-    async function init() {
-        console.log("Инициализация сайта...");
+        // Автозагрузка конфига при открытии админ-панели
+        if (sessionStorage.getItem('admin_auth') === 'true') {
+            // Небольшая задержка, чтобы DOM точно был готов
+            setTimeout(loadConfig, 100);
+        }
         
-        // Загружаем ссылки из config.json
-        await loadTelegramLinks();
-        
-        // Инициализируем ссылки на кнопках
-        initTelegramLinks();
-        
-        // Загружаем изображения (все без изменений)
-        await loadBackgroundImage();
-        await loadColumnImages();
-        
-        console.log("Инициализация завершена");
-    }
-    
-    // Инициализация при загрузке
-    document.addEventListener('DOMContentLoaded', init);
-    
-    // Остальной код без изменений
-    document.querySelectorAll('.column-image').forEach((img, index) => {
-        img.addEventListener('click', function() {
-            console.log(`Картинка ${index + 1} кликнута`);
-            if (this.classList.contains('repair-image')) {
-                alert('Это запасная картинка. Оригинальная картинка в процессе обновления!');
-            }
-        });
-    });
-    
-    setTimeout(() => {
-        document.querySelectorAll('.column').forEach(column => {
-            column.style.animation = 'none';
-            setTimeout(() => {
-                column.style.animation = '';
-            }, 10);
-        });
-    }, 100);
-    
-    console.log("Поддерживаемые форматы изображений:", imageFormats.join(', '));
-    console.log("Поиск файлов в папке 'image' с именами:");
-    console.log("- front.[формат] для фона");
-    console.log("- 1.[формат], 2.[формат], 3.[формат] для колонок");
-    console.log("Если файлы не найдены, будет использована ОБЩАЯ картинка ремонта:");
-    console.log(REPAIR_IMAGE_URL);
-</script>
+        console.log('Админ-панель FLEX загружена. Для входа используйте пароль.');
+    </script>
+</body>
+</html>
