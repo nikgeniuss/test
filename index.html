@@ -619,5 +619,43 @@
     
     document.addEventListener('DOMContentLoaded', init);
     </script>
+    <!-- Telegram Popup -->
+<iframe id="telegramPopup" 
+        src="popup.html" 
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 9999;"
+        title="Telegram Subscription Popup">
+</iframe>
+
+<script>
+    // Показываем попап через 5 секунд
+    setTimeout(() => {
+        const popupFrame = document.getElementById('telegramPopup');
+        popupFrame.style.display = 'block';
+        
+        // Аналитика
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'telegram_popup_triggered', {
+                'event_category': 'engagement',
+                'event_label': 'popup_auto_show',
+                'value': 1
+            });
+        }
+    }, 5000);
+    
+    // Закрытие попапа при клике на Esc
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const popupFrame = document.getElementById('telegramPopup');
+            if (popupFrame.style.display === 'block') {
+                popupFrame.style.display = 'none';
+            }
+        }
+    });
+    
+    // Функция для ручного открытия попапа (можно добавить кнопку)
+    window.openTelegramPopup = function() {
+        document.getElementById('telegramPopup').style.display = 'block';
+    };
+</script>
 </body>
 </html>
