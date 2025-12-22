@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Popup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .popup-overlay.active {
+            opacity: 1;
+        }
+        
+        .popup-container {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            transform: translateY(50px) scale(0.9);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+        
+        .popup-overlay.active .popup-container {
+            transform: translateY(0) scale(1);
+        }
+        
+        .popup-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 215, 0, 0.1),
+                transparent
+            );
+            animation: shine 3s infinite linear;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(360deg); }
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .close-btn:hover {
+            background: rgba(231, 76, 60, 0.8);
+            transform: rotate(90deg);
+        }
+        
+        .telegram-icon {
+            font-size: 60px;
+            color: #0088cc;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+            filter: drop-shadow(0 0 10px rgba(0, 136, 204, 0.5));
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .popup-title {
+            color: #FFD700;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .popup-subtitle {
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 18px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+        
+        .benefits {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: white;
+        }
+        
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .benefit-icon {
+            color: #FFD700;
+            margin-right: 12px;
+            font-size: 18px;
+            min-width: 25px;
+        }
+        
+        .benefit-text {
+            font-size: 16px;
+        }
+        
+        .channels-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .channel-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .channel-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(0, 136, 204, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .channel-icon {
+            background: linear-gradient(135deg, #0088cc, #00b3ff);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .channel-info {
+            flex: 1;
+        }
+        
+        .channel-name {
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .channel-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        .subscribe-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #0088cc 0%, #00b3ff 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .subscribe-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 136, 204, 0.4);
+            background: linear-gradient(135deg, #00b3ff 0%, #0088cc 100%);
+        }
+        
+        .dont-show {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+        
+        .dont-show label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .dont-show input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .popup-container {
+                padding: 30px 20px;
+                width: 95%;
+            }
+            
+            .popup-title {
+                font-size: 24px;
+            }
+            
+            .popup-subtitle {
+                font-size: 16px;
+            }
+            
+            .telegram-icon {
+                font-size: 50px;
+            }
+            
+            .channel-card {
+                padding: 15px;
+            }
+            
+            .channel-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .popup-container {
+                padding: 25px 15px;
+            }
+            
+            .popup-title {
+                font-size: 22px;
+            }
+            
+            .channels-container {
+                gap: 12px;
+            }
+            
+            .channel-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .channel-info {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-container">
+            <button class="close-btn" id="closeBtn">×</button>
+            
+            <div class="telegram-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
+                </svg>
+            </div>
+            
+            <h2 class="popup-title">Не пропустите важные обновления!</h2>
+            <p class="popup-subtitle">Подпишитесь на наши Telegram-каналы и будьте в курсе последних новостей и эксклюзивных предложений</p>
+            
+            <div class="benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <span class="benefit-text">Первыми узнавайте о новых возможностях</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <span class="benefit-text">Эксклюзивные предложения для подписчиков</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <span class="benefit-text">Технические советы и инструкции</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <span class="benefit-text">Оперативная поддержка и обратная связь</span>
+                </div>
+            </div>
+            
+            <div class="channels-container" id="channelsContainer">
+                <!-- Каналы будут загружены динамически -->
+                <div class="channel-card" data-channel="1">
+                    <div class="channel-icon">1</div>
+                    <div class="channel-info">
+                        <div class="channel-name">Основной канал FLEX</div>
+                        <div class="channel-description">Новости, обновления, анонсы</div>
+                    </div>
+                </div>
+                
+                <div class="channel-card" data-channel="2">
+                    <div class="channel-icon">2</div>
+                    <div class="channel-info">
+                        <div class="channel-name">Группа обсуждений</div>
+                        <div class="channel-description">Вопросы, помощь, общение</div>
+                    </div>
+                </div>
+                
+                <div class="channel-card" data-channel="3">
+                    <div class="channel-icon">3</div>
+                    <div class="channel-info">
+                        <div class="channel-name">Новости и предложения</div>
+                        <div class="channel-description">Специальные предложения для подписчиков</div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#" class="subscribe-btn" id="subscribeAllBtn">Подписаться на все каналы</a>
+            
+            <div class="dont-show">
+                <label>
+                    <input type="checkbox" id="dontShowAgain">
+                    Больше не показывать это окно
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Загружаем ссылки из config.json или используем по умолчанию
+        let telegramLinks = [
+            'tg://resolve?domain=Ex_Flex',
+            'https://t.me/+ef-zedL8qyhkNWYy',
+            'https://t.me/ваша_группа_3'
+        ];
+        
+        // Загрузка ссылок из config.json
+        async function loadTelegramLinks() {
+            try {
+                const response = await fetch('../config.json');
+                if (!response.ok) throw new Error('Не удалось загрузить config.json');
+                
+                const data = await response.json();
+                if (data.telegramLinks && Array.isArray(data.telegramLinks)) {
+                    telegramLinks = data.telegramLinks;
+                    console.log('Telegram ссылки загружены:', telegramLinks);
+                }
+            } catch (error) {
+                console.warn('Используем ссылки по умолчанию:', error.message);
+            }
+        }
+        
+        // Инициализация попапа
+        function initPopup() {
+            const popupOverlay = document.getElementById('popupOverlay');
+            const closeBtn = document.getElementById('closeBtn');
+            const dontShowCheckbox = document.getElementById('dontShowAgain');
+            const channelCards = document.querySelectorAll('.channel-card');
+            const subscribeAllBtn = document.getElementById('subscribeAllBtn');
+            
+            // Проверяем, не отключил ли пользователь показ попапа
+            const dontShowPopup = localStorage.getItem('flex_dont_show_popup');
+            if (dontShowPopup === 'true') {
+                console.log('Пользователь отключил показ попапа');
+                return;
+            }
+            
+            // Загружаем ссылки
+            loadTelegramLinks().then(() => {
+                // Устанавливаем ссылки на карточки каналов
+                channelCards.forEach((card, index) => {
+                    if (telegramLinks[index]) {
+                        card.href = telegramLinks[index];
+                        card.target = '_blank';
+                        
+                        // Отслеживание кликов по каналам
+                        card.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            trackChannelClick(index + 1);
+                            window.open(telegramLinks[index], '_blank');
+                        });
+                    }
+                });
+                
+                // Кнопка "Подписаться на все каналы"
+                subscribeAllBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    trackAllChannelsClick();
+                    
+                    // Открываем все каналы в новых вкладках
+                    telegramLinks.forEach((link, index) => {
+                        if (link) {
+                            setTimeout(() => {
+                                window.open(link, '_blank');
+                            }, index * 100); // Небольшая задержка между открытием
+                        }
+                    });
+                });
+                
+                // Показываем попап через 5 секунд
+                setTimeout(() => {
+                    popupOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Блокируем скролл
+                }, 5000);
+            });
+            
+            // Закрытие попапа
+            closeBtn.addEventListener('click', closePopup);
+            
+            // Закрытие по клику на оверлей
+            popupOverlay.addEventListener('click', function(e) {
+                if (e.target === popupOverlay) {
+                    closePopup();
+                }
+            });
+            
+            // Закрытие по Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && popupOverlay.classList.contains('active')) {
+                    closePopup();
+                }
+            });
+            
+            // Сохранение настройки "Больше не показывать"
+            dontShowCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    localStorage.setItem('flex_dont_show_popup', 'true');
+                    console.log('Пользователь отключил показ попапа');
+                } else {
+                    localStorage.removeItem('flex_dont_show_popup');
+                }
+            });
+            
+            function closePopup() {
+                popupOverlay.classList.remove('active');
+                setTimeout(() => {
+                    popupOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Разблокируем скролл
+                }, 500); // Ждем окончания анимации
+            }
+            
+            // Функции для аналитики
+            function trackChannelClick(channelNumber) {
+                console.log(`Клик по каналу ${channelNumber}`);
+                // Здесь можно добавить Google Analytics или другую аналитику
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'telegram_popup_click', {
+                        'event_category': 'engagement',
+                        'event_label': `popup_channel_${channelNumber}`,
+                        'value': 1
+                    });
+                }
+            }
+            
+            function trackAllChannelsClick() {
+                console.log('Клик по "Подписаться на все каналы"');
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'telegram_popup_all', {
+                        'event_category': 'engagement',
+                        'event_label': 'popup_subscribe_all',
+                        'value': 3
+                    });
+                }
+            }
+            
+            // Отслеживание показа попапа
+            setTimeout(() => {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'telegram_popup_view', {
+                        'event_category': 'engagement',
+                        'event_label': 'popup_impression',
+                        'value': 1
+                    });
+                }
+            }, 5100); // Чуть позже чем показ
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', initPopup);
+        
+        // Функция для ручного вызова попапа (можно вызвать из других скриптов)
+        window.showTelegramPopup = function() {
+            const popupOverlay = document.getElementById('popupOverlay');
+            if (popupOverlay) {
+                popupOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    popupOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }, 10);
+            }
+        };
+        
+        // Функция для сброса настроек (для тестирования)
+        window.resetPopupSettings = function() {
+            localStorage.removeItem('flex_dont_show_popup');
+            console.log('Настройки попапа сброшены. Попап будет показан при следующем посещении.');
+        };
+    </script>
+</body>
+</html>
