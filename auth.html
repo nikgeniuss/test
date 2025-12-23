@@ -1,16 +1,68 @@
-<!-- auth.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Авторизация через Telegram</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            font-family: sans-serif;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        h1 {
+            color: #FFD700;
+            margin-bottom: 30px;
+        }
+        .telegram-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+        .telegram-btn:hover {
+            background: #0077b3;
+        }
+    </style>
 </head>
 <body>
-    <script async src="https://telegram.org/js/telegram-widget.js?22" 
-        data-telegram-login="FLEXTEST123_bot" 
-        data-size="large" 
-        data-auth-url="https://github.com/nikgeniuss/test" 
-        data-request-access="write">
+    <div class="container">
+        <h1>Авторизация через Telegram</h1>
+        <p>Нажмите кнопку чтобы открыть бота</p>
+        
+        <button class="telegram-btn" onclick="openTelegramBot()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
+            </svg>
+            Открыть бота
+        </button>
+    </div>
+
+    <script>
+        function openTelegramBot() {
+            // ЗДЕСЬ ВСТАВЬ ИМЯ СВОЕГО БОТА
+            const botName = "FLEXTEST123_bot"; // Например: "FlexSupportBot"
+            window.open(`https://t.me/${botName}?start=login`, '_blank');
+        }
     </script>
 </body>
 </html>
