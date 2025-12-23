@@ -839,5 +839,188 @@
     
     console.log("Сайт с Telegram попапом готов!");
     </script>
+
+    //новинка
+
+    <div id="telegram-modal" style="display:none;">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <button class="modal-close">&times;</button>
+    <h3 class="modal-title">Будьте в курсе последних эксклюзивных предложений и новинок</h3>
+    
+    <div class="auth-section">
+      <p>Авторизуйтесь через Telegram, чтобы не пропускать обновления</p>
+      <button class="auth-button">Войти через Telegram</button>
+    </div>
+    
+    <div class="groups-section">
+      <p>Наши группы</p>
+      <div class="group-buttons">
+        <a href="tg://resolve?domain=Ex_Flex" class="group-button" target="_blank">
+          <svg class="button-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/></svg>
+          <span>Группа 1</span>
+        </a>
+        <a href="https://t.me/+ef-zedL8qyhkNWYy" class="group-button" target="_blank">
+          <svg class="button-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/></svg>
+          <span>Группа 2</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 9998;
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 30px;
+  border-radius: 20px;
+  z-index: 9999;
+  width: 90%;
+  max-width: 500px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-title {
+  color: #FFF8DC;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+  line-height: 1.4;
+}
+
+.auth-section {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.auth-section p {
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.auth-button {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: transform 0.3s;
+}
+
+.auth-button:hover {
+  transform: scale(1.05);
+}
+
+.groups-section {
+  text-align: center;
+}
+
+.groups-section p {
+  color: #FFF8DC;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.group-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.group-button {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.group-button:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-3px);
+}
+
+.group-button .button-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+  .group-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .group-button {
+    min-width: auto;
+  }
+}
+</style>
+
+<script>
+// Таймер показа модального окна
+setTimeout(() => {
+  const modal = document.getElementById('telegram-modal');
+  modal.style.display = 'block';
+}, 5000);
+
+// Закрытие модального окна
+document.querySelector('.modal-close').addEventListener('click', () => {
+  document.getElementById('telegram-modal').style.display = 'none';
+});
+
+document.querySelector('.modal-overlay').addEventListener('click', () => {
+  document.getElementById('telegram-modal').style.display = 'none';
+});
+
+// Кнопка авторизации (заглушка)
+document.querySelector('.auth-button').addEventListener('click', () => {
+  alert('Авторизация через Telegram будет реализована позже');
+});
+</script>
+    
 </body>
 </html>
