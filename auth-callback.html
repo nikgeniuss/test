@@ -1,0 +1,64 @@
+<!-- auth-callback.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Обработка авторизации</title>
+</head>
+<body>
+    <div id="status">Идёт авторизация...</div>
+    
+    <script>
+        // Получаем данные из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userData = {
+            id: urlParams.get('id'),
+            first_name: urlParams.get('first_name'),
+            username: urlParams.get('username'),
+            auth_date: urlParams.get('auth_date'),
+            hash: urlParams.get('hash')
+        };
+        
+        // Сохраняем в Supabase
+        async function saveUser(data) {
+            const SUPABASE_URL = 'https://ВАШ-ПРОЕКТ.supabase.co';
+            const SUPABASE_KEY = 'ВАШ_ANON_KEY';
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify({
+                        id: data.id,
+                        username: data.username,
+                        first_name: data.first_name,
+                        auth_date: new Date().toISOString()
+                    })
+                });
+                
+                if (response.ok) {
+                    // Сохраняем в localStorage
+                    localStorage.setItem('telegram_user', JSON.stringify(data));
+                    localStorage.setItem('last_auth', new Date().toISOString());
+                    
+                    // Закрываем окно через 2 секунды
+                    document.getElementById('status').textContent = 'Авторизация успешна!';
+                    setTimeout(() => window.close(), 2000);
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+        
+        // Запускаем процесс
+        if (userData.id) {
+            saveUser(userData);
+        }
+    </script>
+</body>
+</html>
