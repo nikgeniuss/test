@@ -13,308 +13,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="FLEX - Лучшее решение">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Стиль для Telegram попапа -->
     <style>
-        /* ===== СТИЛЬ ДЛЯ ТЕЛЕГРАМ ПОПАПА ===== */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        
-        .popup-overlay.active {
-            opacity: 1;
-            display: flex;
-        }
-        
-        .popup-container {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            position: relative;
-            transform: translateY(50px) scale(0.9);
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-        }
-        
-        .popup-overlay.active .popup-container {
-            transform: translateY(0) scale(1);
-        }
-        
-        .popup-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(255, 215, 0, 0.1),
-                transparent
-            );
-            animation: shine 3s infinite linear;
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(360deg); }
-        }
-        
-        .popup-close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 2;
-        }
-        
-        .popup-close-btn:hover {
-            background: rgba(231, 76, 60, 0.8);
-            transform: rotate(90deg);
-        }
-        
-        .popup-telegram-icon {
-            font-size: 60px;
-            color: #0088cc;
-            text-align: center;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .popup-title {
-            color: #FFD700;
-            font-size: 28px;
-            text-align: center;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-        }
-        
-        .popup-subtitle {
-            color: white;
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 18px;
-            line-height: 1.5;
-            opacity: 0.9;
-        }
-        
-        .popup-benefits {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .popup-benefit-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            color: white;
-        }
-        
-        .popup-benefit-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .popup-benefit-icon {
-            color: #FFD700;
-            margin-right: 12px;
-            font-size: 18px;
-            min-width: 25px;
-        }
-        
-        .popup-benefit-text {
-            font-size: 16px;
-        }
-        
-        .popup-channels-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .popup-channel-card {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        .popup-channel-card:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(0, 136, 204, 0.5);
-            transform: translateY(-3px);
-        }
-        
-        .popup-channel-icon {
-            background: linear-gradient(135deg, #0088cc, #00b3ff);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            flex-shrink: 0;
-            font-weight: bold;
-        }
-        
-        .popup-channel-info {
-            flex: 1;
-        }
-        
-        .popup-channel-name {
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
-        .popup-channel-description {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-        }
-        
-        .popup-subscribe-btn {
-            display: block;
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #0088cc 0%, #00b3ff 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            text-decoration: none;
-        }
-        
-        .popup-subscribe-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 136, 204, 0.4);
-            background: linear-gradient(135deg, #00b3ff 0%, #0088cc 100%);
-        }
-        
-        .popup-dont-show {
-            text-align: center;
-            margin-top: 20px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-        }
-        
-        .popup-dont-show label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        
-        .popup-dont-show input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-        
-        /* Адаптивность попапа */
-        @media (max-width: 768px) {
-            .popup-container {
-                padding: 30px 20px;
-                width: 95%;
-            }
-            
-            .popup-title {
-                font-size: 24px;
-            }
-            
-            .popup-subtitle {
-                font-size: 16px;
-            }
-            
-            .popup-telegram-icon {
-                font-size: 50px;
-            }
-            
-            .popup-channel-card {
-                padding: 15px;
-            }
-            
-            .popup-channel-icon {
-                width: 45px;
-                height: 45px;
-                font-size: 22px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .popup-container {
-                padding: 25px 15px;
-            }
-            
-            .popup-title {
-                font-size: 22px;
-            }
-            
-            .popup-channels-container {
-                gap: 12px;
-            }
-            
-            .popup-channel-card {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-            
-            .popup-channel-info {
-                width: 100%;
-            }
-        }
-        /* ===== КОНЕЦ СТИЛЯ ДЛЯ ПОПАПА ===== */
-        
-        /* Твои оригинальные стили сайта (оставляем без изменений) */
         * {
             margin: 0;
             padding: 0;
@@ -335,8 +34,26 @@
             transition: background-color 0.3s ease;
         }
         
-        /* ... и дальше все твои оригинальные стили без изменений ... */
-        /* Я сократил тут для читаемости, но в реальном файле ВСЕ твои стили должны быть на месте */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        body.image-not-loaded {
+            background-image: none;
+        }
+        
+        body.image-not-loaded::before {
+            opacity: 1;
+        }
         
         .content {
             padding: 30px 20px;
@@ -377,18 +94,539 @@
             font-family: 'Arial Black', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        /* ... остальные стили колонок, кнопок и медиазапросы ... */
+        h1:hover {
+            animation: goldGlow 2s infinite alternate;
+        }
         
+        @keyframes goldGlow {
+            from {
+                text-shadow: 
+                    0 0 10px rgba(255, 215, 0, 0.3),
+                    0 0 20px rgba(255, 215, 0, 0.2),
+                    0 0 30px rgba(255, 215, 0, 0.1),
+                    2px 2px 4px rgba(0, 0, 0, 0.8);
+            }
+            to {
+                text-shadow: 
+                    0 0 15px rgba(255, 215, 0, 0.5),
+                    0 0 25px rgba(255, 215, 0, 0.4),
+                    0 0 35px rgba(255, 215, 0, 0.3),
+                    2px 2px 4px rgba(0, 0, 0, 0.8),
+                    0 0 40px rgba(255, 215, 0, 0.2);
+            }
+        }
+        
+        .description {
+            font-size: clamp(1.2rem, 3vw, 2.2rem);
+            max-width: 900px;
+            margin: 0 auto 50px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+            padding: 0 15px;
+            animation: fadeIn 1s ease 0.3s forwards;
+            opacity: 0;
+            
+            color: #FFF8DC;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .columns-container {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+            max-width: 1400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .column {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 20px;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .column:nth-child(1) { animation-delay: 0.5s; }
+        .column:nth-child(2) { animation-delay: 0.7s; }
+        .column:nth-child(3) { animation-delay: 0.9s; }
+        
+        .column:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-container {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.1);
+            min-height: 200px;
+        }
+        
+        .column:hover .image-container {
+            transform: scale(1.03);
+        }
+        
+        .column-image {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+        }
+        
+        .repair-image {
+            width: 80%;
+            height: auto;
+            max-height: 250px;
+            opacity: 0.8;
+            filter: brightness(0.9) sepia(0.3) saturate(0.8);
+        }
+        
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+            text-align: center;
+            pointer-events: none;
+        }
+        
+        .repair-message {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #f39c12;
+            font-size: 0.9rem;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            border-radius: 0 0 12px 12px;
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .image-container.image-not-found::before {
+            opacity: 1;
+        }
+        
+        .image-container.image-not-found .repair-message {
+            opacity: 1;
+        }
+        
+        .repair-icons {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            display: none;
+        }
+        
+        @keyframes wrenchAnimation {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(30deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-30deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        @keyframes gearAnimation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .repair-wrench {
+            font-size: 3.5rem;
+            color: #f39c12;
+            margin-bottom: 10px;
+            animation: wrenchAnimation 2s infinite;
+            filter: drop-shadow(0 0 5px rgba(243, 156, 18, 0.5));
+        }
+        
+        .repair-gear {
+            font-size: 2.5rem;
+            color: #e74c3c;
+            animation: gearAnimation 4s linear infinite;
+            filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.5));
+        }
+        
+        /* КРУГЛЫЕ КНОПКИ С КРУПНЫМИ ИКОНКАМИ */
+        .column-button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            width: 70px;
+            height: 70px;
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            text-decoration: none; /* Для ссылок */
+        }
+        
+        .column-button:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(37, 117, 252, 0.6);
+            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+        }
+        
+        .button-icon {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 1200px) {
+            .columns-container {
+                gap: 15px;
+            }
+            .column {
+                padding: 18px;
+            }
+            .column-image {
+                max-height: 280px;
+            }
+            .repair-image {
+                max-height: 230px;
+            }
+            .repair-wrench {
+                font-size: 3rem;
+            }
+            .repair-gear {
+                font-size: 2.2rem;
+            }
+            .column-button {
+                width: 65px;
+                height: 65px;
+                padding: 18px;
+            }
+            .button-icon {
+                width: 32px;
+                height: 32px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .columns-container {
+                gap: 12px;
+            }
+            .column {
+                padding: 16px;
+                border-radius: 15px;
+            }
+            .image-container {
+                border-radius: 12px;
+                border-width: 2px;
+                min-height: 180px;
+            }
+            .column-image {
+                max-height: 250px;
+            }
+            .repair-image {
+                max-height: 200px;
+            }
+            .repair-wrench {
+                font-size: 2.8rem;
+            }
+            .repair-gear {
+                font-size: 2rem;
+            }
+            .column-button {
+                width: 60px;
+                height: 60px;
+                padding: 16px;
+            }
+            .button-icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: clamp(2.5rem, 8vw, 5rem);
+                margin-bottom: 10px;
+            }
+            
+            .description {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+            
+            .columns-container {
+                gap: 10px;
+                padding: 0 5px;
+            }
+            
+            .column {
+                padding: 14px;
+                border-radius: 12px;
+                animation-delay: 0.3s !important;
+            }
+            
+            .image-container {
+                border-radius: 10px;
+                border-width: 2px;
+                margin-bottom: 15px;
+                min-height: 160px;
+            }
+            
+            .column-image {
+                max-height: 220px;
+            }
+            
+            .repair-image {
+                max-height: 180px;
+            }
+            
+            .repair-wrench {
+                font-size: 2.5rem;
+            }
+            .repair-gear {
+                font-size: 1.8rem;
+            }
+            
+            .column-button {
+                width: 55px;
+                height: 55px;
+                padding: 14px;
+                margin-bottom: 15px;
+            }
+            
+            .button-icon {
+                width: 28px;
+                height: 28px;
+            }
+            
+            body {
+                background-attachment: scroll;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: clamp(2rem, 7vw, 4rem);
+                letter-spacing: 1px;
+            }
+            
+            .column-image {
+                max-height: 200px;
+            }
+            
+            .repair-image {
+                max-height: 160px;
+            }
+            
+            .repair-wrench {
+                font-size: 2.2rem;
+            }
+            .repair-gear {
+                font-size: 1.6rem;
+            }
+            
+            .repair-message {
+                font-size: 0.8rem;
+            }
+            
+            .column-button {
+                width: 50px;
+                height: 50px;
+                padding: 12px;
+            }
+            
+            .button-icon {
+                width: 26px;
+                height: 26px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: clamp(1.8rem, 6vw, 3.5rem);
+                margin-bottom: 8px;
+            }
+            
+            .description {
+                font-size: 1rem;
+                padding: 0 10px;
+                margin-bottom: 25px;
+            }
+            
+            .columns-container {
+                gap: 8px;
+                padding: 0;
+            }
+            
+            .column {
+                padding: 12px;
+                border-radius: 10px;
+            }
+            
+            .image-container {
+                border-radius: 8px;
+                border-width: 2px;
+                margin-bottom: 12px;
+                min-height: 140px;
+            }
+            
+            .column-image {
+                max-height: 180px;
+            }
+            
+            .repair-image {
+                max-height: 140px;
+            }
+            
+            .repair-wrench {
+                font-size: 1.8rem;
+            }
+            .repair-gear {
+                font-size: 1.4rem;
+            }
+            
+            .repair-message {
+                font-size: 0.75rem;
+            }
+            
+            .column-button {
+                width: 45px;
+                height: 45px;
+                padding: 10px;
+                margin-bottom: 12px;
+            }
+            
+            .button-icon {
+                width: 24px;
+                height: 24px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            h1 {
+                font-size: clamp(1.6rem, 5vw, 3rem);
+                letter-spacing: 0.5px;
+            }
+            
+            .column {
+                padding: 10px;
+            }
+            
+            .image-container {
+                border-width: 1px;
+                min-height: 120px;
+            }
+            
+            .column-image {
+                max-height: 160px;
+            }
+            
+            .repair-image {
+                max-height: 120px;
+                width: 70%;
+            }
+            
+            .repair-wrench {
+                font-size: 1.5rem;
+            }
+            .repair-gear {
+                font-size: 1.2rem;
+            }
+            
+            .column-button {
+                width: 40px;
+                height: 40px;
+                padding: 8px;
+            }
+            
+            .button-icon {
+                width: 22px;
+                height: 22px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Основной контент сайта -->
     <div class="content">
         <h1>FLEX</h1>
         <p class="description">Лучшее решение для вас</p>
         
         <div class="columns-container">
-            <!-- Твои 3 колонки с картинками и кнопками Telegram -->
             <div class="column">
                 <div class="image-container">
                     <img src="" alt="Картинка 1" class="column-image">
@@ -405,7 +643,6 @@
                 </a>
             </div>
             
-            <!-- Вторая и третья колонки аналогично -->
             <div class="column">
                 <div class="image-container">
                     <img src="" alt="Картинка 2" class="column-image">
@@ -444,89 +681,20 @@
         </div>
     </div>
 
-    <!-- Telegram Popup окно (встроено в index.html) -->
-    <div class="popup-overlay" id="telegramPopup">
-        <div class="popup-container">
-            <button class="popup-close-btn" id="popupCloseBtn">×</button>
-            
-            <div class="popup-telegram-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
-                </svg>
-            </div>
-            
-            <h2 class="popup-title">Не пропустите важные обновления!</h2>
-            <p class="popup-subtitle">Подпишитесь на наши Telegram-каналы и будьте в курсе последних новостей и эксклюзивных предложений</p>
-            
-            <div class="popup-benefits">
-                <div class="popup-benefit-item">
-                    <span class="popup-benefit-icon">✓</span>
-                    <span class="popup-benefit-text">Первыми узнавайте о новых возможностях</span>
-                </div>
-                <div class="popup-benefit-item">
-                    <span class="popup-benefit-icon">✓</span>
-                    <span class="popup-benefit-text">Эксклюзивные предложения для подписчиков</span>
-                </div>
-                <div class="popup-benefit-item">
-                    <span class="popup-benefit-icon">✓</span>
-                    <span class="popup-benefit-text">Технические советы и инструкции</span>
-                </div>
-                <div class="popup-benefit-item">
-                    <span class="popup-benefit-icon">✓</span>
-                    <span class="popup-benefit-text">Оперативная поддержка и обратная связь</span>
-                </div>
-            </div>
-            
-            <div class="popup-channels-container" id="popupChannelsContainer">
-                <div class="popup-channel-card" data-channel="1">
-                    <div class="popup-channel-icon">1</div>
-                    <div class="popup-channel-info">
-                        <div class="popup-channel-name">Основной канал FLEX</div>
-                        <div class="popup-channel-description">Новости, обновления, анонсы</div>
-                    </div>
-                </div>
-                
-                <div class="popup-channel-card" data-channel="2">
-                    <div class="popup-channel-icon">2</div>
-                    <div class="popup-channel-info">
-                        <div class="popup-channel-name">Группа обсуждений</div>
-                        <div class="popup-channel-description">Вопросы, помощь, общение</div>
-                    </div>
-                </div>
-                
-                <div class="popup-channel-card" data-channel="3">
-                    <div class="popup-channel-icon">3</div>
-                    <div class="popup-channel-info">
-                        <div class="popup-channel-name">Новости и предложения</div>
-                        <div class="popup-channel-description">Специальные предложения для подписчиков</div>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="popup-subscribe-btn" id="popupSubscribeAllBtn">Подписаться на все каналы</button>
-            
-            <div class="popup-dont-show">
-                <label>
-                    <input type="checkbox" id="popupDontShowAgain">
-                    Больше не показывать это окно
-                </label>
-            </div>
-        </div>
-    </div>
-
     <script>
-    // ===== ОРИГИНАЛЬНЫЙ СКРИПТ САЙТА (без изменений) =====
     console.log("Сайт загружен!");
     
     const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
     const REPAIR_IMAGE_URL = 'https://cdn.pixabay.com/photo/2018/05/18/15/30/web-design-3411373_1280.jpg';
     
+    // Ссылки по умолчанию (если config.json не загрузится)
     let telegramLinks = [
         'tg://resolve?domain=Ex_Flex',
         'https://t.me/+ef-zedL8qyhkNWYy',
         'https://t.me/ваша_группа_3'
     ];
     
+    // Функция загрузки конфигурации из config.json (только ссылки)
     async function loadTelegramLinks() {
         try {
             const response = await fetch('config.json');
@@ -549,9 +717,11 @@
         }
     }
     
+    // Функция для отслеживания кликов по Telegram
     function trackTelegramClick(buttonNumber) {
         console.log(`Кликнута кнопка Telegram ${buttonNumber}`);
         
+        // Аналитика (если есть)
         if (typeof gtag !== 'undefined') {
             gtag('event', 'telegram_click', {
                 'event_category': 'engagement',
@@ -560,6 +730,7 @@
             });
         }
         
+        // Задержка для логирования
         setTimeout(() => {
             const link = telegramLinks[buttonNumber - 1];
             console.log(`Переход в Telegram группу ${buttonNumber}: ${link}`);
@@ -646,12 +817,16 @@
         }
     }
     
+    // Инициализация ссылок
     function initTelegramLinks() {
         const buttons = document.querySelectorAll('.column-button');
         buttons.forEach((button, index) => {
             if (index < telegramLinks.length) {
                 button.href = telegramLinks[index];
+                // Добавляем title для доступности
                 button.title = `Перейти в Telegram группу ${index + 1}`;
+                
+                // Обновляем обработчик onclick
                 button.setAttribute('onclick', `trackTelegramClick(${index + 1})`);
             }
         });
@@ -662,19 +837,23 @@
     async function init() {
         console.log("Инициализация сайта...");
         
+        // Загружаем ссылки из config.json
         await loadTelegramLinks();
+        
+        // Инициализируем ссылки на кнопках
         initTelegramLinks();
+        
+        // Загружаем изображения (все без изменений)
         await loadBackgroundImage();
         await loadColumnImages();
         
         console.log("Инициализация завершена");
-        
-        // ===== ЗАПУСКАЕМ ПОПАП ЧЕРЕЗ 5 СЕКУНД =====
-        setTimeout(showTelegramPopup, 5000);
     }
     
+    // Инициализация при загрузке
     document.addEventListener('DOMContentLoaded', init);
     
+    // Остальной код без изменений
     document.querySelectorAll('.column-image').forEach((img, index) => {
         img.addEventListener('click', function() {
             console.log(`Картинка ${index + 1} кликнута`);
@@ -693,155 +872,14 @@
         });
     }, 100);
     
-    // ===== СКРИПТ ДЛЯ TELEGRAM ПОПАПА =====
-    function showTelegramPopup() {
-        // Проверяем, не отключил ли пользователь показ попапа
-        const dontShowPopup = localStorage.getItem('flex_dont_show_popup');
-        if (dontShowPopup === 'true') {
-            console.log('Пользователь отключил показ попапа');
-            return;
-        }
-        
-        const popupOverlay = document.getElementById('telegramPopup');
-        popupOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Блокируем скролл
-        
-        // Аналитика (если есть)
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'telegram_popup_show', {
-                'event_category': 'engagement',
-                'event_label': 'popup_auto_shown',
-                'value': 1
-            });
-        }
-        
-        console.log('Telegram попап показан');
-    }
-    
-    function initPopup() {
-        const popupOverlay = document.getElementById('telegramPopup');
-        const closeBtn = document.getElementById('popupCloseBtn');
-        const dontShowCheckbox = document.getElementById('popupDontShowAgain');
-        const channelCards = document.querySelectorAll('.popup-channel-card');
-        const subscribeAllBtn = document.getElementById('popupSubscribeAllBtn');
-        
-        // Устанавливаем ссылки на карточки каналов
-        channelCards.forEach((card, index) => {
-            if (telegramLinks[index]) {
-                // Делаем карточку кликабельной
-                card.style.cursor = 'pointer';
-                
-                card.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    trackPopupChannelClick(index + 1);
-                    
-                    // Открываем ссылку в новой вкладке
-                    window.open(telegramLinks[index], '_blank');
-                    
-                    // Закрываем попап после клика (опционально)
-                    // closePopup();
-                });
-            }
-        });
-        
-        // Кнопка "Подписаться на все каналы"
-        subscribeAllBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            trackPopupAllChannelsClick();
-            
-            // Открываем все каналы в новых вкладках
-            telegramLinks.forEach((link, index) => {
-                if (link) {
-                    setTimeout(() => {
-                        window.open(link, '_blank');
-                    }, index * 100);
-                }
-            });
-            
-            // Закрываем попап после клика
-            closePopup();
-        });
-        
-        // Закрытие попапа
-        closeBtn.addEventListener('click', closePopup);
-        
-        // Закрытие по клику на оверлей
-        popupOverlay.addEventListener('click', function(e) {
-            if (e.target === popupOverlay) {
-                closePopup();
-            }
-        });
-        
-        // Закрытие по Escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && popupOverlay.classList.contains('active')) {
-                closePopup();
-            }
-        });
-        
-        // Сохранение настройки "Больше не показывать"
-        dontShowCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                localStorage.setItem('flex_dont_show_popup', 'true');
-                console.log('Пользователь отключил показ попапа');
-            } else {
-                localStorage.removeItem('flex_dont_show_popup');
-            }
-        });
-        
-        function closePopup() {
-            popupOverlay.classList.remove('active');
-            setTimeout(() => {
-                document.body.style.overflow = 'auto'; // Разблокируем скролл
-            }, 500);
-            
-            console.log('Telegram попап закрыт');
-        }
-        
-        // Функции для аналитики попапа
-        function trackPopupChannelClick(channelNumber) {
-            console.log(`Клик по каналу ${channelNumber} в попапе`);
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'telegram_popup_channel_click', {
-                    'event_category': 'engagement',
-                    'event_label': `popup_channel_${channelNumber}`,
-                    'value': 1
-                });
-            }
-        }
-        
-        function trackPopupAllChannelsClick() {
-            console.log('Клик по "Подписаться на все каналы"');
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'telegram_popup_all_click', {
-                    'event_category': 'engagement',
-                    'event_label': 'popup_subscribe_all',
-                    'value': telegramLinks.length
-                });
-            }
-        }
-    }
-    
-    // Инициализируем попап после загрузки страницы
-    document.addEventListener('DOMContentLoaded', initPopup);
-    
-    // Функция для ручного вызова попапа (можно вызвать из консоли)
-    window.showTelegramPopupManual = function() {
-        showTelegramPopup();
-    };
-    
-    // Функция для сброса настроек (для тестирования)
-    window.resetPopupSettings = function() {
-        localStorage.removeItem('flex_dont_show_popup');
-        console.log('Настройки попапа сброшены. Попап будет показан при следующем посещении.');
-        alert('Настройки попапа сброшены. Он появится снова через 5 секунд.');
-    };
-    
-    console.log("Сайт с Telegram попапом готов!");
-    </script>
-
-    //новинка
-
+    console.log("Поддерживаемые форматы изображений:", imageFormats.join(', '));
+    console.log("Поиск файлов в папке 'image' с именами:");
+    console.log("- front.[формат] для фона");
+    console.log("- 1.[формат], 2.[формат], 3.[формат] для колонок");
+    console.log("Если файлы не найдены, будет использована ОБЩАЯ картинка ремонта:");
+    console.log(REPAIR_IMAGE_URL);
+</script>
+//новинка
     <div id="telegram-modal" style="display:none;">
   <div class="modal-overlay"></div>
   <div class="modal-content">
