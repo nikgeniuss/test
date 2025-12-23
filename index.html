@@ -1055,8 +1055,14 @@ document.querySelector('.modal-overlay').addEventListener('click', () => {
 });
 
 // Кнопка авторизации (заглушка)
+// Заменить текущий обработчик кнопки:
 document.querySelector('.auth-button').addEventListener('click', () => {
-  alert('Авторизация через Telegram будет реализована позже');
+    // Открываем окно авторизации
+    window.open(
+        'auth.html',
+        'telegram_auth',
+        'width=600,height=700,left=100,top=100'
+    );
 });
 </script>
     
