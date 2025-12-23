@@ -879,5 +879,85 @@
     console.log("Если файлы не найдены, будет использована ОБЩАЯ картинка ремонта:");
     console.log(REPAIR_IMAGE_URL);
 </script>
+
+
+    //новое
+
+    <!-- Модальное окно для авторизации -->
+<div id="telegram-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000;">
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7);"></div>
+    
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+                padding: 30px; border-radius: 20px; z-index: 10001; 
+                width: 90%; max-width: 500px; border: 1px solid rgba(255,255,255,0.1);">
+        
+        <button onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; 
+                background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+        
+        <h3 style="color: #FFF8DC; text-align: center; margin-bottom: 25px; font-size: 1.4rem;">
+            Будьте в курсе последних эксклюзивных предложений и новинок
+        </h3>
+        
+        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <p style="color: #ccc; margin-bottom: 15px;">Авторизуйтесь через Telegram, чтобы не пропускать обновления</p>
+            <button onclick="openAuthPage()" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); 
+                    color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-size: 1rem;">
+                Войти через Telegram
+            </button>
+        </div>
+        
+        <div style="text-align: center;">
+            <p style="color: #FFF8DC; margin-bottom: 20px; font-size: 1.2rem;">Наши группы</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <a href="tg://resolve?domain=Ex_Flex" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
+                        border-radius: 15px; padding: 15px; display: flex; align-items: center; gap: 10px; 
+                        text-decoration: none; color: white;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
+                    </svg>
+                    <span>Группа 1</span>
+                </a>
+                <a href="https://t.me/+ef-zedL8qyhkNWYy" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
+                        border-radius: 15px; padding: 15px; display: flex; align-items: center; gap: 10px; 
+                        text-decoration: none; color: white;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.69 1.09-4.78 3.2-.45.31-.86.46-1.23.45-.41-.01-1.2-.23-1.79-.42-.72-.23-1.29-.36-1.24-.76.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.28 0 0"/>
+                    </svg>
+                    <span>Группа 2</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Функции для модального окна
+    function showModal() {
+        document.getElementById('telegram-modal').style.display = 'block';
+    }
+    
+    function closeModal() {
+        document.getElementById('telegram-modal').style.display = 'none';
+    }
+    
+    function openAuthPage() {
+        // Открываем страницу авторизации
+        window.open('auth.html', '_blank', 'width=600,height=700');
+        closeModal();
+    }
+    
+    // Показываем модальное окно через 5 секунд
+    setTimeout(showModal, 5000);
+    
+    // Закрытие при клике на фон
+    document.getElementById('telegram-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+</script>
+
+    
 </body>
 </html>
