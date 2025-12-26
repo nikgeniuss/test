@@ -12,7 +12,7 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="FLEX - Лучшее решение">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?v=25122024">
     <style>
         * {
             margin: 0;
@@ -697,7 +697,7 @@
     // Функция загрузки конфигурации из config.json (только ссылки)
     async function loadTelegramLinks() {
         try {
-            const response = await fetch('config.json');
+            const response = await fetch('config.json?v=' + Date.now());
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
